@@ -1,35 +1,35 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { View, Text } from "react-native";
+import React from "react";
+import { Tabs } from "expo-router";
+import Color from "@/constants/theme/Color";
+import { HomeIcon, CheckInIcon } from "@/components/CustomIcon";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+export default function _layout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-      }}>
+        tabBarLabelStyle: {
+          fontSize: 13,
+          fontWeight: "bold",
+          marginBottom: 0,
+        },
+        tabBarActiveTintColor: Color.color3,
+        tabBarInactiveTintColor: Color.color2,
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
+          tabBarLabel: "Trang Chủ",
+          tabBarIcon: ({ focused }) => <HomeIcon focused={focused} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="checkin"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
+          tabBarLabel: "Chấm công",
+          tabBarIcon: ({ focused }) => <CheckInIcon focused={focused} />,
         }}
       />
     </Tabs>
