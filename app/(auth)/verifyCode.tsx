@@ -63,9 +63,8 @@ export default function verifyCode() {
           >
             <Image
               style={AppStyle.StyleLogin.logo}
-              source={require("../../assets/images/avt.png")}
+              source={require("../../assets/images/logo.png")}
             />
-            <Text style={AppStyle.StyleLogin.appName}>APP CHẤM CÔNG</Text>
           </View>
           <View style={AppStyle.StyleLogin.flexLogin}>
             <View style={AppStyle.StyleLogin.boxLogin}>

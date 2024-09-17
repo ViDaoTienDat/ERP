@@ -15,8 +15,13 @@ import AppStyle from "../../constants/theme";
 import { useState } from "react";
 import { router } from "expo-router";
 import { signIn } from "../axios/API/loginAPI";
+import { getAllBranch, getUser } from "../axios/API/dataUserAPI";
+import { useDispatch } from "react-redux";
+import { setBranch, setDataIntern, setUser } from "../state/reducers/dataSlice";
+import { GetInternSchedule } from "../axios/API/InternAPI";
 
 export default function Index() {
+  const dispatch = useDispatch();
   const [showPass, setShowPass] = useState(false);
   const [wrongPass, setWrongPass] = useState(false);
   const [textwrong, setTextWrong] = useState("");
@@ -34,30 +39,35 @@ export default function Index() {
       if (result.code === 200) {
         setWrongPass(false);
         setTextWrong("");
-        // getAllBranch().then(result => {
-        //   if (result.code === 200) {
-        //     dispatch(setBranch(result.data));
-        //   }
-        // });
-        // getHisCheckIn().then(async result => {
+        getUser(result.data.access_token).then(async (result) => {
+          if (result.code === 200) {
+            dispatch(setUser(result.data));
+          }
+        });
+        getAllBranch().then(async (result) => {
+          if (result.code === 200) {
+            dispatch(setBranch(result.data));
+          }
+        });
+        // getHisCheckIn().then(async (result) => {
         //   if (result.code === 200) {
         //     const datehis = await handleSplitHisCheckIn(result.data);
         //     dispatch(setDateHisCheckIn(datehis));
         //   }
         // });
-        // GetInternSchedule().then(async result => {
-        //   if (result.code === 200) {
-        //     dispatch(setDataIntern(result.data));
-        //   }
-        // });
-        // getWorkShift().then(async result => {
+        GetInternSchedule().then(async (result) => {
+          if (result.code === 200) {
+            dispatch(setDataIntern(result.data));
+          }
+        });
+        // getWorkShift().then(async (result) => {
         //   if (result.code === 200) {
         //     const workshift = await splitWorkShift(result.data);
         //     dispatch(setWorkShift(workshift));
         //   }
         // });
-        // navigation.navigate('HomeTab');
-        router.push("./home");
+
+        router.push("/(tabs)/home");
       } else if (result.code === 401) {
         setWrongPass(true);
         setTextWrong("Email hoặc mật khẩu không đúng!");
@@ -93,13 +103,14 @@ export default function Index() {
             style={[
               AppStyle.StyleCommon.alignCenter,
               AppStyle.StyleLogin.flexLogo,
+              ,
             ]}
           >
             <Image
+              resizeMode="contain"
               style={AppStyle.StyleLogin.logo}
-              source={require("../../assets/images/avt.png")}
+              source={require("../../assets/images/logo.png")}
             />
-            <Text style={AppStyle.StyleLogin.appName}>APP CHẤM CÔNG</Text>
           </View>
           <View style={AppStyle.StyleLogin.flexLogin}>
             <View style={AppStyle.StyleLogin.boxLogin}>
@@ -150,24 +161,13 @@ export default function Index() {
               {wrongPass && (
                 <Text style={AppStyle.StyleLogin.wrongPass}>{textwrong}</Text>
               )}
-              <TouchableOpacity
-                style={[
-                  AppStyle.StyleLogin.boxItem,
-                  AppStyle.StyleLogin.button,
-                  AppStyle.StyleCommon.alignCenter,
-                ]}
-                onPress={handleLogin}
-                disabled={loading} // Vô hiệu hóa nút khi đang tải
+              <View
+                style={{
+                  alignSelf: "flex-end",
+                  marginRight: 15,
+                  marginBottom: 15,
+                }}
               >
-                {loading ? ( // Hiển thị ActivityIndicator nếu đang tải
-                  <ActivityIndicator size="small" color="#fff" />
-                ) : (
-                  <Text style={AppStyle.StyleCommon.textWhite15}>
-                    Đăng nhập
-                  </Text>
-                )}
-              </TouchableOpacity>
-              <View style={AppStyle.StyleLogin.boxItem}>
                 <TouchableOpacity
                   style={AppStyle.StyleLogin.boxHref}
                   onPress={handleForgotPassword}
@@ -177,6 +177,32 @@ export default function Index() {
                   </Text>
                 </TouchableOpacity>
               </View>
+              <TouchableOpacity
+                style={[
+                  AppStyle.StyleLogin.boxItem,
+                  AppStyle.StyleLogin.button,
+                  AppStyle.StyleCommon.alignCenter,
+                  ,
+                  {
+                    backgroundColor: email && password ? "black" : "#ccc", // Điều kiện đổi màu nền
+                  },
+                ]}
+                onPress={handleLogin}
+                disabled={loading} // Vô hiệu hóa nút khi đang tải
+              >
+                {loading ? ( // Hiển thị ActivityIndicator nếu đang tải
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  <Text
+                    style={[
+                      AppStyle.StyleCommon.textWhite15,
+                      { color: email && password ? "#fff" : "#A8A8A8" },
+                    ]}
+                  >
+                    Đăng nhập
+                  </Text>
+                )}
+              </TouchableOpacity>
             </View>
           </View>
           <View style={AppStyle.StyleLogin.flexVer}>

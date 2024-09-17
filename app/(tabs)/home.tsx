@@ -1,4 +1,11 @@
-import { View, Text, FlatList, Animated } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Animated,
+  StyleSheet,
+  ImageBackground,
+} from "react-native";
 import React, { useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
@@ -7,6 +14,7 @@ import CardCategory from "@/components/CardCategory";
 import { data_cardbasic } from "../../assets/data/data_test";
 import CardInternalNews from "@/components/CardInternalNews";
 import Pagination from "@/components/Pagination";
+import Color from "@/constants/theme/Color";
 export default function home() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef(null);
@@ -33,12 +41,12 @@ export default function home() {
       <View style={AppStyle.StyleHome.boxCategory}>
         <CardCategory
           name="Hồ sơ"
-          img={require("../../assets/images/user.png")}
+          img={require("../../assets/images/Union.png")}
           background="rgba(0, 0 , 0, 0.2)"
         />
         <CardCategory
           name="Chấm công"
-          img={require("../../assets/images/clock.png")}
+          img={require("../../assets/images/timekeepin.png")}
           background="rgba(0, 0 , 0, 0.2)"
         />
         <CardCategory

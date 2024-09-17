@@ -5,20 +5,34 @@ const width = Dimension.window.width - 38; //  paddingHorizontal = 15 in checkin
 
 const StyleHeader = StyleSheet.create({
   header: {
+    justifyContent: "space-evenly",
     width: "100%",
-    height: 100,
+    height: 128,
+    paddingHorizontal: 15,
+    paddingBottom: 5,
+    backgroundColor: Color.color3,
+    borderBottomLeftRadius: 36,
+    borderBottomRightRadius: 36,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+
+    elevation: 12,
+  },
+  boxInfo: {
     flexDirection: "row",
-    justifyContent: "space-around",
     alignItems: "center",
-    paddingTop: 30,
-    paddingHorizontal: 10,
-    borderBottomColor: Color.color1,
-    borderBottomWidth: 5,
+    gap: 15,
   },
   header_item: {
     width: "auto",
     height: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    gap: 15,
     alignItems: "center",
   },
   size_avt: {
@@ -34,12 +48,13 @@ const StyleHeader = StyleSheet.create({
     height: 40,
     flexDirection: "row",
     paddingHorizontal: 15,
-    backgroundColor: Color.color1,
     borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#fff",
   },
   size_iconsearch: {
-    width: 20,
-    height: 20,
+    width: 28,
+    height: 32,
   },
   boxinput: {
     width: "60%",

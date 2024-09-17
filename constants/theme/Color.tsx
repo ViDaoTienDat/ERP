@@ -1,7 +1,7 @@
 export default {
   color1: "#d9d9d9",
   color2: "#2c2c2c",
-  color3: "#c22621",
+  color3: "#B51B01",
   color4: "#C9C9C9",
   color5: "#E8DEF8",
   color6: "#FFCBCB",
@@ -11,4 +11,6 @@ export default {
   color9: "#FEF7FF",
   color10: "#ececec",
   color11: "#b7b7b7",
+  color12: "#118E69",
+  color13: "#e89962",
 };

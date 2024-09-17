@@ -3,7 +3,7 @@ import Color from "./Color";
 const StyleCheckIn = StyleSheet.create({
   boxContainer: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "#fff",
   },
   container: {
     width: "100%",

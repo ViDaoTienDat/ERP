@@ -12,9 +12,11 @@ const width = dimension.window.width;
 // }
 function CardInternalNews({ item }: any) {
   return (
-    <View style={selfstyle.container}>
-      <Text>{item.title}</Text>
-    </View>
+    <Image
+      resizeMode="stretch"
+      source={require("../assets/images/thongbaonghile.png")}
+      style={selfstyle.container}
+    ></Image>
   );
 }
 
@@ -22,7 +24,7 @@ const selfstyle = StyleSheet.create({
   container: {
     width: width - 30,
     height: 140,
-    backgroundColor: Color.color1,
+
     borderRadius: 10,
     flexDirection: "row",
     alignSelf: "center",
