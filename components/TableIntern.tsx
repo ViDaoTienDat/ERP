@@ -37,6 +37,7 @@ export function RowResIntern({
   const [currweek, setCurrWeek] = useState(false);
   useEffect(() => {
     const newdate = getSunDayOfWeek(new Date());
+    setCurrWeek(false);
     if (
       data.CN.register_day === newdate.getDate() &&
       data.CN.register_month === newdate.getMonth() + 1 &&
@@ -44,7 +45,7 @@ export function RowResIntern({
     ) {
       setCurrWeek(true);
     }
-  });
+  }, [data.CN]);
   return (
     <View style={AppStyle.StyleTable.rowcalendar}>
       <CellResInternDayOff data={data.CN} month={month} curr={currweek} />
@@ -107,7 +108,7 @@ function CellResIntern({
         </Text>
       </View>
       <View style={AppStyle.StyleTable.boxValue}>
-        {data.register_shift != "" && data.add ? (
+        {data.register_shift != "" && add ? (
           <TouchableOpacity
             style={AppStyle.StyleTable.boxValue}
             onPress={() => {
@@ -156,7 +157,7 @@ function CellResIntern({
               {data.end_time ? data.end_time : "--/--"}
             </Text>
           </View>
-        ) : data.add && month == data.register_month ? (
+        ) : add && month == data.register_month ? (
           <TouchableOpacity
             style={[AppStyle.StyleTable.boxButton, { backgroundColor: "#fff" }]}
             onPress={() => {

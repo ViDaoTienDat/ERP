@@ -39,7 +39,7 @@ function ChangeSchedule(): React.JSX.Element {
     <View style={{ flex: 1 }}>
       <View style={AppStyle.StyleCommon.container}>
         <ScrollView
-          style={AppStyle.StyleRegister.boxcontent}
+          style={[AppStyle.StyleRegister.boxcontent]}
           showsVerticalScrollIndicator={false}
         >
           <Text style={AppStyle.StyleRegister.title}>Tạo yêu cầu mới</Text>

@@ -8,17 +8,21 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 export default function verifyCode() {
   const [code, setCode] = useState("");
   // const { email } = route.params;
   const [wrongPass, setWrongPass] = useState(false);
   const [textwrong, setTextWrong] = useState("");
+  const params = useLocalSearchParams();
 
+  useEffect(() => {
+    console.log("Params" + JSON.stringify(params));
+  }, []);
   const handleNext = () => {
     router.navigate("./enterNewPass");
     // verifyPassword(email, code).then((result)=> {

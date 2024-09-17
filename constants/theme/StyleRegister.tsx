@@ -3,6 +3,7 @@ import Color from "./Color";
 const StyleRegister = StyleSheet.create({
   boxcontent: {
     width: "100%",
+    paddingHorizontal: 15,
     alignSelf: "center",
   },
   title: {

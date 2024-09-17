@@ -81,7 +81,7 @@ export function ModalResIntern({
           console.log(result);
         }
       } else {
-        // console.log("ChangeInternSchedule" + date);
+        console.log("ChangeInternSchedule" + date);
         // result = await ChangeInternSchedule(date, workshiftSend);
         let textWorkShift = "";
         if (

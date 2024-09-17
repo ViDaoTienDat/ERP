@@ -163,15 +163,13 @@ export default function Index() {
               )}
               <View
                 style={{
+                  flex: 1,
                   alignSelf: "flex-end",
-                  marginRight: 15,
+                  marginRight: 20,
                   marginBottom: 15,
                 }}
               >
-                <TouchableOpacity
-                  style={AppStyle.StyleLogin.boxHref}
-                  onPress={handleForgotPassword}
-                >
+                <TouchableOpacity onPress={handleForgotPassword}>
                   <Text style={AppStyle.StyleLogin.textHref}>
                     Quên mật khẩu?
                   </Text>

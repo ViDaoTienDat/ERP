@@ -3,6 +3,7 @@ import Color from "./Color";
 const StyleCommon = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   flexRowCenter: {
     flexDirection: "row",

@@ -7,22 +7,41 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
 import { router } from "expo-router";
+import { sendCode } from "../axios/API/loginAPI";
 
 export default function forgotPass() {
   const [email, setEmail] = useState("");
   const [wrongPass, setWrongPass] = useState(false);
   const [textwrong, setTextWrong] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleGoBack = () => {
     router.back();
   };
   const handleNext = () => {
-    router.push("./verifyCode");
+    setIsLoading(true);
+    setTextWrong("");
+    sendCode(email).then((result) => {
+      if (result.code === 200) {
+        router.push({ pathname: "./verifyCode", params: { email: email } });
+        setWrongPass(false);
+        setTextWrong("");
+        setIsLoading(false);
+      } else if (result.code === 400) {
+        setWrongPass(true);
+        setTextWrong("Email không tồn tại!");
+        setIsLoading(false);
+      } else {
+        setWrongPass(true);
+        setTextWrong("Lỗi không xác định!");
+        setIsLoading(false);
+      }
+    });
   };
   return (
     <KeyboardAvoidingView
@@ -66,10 +85,15 @@ export default function forgotPass() {
                     setEmail(text);
                   }}
                 />
+                {wrongPass && (
+                  <Text
+                    style={[AppStyle.StyleLogin.wrongPass, { marginLeft: -30 }]}
+                  >
+                    {textwrong}
+                  </Text>
+                )}
               </View>
-              {wrongPass && (
-                <Text style={AppStyle.StyleLogin.wrongPass}>{textwrong}</Text>
-              )}
+
               <View
                 style={[
                   AppStyle.StyleCommon.flexRowCenter,
@@ -96,15 +120,22 @@ export default function forgotPass() {
                   ]}
                   onPress={handleNext}
                 >
-                  <Text
-                    style={[
-                      AppStyle.StyleCommon.textWhite15,
-                      ,
-                      AppStyle.StyleLogin.spaceButton,
-                    ]}
-                  >
-                    Gửi mã
-                  </Text>
+                  {isLoading ? ( // Hiển thị ActivityIndicator nếu đang tải
+                    <ActivityIndicator
+                      style={[AppStyle.StyleLogin.spaceButton]}
+                      size="small"
+                      color="#fff"
+                    />
+                  ) : (
+                    <Text
+                      style={[
+                        AppStyle.StyleCommon.textWhite15,
+                        AppStyle.StyleLogin.spaceButton,
+                      ]}
+                    >
+                      Gửi mã
+                    </Text>
+                  )}
                 </TouchableOpacity>
               </View>
             </View>
