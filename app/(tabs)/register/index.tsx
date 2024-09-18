@@ -14,7 +14,7 @@ export default function register() {
     setTab(num);
   };
   return (
-    <View
+    <SafeAreaView
       style={[
         AppStyle.StyleCommon.container,
         { paddingHorizontal: 15, backgroundColor: "#fff" },
@@ -28,6 +28,6 @@ export default function register() {
         onchangeTab={false}
       />
       {tab == 0 ? <RegisterChild /> : <ReqScreen />}
-    </View>
+    </SafeAreaView>
   );
 }

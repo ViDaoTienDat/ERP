@@ -5,6 +5,7 @@ const StyleCommon = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+
   flexRowCenter: {
     flexDirection: "row",
     justifyContent: "center",

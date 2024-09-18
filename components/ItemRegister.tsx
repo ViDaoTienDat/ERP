@@ -91,31 +91,13 @@ export function ItemDropDown({
     <View style={AppStyle.StyleRegister.boxItem}>
       <Text style={AppStyle.StyleRegister.label}>{label}</Text>
 
-      {/* <CustomDropdown
+      <CustomDropdown
         data={data}
         firstValue={firstValue}
         onChange={(value: string) => {
           onchangeValue(value);
         }}
-      /> */}
-      <View
-        style={{
-          width: "100%",
-          borderColor: Color.color4,
-          borderWidth: 1,
-          borderRadius: 10,
-        }}
-      >
-        <Picker
-          dropdownIconColor={Color.color13}
-          selectedValue={value}
-          onValueChange={(itemValue, itemIndex) => setvalue(itemValue)}
-        >
-          {data.map((item: any, index: number) => (
-            <Picker.Item key={index} label={item.label} value={item.value} />
-          ))}
-        </Picker>
-      </View>
+      />
     </View>
   );
 }

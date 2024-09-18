@@ -165,6 +165,7 @@ function CellResIntern({
             }}
           >
             <Image
+              resizeMode="contain"
               style={AppStyle.StyleTable.imgButton}
               source={require("../assets/images/plus.png")}
             />

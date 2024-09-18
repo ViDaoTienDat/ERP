@@ -1,9 +1,10 @@
 import CustomHeader from "@/components/CustomHeader";
 import AppStyle from "@/constants/theme";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import RegisterInternChild from "./RegisterInternChild";
 import ChangeSchedule from "./ChangeSchedule";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function registerIntern(): React.JSX.Element {
   const [tab, setTab] = useState<Number>(0);

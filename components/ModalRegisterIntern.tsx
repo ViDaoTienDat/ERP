@@ -8,10 +8,8 @@ import {
 } from "react-native";
 
 import React, { useEffect, useState } from "react";
-import CustomDropdown from "./DropDown";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useDispatch, useSelector } from "react-redux";
-
 import AppStyle from "@/constants/theme";
 import { setDataIntern } from "@/app/state/reducers/dataSlice";
 import {
@@ -19,10 +17,10 @@ import {
   GetInternSchedule,
   RegisterInternSchedule,
 } from "@/app/axios/API/InternAPI";
-import { RootState } from "@/app/state/store";
 import { Picker } from "@react-native-picker/picker";
 import Color from "@/constants/theme/Color";
-import { dataReq } from "@/assets/data/data_test";
+import CustomDropdown from "./DropDown";
+
 type DataModalResIntern = {
   visiable: boolean;
   defaultDate: Date;
@@ -30,6 +28,12 @@ type DataModalResIntern = {
   add: boolean;
   onChangeSchedule: Function;
 };
+const dataworkShift = [
+  { label: "Ca sáng", value: "2c1e165e-8" },
+  { label: "Ca chiều", value: "78546471-a" },
+  { label: "Fulltime", value: "All" },
+];
+const dataBranches: any = [];
 export function ModalResIntern({
   visiable,
   funcHide,
@@ -44,11 +48,18 @@ export function ModalResIntern({
   const dispatch = useDispatch();
   const listWorkShift = useSelector((state: any) => state.userdata.workshift);
   const listOffice = useSelector((state: any) => state.userdata.branch);
-  const [workShift, setWorkShift] = useState(listWorkShift[0]);
-  const [office, setOffice] = useState(listOffice[0]);
+  const [workShift, setWorkShift] = useState(dataworkShift[0].value);
+  const [office, setOffice] = useState("");
 
   const [show, setShow] = useState(false);
   const [date, setDate] = useState<Date>(defaultDate);
+  useEffect(() => {
+    dataBranches.length = 0;
+    listOffice.forEach((item: any) => {
+      dataBranches.push({ label: item.name, value: item.id });
+    });
+    setOffice(dataBranches[0].value);
+  }, []);
   useEffect(() => {
     setDate(defaultDate);
   }, [defaultDate]);
@@ -158,14 +169,14 @@ export function ModalResIntern({
                     Văn phòng
                   </Text>
                   <View style={AppStyle.StyleTable.addValue}>
-                    {/* <CustomDropdown
-                      data={listWorkShift}
-                      firstValue={listWorkShift[0]}
+                    <CustomDropdown
+                      data={dataBranches}
+                      firstValue={office}
                       onChange={(value: React.SetStateAction<string>) => {
-                        setWorkShift(value);
+                        setOffice(value);
                       }}
-                    /> */}
-                    <View
+                    />
+                    {/* <View
                       style={{
                         width: "100%",
                         borderColor: Color.color4,
@@ -187,7 +198,7 @@ export function ModalResIntern({
                           />
                         ))}
                       </Picker>
-                    </View>
+                    </View> */}
                   </View>
                 </View>
                 <View style={AppStyle.StyleTable.addItem}>
@@ -195,14 +206,14 @@ export function ModalResIntern({
                     Ca làm việc
                   </Text>
                   <View style={AppStyle.StyleTable.addValue}>
-                    {/* <CustomDropdown
-                      data={listWorkShift}
-                      firstValue={listWorkShift[0]}
+                    <CustomDropdown
+                      data={dataworkShift}
+                      firstValue={workShift}
                       onChange={(value: React.SetStateAction<string>) => {
                         setWorkShift(value);
                       }}
-                    /> */}
-                    <View
+                    />
+                    {/* <View
                       style={{
                         width: "100%",
                         borderColor: Color.color4,
@@ -220,7 +231,7 @@ export function ModalResIntern({
                         <Picker.Item label="Ca 2" value={listWorkShift[1]} />
                         <Picker.Item label="All" value={listWorkShift[2]} />
                       </Picker>
-                    </View>
+                    </View> */}
                   </View>
                 </View>
                 <View
