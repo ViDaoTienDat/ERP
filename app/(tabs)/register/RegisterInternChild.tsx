@@ -19,6 +19,7 @@ function RegisterInternChild(): React.JSX.Element {
 
   const getNewMonth = async (newmonth: any, year: any) => {
     const calendardata = await getInternSchedule(newmonth, year, dataIntern);
+
     setdatamonth(calendardata.schedule);
     setcurryear(calendardata.year);
     setcurrmonth(calendardata.month);

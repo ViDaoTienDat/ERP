@@ -13,15 +13,6 @@ const StyleHeader = StyleSheet.create({
     backgroundColor: Color.color3,
     borderBottomLeftRadius: 36,
     borderBottomRightRadius: 36,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.37,
-    shadowRadius: 7.49,
-
-    elevation: 12,
   },
   boxInfo: {
     flexDirection: "row",

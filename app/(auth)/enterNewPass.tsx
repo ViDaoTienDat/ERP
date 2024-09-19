@@ -11,10 +11,13 @@ import {
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { checkPassword } from "../axios/func/checkPassword";
+import { resetPassword } from "../axios/API/loginAPI";
 
 export default function enterNewPass() {
-  //   const { email } = route.params;
+  const params = useLocalSearchParams();
+  const email = params.email;
   const [newpass, setNewPass] = useState("");
   const [retypePass, setRetypePass] = useState("");
   const [strongPass, setStrongPass] = useState(true);
@@ -31,24 +34,24 @@ export default function enterNewPass() {
   };
 
   useEffect(() => {
-    // checkPassword(newpass).then(({ mess, result }) => {
-    //   setStrongPass(result);
-    //   setMessage(mess);
-    // });
+    checkPassword(newpass).then(({ mess, result }) => {
+      setStrongPass(result);
+      setMessage(mess);
+    });
   }, [newpass]);
 
   const handleLogin = () => {
-    // resetPassword(email, newpass, retypePass).then((result) => {
-    //   if (result.code === 200) {
-    //     handleGoLogin();
-    //   } else if (result.code === 400) {
-    //     setWrongPass(true);
-    //     setTextWrong("Không thể đổi!");
-    //   } else {
-    //     setWrongPass(true);
-    //     setTextWrong("Lỗi không xác định!");
-    //   }
-    // });
+    resetPassword(email, newpass, retypePass).then((result) => {
+      if (result.code === 200) {
+        handleGoLogin();
+      } else if (result.code === 400) {
+        setWrongPass(true);
+        setTextWrong("Không thể đổi!");
+      } else {
+        setWrongPass(true);
+        setTextWrong("Lỗi không xác định!");
+      }
+    });
   };
   return (
     <KeyboardAvoidingView

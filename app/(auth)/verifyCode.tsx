@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
 import { router, useLocalSearchParams } from "expo-router";
+import { verifyPassword } from "../axios/API/loginAPI";
 
 export default function verifyCode() {
   const [code, setCode] = useState("");
@@ -21,23 +22,21 @@ export default function verifyCode() {
   const params = useLocalSearchParams();
 
   useEffect(() => {
-    console.log("Params" + JSON.stringify(params));
+    console.log("Params" + JSON.stringify(params.email));
   }, []);
+  const email = params.email;
   const handleNext = () => {
-    router.navigate("./enterNewPass");
-    // verifyPassword(email, code).then((result)=> {
-    //   if (result.code === 200){
-    //     navigation.navigate('EnterNewPass', {email: email});
-    //   }
-    //   else if (result.code === 400){
-    //     setWrongPass(true);
-    //     setTextWrong('Mã không chính xác!');
-    //   }
-    //   else{
-    //     setWrongPass(true);
-    //     setTextWrong('Lỗi không xác định!');
-    //   }
-    // })
+    verifyPassword(email, code).then((result) => {
+      if (result.code === 200) {
+        router.push({ pathname: "./enterNewPass", params: { email: email } });
+      } else if (result.code === 400) {
+        setWrongPass(true);
+        setTextWrong("Mã không chính xác!");
+      } else {
+        setWrongPass(true);
+        setTextWrong("Lỗi không xác định!");
+      }
+    });
   };
 
   const reSendCode = () => {

@@ -23,11 +23,19 @@ function CustomDropdown({
   }, [data]);
 
   return (
-    <View style={selfstyle.container}>
+    <View
+      style={[
+        selfstyle.container,
+        isFocus && { backgroundColor: "#FFF7EB", borderColor: Color.color13 },
+      ]}
+    >
       <Dropdown
         style={[selfstyle.dropdown]}
-        placeholderStyle={selfstyle.dropdownTextStyle}
-        selectedTextStyle={selfstyle.dropdownTextStyle}
+        placeholderStyle={[selfstyle.dropdownTextStyle]}
+        selectedTextStyle={[
+          selfstyle.dropdownTextStyle,
+          isFocus && { color: Color.color13 },
+        ]}
         inputSearchStyle={selfstyle.inputSearchStyle}
         iconStyle={selfstyle.iconStyle}
         data={data}
@@ -55,6 +63,7 @@ const selfstyle = StyleSheet.create({
   container: {
     width: "100%",
     height: 50,
+    // backgroundColor: "#FFF7EB",
     borderColor: Color.color4,
     borderWidth: 1,
     borderRadius: 10,
@@ -63,10 +72,12 @@ const selfstyle = StyleSheet.create({
   },
   dropdownTextStyle: {
     fontSize: 15,
+
     fontWeight: "400",
-    color: Color.color2,
+    // color: "#EF9F48",
   },
   iconStyle: {
+    tintColor: "#EF9F48",
     width: 20,
     height: 20,
   },
@@ -75,7 +86,8 @@ const selfstyle = StyleSheet.create({
     fontSize: 14,
   },
   dropdown: {
-    width: "90%",
+    width: "100%",
+    paddingHorizontal: 10,
   },
 });
 export default CustomDropdown;

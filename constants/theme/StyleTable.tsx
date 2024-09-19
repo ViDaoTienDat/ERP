@@ -11,6 +11,12 @@ export const StyleTable = StyleSheet.create({
   content: {
     marginTop: 10,
   },
+  inputdate: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingRight: 12,
+  },
   boxday: {
     width: 28,
     height: 28,

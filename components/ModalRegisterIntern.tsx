@@ -1,4 +1,6 @@
 import {
+  ActivityIndicator,
+  Image,
   Modal,
   Platform,
   Text,
@@ -43,6 +45,7 @@ export function ModalResIntern({
 }: DataModalResIntern): React.JSX.Element {
   const Hide = () => {
     funcHide();
+    setIsError(false);
   };
 
   const dispatch = useDispatch();
@@ -52,7 +55,11 @@ export function ModalResIntern({
   const [office, setOffice] = useState("");
 
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   const [date, setDate] = useState<Date>(defaultDate);
+
   useEffect(() => {
     dataBranches.length = 0;
     listOffice.forEach((item: any) => {
@@ -69,6 +76,8 @@ export function ModalResIntern({
     setDate(currentDate);
   };
   const SubmitRegisterIntern = async () => {
+    setIsLoading(true);
+    setIsError(false);
     let workshiftSend = [];
     if (workShift === "All") {
       workshiftSend.push("2c1e165e-8", "78546471-a");
@@ -89,6 +98,7 @@ export function ModalResIntern({
             console.log(item);
           }
         } else {
+          setIsError(true);
           console.log(result);
         }
       } else {
@@ -114,8 +124,10 @@ export function ModalResIntern({
         funcHide();
       }
     } catch (error) {
+      setIsError(true);
       console.error("Error during submission:", error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -136,6 +148,7 @@ export function ModalResIntern({
                     style={[
                       AppStyle.StyleTable.addValue,
                       AppStyle.StyleTable.addButton,
+                      AppStyle.StyleTable.inputdate,
                     ]}
                     onPress={() => {
                       setShow(true);
@@ -145,6 +158,14 @@ export function ModalResIntern({
                       {date.getDate()}/{date.getMonth() + 1}/
                       {date.getFullYear()}
                     </Text>
+                    <Image
+                      style={{
+                        width: 16,
+                        height: 16,
+                        tintColor: Color.color13,
+                      }}
+                      source={require("../assets/images/timeoff.png")}
+                    />
                   </TouchableOpacity>
                   {show && (
                     <DateTimePicker
@@ -234,6 +255,18 @@ export function ModalResIntern({
                     </View> */}
                   </View>
                 </View>
+                {isError && (
+                  <View
+                    style={{
+                      alignSelf: "center",
+                      padding: 10,
+                    }}
+                  >
+                    <Text style={{ color: Color.color3 }}>
+                      Đăng ký lịch thực tập thất bại, hãy thử lại !!!
+                    </Text>
+                  </View>
+                )}
                 <View
                   style={[
                     AppStyle.StyleCommon.flexRowCenter,
@@ -260,15 +293,22 @@ export function ModalResIntern({
                     ]}
                     onPress={SubmitRegisterIntern}
                   >
-                    <Text
-                      style={[
-                        AppStyle.StyleCommon.textWhite15,
-                        ,
-                        AppStyle.StyleLogin.spaceButton,
-                      ]}
-                    >
-                      Xác nhận
-                    </Text>
+                    {isLoading ? ( // Hiển thị ActivityIndicator nếu đang tải
+                      <ActivityIndicator
+                        style={[AppStyle.StyleLogin.spaceButton]}
+                        size="small"
+                        color="#fff"
+                      />
+                    ) : (
+                      <Text
+                        style={[
+                          AppStyle.StyleCommon.textWhite15,
+                          AppStyle.StyleLogin.spaceButton,
+                        ]}
+                      >
+                        Xác nhận
+                      </Text>
+                    )}
                   </TouchableOpacity>
                 </View>
               </View>

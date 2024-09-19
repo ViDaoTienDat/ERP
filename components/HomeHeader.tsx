@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 function HomeHeader(): React.JSX.Element {
   const userInfo = useSelector((state: any) => state.userdata.user);
   return (
-    <View style={AppStyle.StyleHeader.header}>
+    <View style={[AppStyle.StyleHeader.header]}>
       <View
         style={[
           {

@@ -48,6 +48,7 @@ export const RegisterInternSchedule = async (
       const userId = getUserIdFromAccessToken(token.accessToken);
       if (userId) {
         const url = `${serverAPI}/api/v1/schedules/register/${userId}`;
+        // const url = `${serverAPI}/api/v1/schedules/dasdasdsadasdasd`; // co tinh de error
         const formattedDate = formatDateToLocal(date);
         const data = {
           register_time: {

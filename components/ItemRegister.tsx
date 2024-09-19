@@ -84,6 +84,7 @@ export function ItemDropDown({
     const office = data.find(
       (office: { value: any }) => office.value === value
     );
+
     const label = office ? office.label : "Không tìm thấy";
     onChange(label);
   };
