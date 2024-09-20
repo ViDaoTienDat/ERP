@@ -44,7 +44,9 @@ export function ModalResIntern({
   onChangeSchedule,
 }: DataModalResIntern): React.JSX.Element {
   const Hide = () => {
-    funcHide();
+    if (!isLoading) {
+      funcHide();
+    }
     setIsError(false);
   };
 
