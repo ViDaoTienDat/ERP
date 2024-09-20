@@ -5,10 +5,9 @@ const width = Dimension.window.width - 38; //  paddingHorizontal = 15 in checkin
 
 const StyleHeader = StyleSheet.create({
   header: {
-    justifyContent: "space-evenly",
     width: "100%",
     height: 170,
-    // justifyContent: "flex-end",
+    justifyContent: "flex-end",
     backgroundColor: Color.color_header_red,
     borderBottomLeftRadius: 36,
     borderBottomRightRadius: 36,
@@ -28,23 +27,11 @@ const StyleHeader = StyleSheet.create({
   },
   text_position: {
     color: Color.color_white,
-    height: 128,
-    paddingHorizontal: 15,
-    paddingBottom: 5,
-    backgroundColor: Color.color3,
-    borderBottomLeftRadius: 36,
-    borderBottomRightRadius: 36,
-  },
-  boxInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 15,
   },
   header_item: {
     width: "auto",
     height: "100%",
-    justifyContent: "flex-start",
-    gap: 15,
+    justifyContent: "center",
     alignItems: "center",
   },
   topRow: {
@@ -73,18 +60,18 @@ const StyleHeader = StyleSheet.create({
     height: 40,
     flexDirection: "row",
     backgroundColor: Color.color_header_red,
+    borderRadius: 20,
     alignItems: "center",
     borderWidth: 1,
     marginHorizontal: 15,
     marginBottom: 18,
     marginTop: 10,
     paddingHorizontal: 15,
-    borderRadius: 50,
-    borderColor: "#fff",
+    borderColor: Color.color_white,
   },
   size_iconsearch: {
-    width: 28,
-    height: 32,
+    width: 20,
+    height: 20,
   },
   size_iconnotificaton: {
     width: 32,

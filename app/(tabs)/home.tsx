@@ -44,22 +44,22 @@ export default function home() {
         <CardCategory
           name="Hồ sơ"
           img={require("../../assets/images/Union.png")}
-          background="rgba(0, 0 , 0, 0.2)"
+          // background="rgba(0, 0 , 0, 0.2)"
         />
         <CardCategory
           name="Chấm công"
           img={require("../../assets/images/timekeepin.png")}
-          background="rgba(0, 0 , 0, 0.2)"
+          // background="rgba(0, 0 , 0, 0.2)"
         />
         <CardCategory
           name="Nghỉ phép"
           img={require("../../assets/images/timeoff.png")}
-          background="rgba(0, 0 , 0, 0.2)"
+          // background="rgba(0, 0 , 0, 0.2)"
         />
         <CardCategory
           name="Quy định"
           img={require("../../assets/images/rule.png")}
-          background="rgba(0, 0 , 0, 0.2)"
+          // background="rgba(0, 0 , 0, 0.2)"
         />
       </View>
     </SafeAreaView>
