@@ -4,7 +4,7 @@ import CustomHeader from "@/components/CustomHeader";
 import CheckIn from "../../components/tab_checkin/checkIn";
 import History from "../../components/tab_checkin/history";
 import AppStyle from "@/constants/theme";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 export default function checkin() {
   const [numTab, setNumTab] = useState(0); // Initialize numTab as state
 
@@ -13,8 +13,14 @@ export default function checkin() {
     setNumTab(index); // Update numTab with the pressed tab index
   };
   return (
-    <View style={{ flex: 1, paddingHorizontal: 15, backgroundColor: "#fff" }}>
-      <ImageBackground source={require("../../assets/images/logo-background.png")} resizeMode="contain" style={AppStyle.StyleHome.background}>
+    <SafeAreaView
+      style={{ flex: 1, paddingHorizontal: 15, backgroundColor: "#fff" }}
+    >
+      <ImageBackground
+        source={require("../../assets/images/logo-background.png")}
+        resizeMode="contain"
+        style={AppStyle.StyleHome.background}
+      >
         <CustomHeader
           title="Chấm công"
           tabs={["Chấm công", "Lịch sử"]}
@@ -25,6 +31,6 @@ export default function checkin() {
         {/* Conditionally render the screen based on numTab */}
         {numTab == 0 ? <CheckIn /> : <History />}
       </ImageBackground>
-    </View>
+    </SafeAreaView>
   );
 }

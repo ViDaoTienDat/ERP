@@ -8,32 +8,35 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { verifyPassword } from "../axios/API/loginAPI";
 
 export default function verifyCode() {
   const [code, setCode] = useState("");
   // const { email } = route.params;
   const [wrongPass, setWrongPass] = useState(false);
   const [textwrong, setTextWrong] = useState("");
+  const params = useLocalSearchParams();
 
+  useEffect(() => {
+    console.log("Params" + JSON.stringify(params.email));
+  }, []);
+  const email = params.email;
   const handleNext = () => {
-    router.navigate("./enterNewPass");
-    // verifyPassword(email, code).then((result)=> {
-    //   if (result.code === 200){
-    //     navigation.navigate('EnterNewPass', {email: email});
-    //   }
-    //   else if (result.code === 400){
-    //     setWrongPass(true);
-    //     setTextWrong('Mã không chính xác!');
-    //   }
-    //   else{
-    //     setWrongPass(true);
-    //     setTextWrong('Lỗi không xác định!');
-    //   }
-    // })
+    verifyPassword(email, code).then((result) => {
+      if (result.code === 200) {
+        router.push({ pathname: "./enterNewPass", params: { email: email } });
+      } else if (result.code === 400) {
+        setWrongPass(true);
+        setTextWrong("Mã không chính xác!");
+      } else {
+        setWrongPass(true);
+        setTextWrong("Lỗi không xác định!");
+      }
+    });
   };
 
   const reSendCode = () => {
@@ -63,9 +66,8 @@ export default function verifyCode() {
           >
             <Image
               style={AppStyle.StyleLogin.logo}
-              source={require("../../assets/images/avt.png")}
+              source={require("../../assets/images/logo.png")}
             />
-            <Text style={AppStyle.StyleLogin.appName}>APP CHẤM CÔNG</Text>
           </View>
           <View style={AppStyle.StyleLogin.flexLogin}>
             <View style={AppStyle.StyleLogin.boxLogin}>

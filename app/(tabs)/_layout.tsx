@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import Color from "@/constants/theme/Color";
-import { HomeIcon, CheckInIcon } from "@/components/CustomIcon";
+import { HomeIcon, CheckInIcon, RegisterIcon } from "@/components/CustomIcon";
 
 export default function _layout() {
   return (
@@ -30,6 +30,13 @@ export default function _layout() {
         options={{
           tabBarLabel: "Chấm công",
           tabBarIcon: ({ focused }) => <CheckInIcon focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
+        name="register"
+        options={{
+          tabBarLabel: "Đăng ký",
+          tabBarIcon: ({ focused }) => <RegisterIcon focused={focused} />,
         }}
       />
     </Tabs>

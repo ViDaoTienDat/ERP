@@ -3,6 +3,7 @@ import colors from "./Color";
 const StyleLogin = StyleSheet.create({
   flexLogo: {
     flex: 4,
+    marginBottom: 50,
     justifyContent: "flex-end",
   },
   flexLogin: {
@@ -13,9 +14,8 @@ const StyleLogin = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 167,
+    height: 85,
   },
   appName: {
     fontWeight: "bold",
@@ -46,14 +46,17 @@ const StyleLogin = StyleSheet.create({
   },
   button: {
     height: 40,
-    backgroundColor: colors.color2,
+    backgroundColor: colors.color3,
     borderRadius: 10,
+  },
+  mini_button: {
+    width: 120,
   },
   boxHref: {
     width: 105,
   },
   textHref: {
-    color: colors.color2,
+    color: colors.color3,
     textDecorationLine: "underline",
   },
   buttonImg: {

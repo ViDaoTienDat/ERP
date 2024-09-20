@@ -13,7 +13,7 @@ function Pagination({ data, scrollX }: Data): React.JSX.Element {
       {data.map((_: any, idx: any) => {
         const colorDot = scrollX.interpolate({
           inputRange: [(idx - 1) * width, idx * width, (idx + 1) * width],
-          outputRange: ["#d9d9d9", "#000000", "#d9d9d9"],
+          outputRange: ["#d9d9d9", "#B51B01", "#d9d9d9"],
           extrapolate: "clamp",
         });
         return (

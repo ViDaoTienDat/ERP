@@ -2,46 +2,58 @@ import React from "react";
 import {
   Image,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
-  Text
 } from "react-native";
 import Color from "../constants/theme/Color";
 import AppStyle from "../constants/theme";
+import { useSelector } from "react-redux";
 
 function HomeHeader(): React.JSX.Element {
+  const userInfo = useSelector((state: any) => state.userdata.user);
   return (
-    <View style={AppStyle.StyleHeader.header}>
-      <View style={AppStyle.StyleHeader.topRow}>
-        <View style={AppStyle.StyleHeader.profileContainer}>
-          <TouchableOpacity onPress={() => {}}>
+    <View style={[AppStyle.StyleHeader.header]}>
+      <View
+        style={[
+          {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          },
+        ]}
+      >
+        <View style={[AppStyle.StyleHeader.boxInfo]}>
+          <TouchableOpacity>
             <Image
-              style={[
-                AppStyle.StyleHeader.size_avt,
-              ]}
+              style={[AppStyle.StyleHeader.size_avt]}
               source={require("../assets/images/avt.png")}
             />
           </TouchableOpacity>
-          <View style={AppStyle.StyleHeader.textContainer}>
-            <Text style={AppStyle.StyleHeader.text_name}>Nguyễn Văn A</Text>
-            <Text style={AppStyle.StyleHeader.text_position}>Chức vụ</Text>
+          <View>
+            <Text
+              style={[AppStyle.StyleCommon.textWhite15, { lineHeight: 19 }]}
+            >
+              {userInfo ? userInfo.full_name : "..."}
+            </Text>
+            <Text style={{ fontSize: 12, color: "#ececec" }}>
+              {userInfo ? userInfo.position : "..."}
+            </Text>
           </View>
         </View>
         <View>
-          <TouchableOpacity onPress={() => {}}>
+          <View style={[selfstyle.dot, { backgroundColor: "#E6224D" }]}></View>
+          <TouchableOpacity style={{}}>
             <Image
-              style={[AppStyle.StyleHeader.size_iconnotificaton]}
-              source={require("../assets/images/bell-fill.png")}
+              style={[AppStyle.StyleHeader.size_iconsearch]}
+              source={require("../assets/images/bell.png")}
             />
           </TouchableOpacity>
         </View>
       </View>
-      <View
-        style={[
-          AppStyle.StyleHeader.boxsearch,
-        ]}
-      >
+
+      <View style={[AppStyle.StyleHeader.boxsearch]}>
         <Image
           style={[AppStyle.StyleHeader.size_iconsearch]}
           source={require("../assets/images/search.png")}
@@ -55,5 +67,24 @@ function HomeHeader(): React.JSX.Element {
     </View>
   );
 }
+const selfstyle = StyleSheet.create({
+  dot: {
+    position: "absolute",
+    zIndex: 100,
+    left: 15,
+    width: 8,
+    height: 8,
+    borderRadius: 50,
+    backgroundColor: Color.color1,
+    marginHorizontal: 3,
+  },
+  container: {
+    width: "100%",
+    height: 40,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default HomeHeader;

@@ -15,13 +15,6 @@ import AppStyle from "../../constants/theme";
 import { useState } from "react";
 import { router } from "expo-router";
 import { signIn } from "../axios/API/loginAPI";
-import { getAllBranch } from "../axios/API/branchApi";
-import { getHisCheckIn } from "../axios/API/checkInApi";
-import { getWorkShift } from "../axios/API/workShirtApi";
-import { handleSplitHisCheckIn } from "../axios/func/createCalendar";
-import { splitWorkShift } from "../axios/func/loadDataUser";
-import { setBranch, setDateHisCheckIn, setWorkShift } from "../state/reducers/dataSlice";
-import { useDispatch } from "react-redux";
 
 export default function Index() {
   const [showPass, setShowPass] = useState(false);
@@ -30,8 +23,6 @@ export default function Index() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const dispatch = useDispatch();
 
   const handleShowPass = () => {
     setShowPass(!showPass);
@@ -43,30 +34,29 @@ export default function Index() {
       if (result.code === 200) {
         setWrongPass(false);
         setTextWrong("");
-        getAllBranch().then(result => {
-          console.log(result);
-          if (result.code === 200) {
-            dispatch(setBranch(result.data));
-          }
-        });
-        getHisCheckIn().then(async result => {
-          console.log(result);
-          if (result.code === 200) {
-            const datehis = await handleSplitHisCheckIn(result.data);
-            dispatch(setDateHisCheckIn(datehis));
-          }
-        });
+        // getAllBranch().then(result => {
+        //   if (result.code === 200) {
+        //     dispatch(setBranch(result.data));
+        //   }
+        // });
+        // getHisCheckIn().then(async result => {
+        //   if (result.code === 200) {
+        //     const datehis = await handleSplitHisCheckIn(result.data);
+        //     dispatch(setDateHisCheckIn(datehis));
+        //   }
+        // });
         // GetInternSchedule().then(async result => {
         //   if (result.code === 200) {
         //     dispatch(setDataIntern(result.data));
         //   }
         // });
-        getWorkShift().then(async result => {
-          if (result.code === 200) {
-            const workshift = await splitWorkShift(result.data);
-            dispatch(setWorkShift(workshift));
-          }
-        });
+        // getWorkShift().then(async result => {
+        //   if (result.code === 200) {
+        //     const workshift = await splitWorkShift(result.data);
+        //     dispatch(setWorkShift(workshift));
+        //   }
+        // });
+        // navigation.navigate('HomeTab');
         router.push("./home");
       } else if (result.code === 401) {
         setWrongPass(true);

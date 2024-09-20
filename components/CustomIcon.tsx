@@ -10,7 +10,7 @@ type DataIcon = {
 };
 const CustomIcon = ({ focused, img }: DataCustomIcon) => (
   <View style={{ ...styles.iconContainer }}>
-    <Image style={styles.iconImg} source={img} />
+    <Image resizeMode="contain" style={styles.iconImg} source={img} />
   </View>
 );
 export const HomeIcon = ({ focused }: DataIcon) => (
@@ -40,8 +40,8 @@ export const RegisterIcon = ({ focused }: DataIcon) => (
     focused={focused}
     img={
       focused
-        ? require("../assets/images/new-document_007aff.png")
-        : require("../assets/images/new-document.png")
+        ? require("../assets/images/Subtract.png")
+        : require("../assets/images/Subtractunfocused.png")
     }
   />
 );
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   iconImg: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
   },
 });
