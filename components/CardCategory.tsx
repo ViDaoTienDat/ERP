@@ -9,14 +9,14 @@ import React from 'react';import {
   type Category = {
     name: string;
     img: any;
-    background: string;
+    //background: string;
 }
-  function CardCategory({name, img, background}: Category): React.JSX.Element {
+  function CardCategory({name, img}: Category): React.JSX.Element {
   
       return (
       <View style={selfstyle.container}>
         <TouchableOpacity style={selfstyle.container}>
-        <View style={[selfstyle.box_icon, {backgroundColor: background}]}>
+        <View style={[selfstyle.box_icon]}>
           <Image style={selfstyle.icon} source={img}/>
         </View>
         <Text style={selfstyle.text_name}>{name}</Text>
@@ -47,7 +47,7 @@ import React from 'react';import {
     text_name: {
         width: 'auto',
         fontSize: 13,
-        fontWeight: '400',
+        fontWeight: '500',
         color: 'black',
         alignSelf: 'center'
     }

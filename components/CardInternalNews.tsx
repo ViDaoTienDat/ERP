@@ -13,7 +13,6 @@ const width = dimension.window.width;
 function CardInternalNews({ item }: any) {
   return (
     <View style={selfstyle.container}>
-      <Text>{item.title}</Text>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import AppStyle from "../constants/theme";
 import { useNavigation } from "@react-navigation/native";
 
@@ -18,7 +18,7 @@ function TitleHeader({ title }: DataTitleHeader): React.JSX.Element {
         style={AppStyle.StyleHeader.buttonBack}
         onPress={() => navigation.goBack()}
       >
-        <Text style={AppStyle.StyleHeader.textButton}>Trở về</Text>
+        <Image source={require("../assets/images/arrow-left.png")} style={AppStyle.StyleHeader.size_iconBack} />
       </TouchableOpacity>
     </View>
   );

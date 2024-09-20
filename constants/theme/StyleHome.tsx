@@ -22,6 +22,10 @@ const StyleHome = StyleSheet.create({
         height: 100,
         flexDirection: 'row',
         justifyContent: 'space-around',
-      },
+    },
+    background:{
+        flex: 1,
+        
+    }
   })
   export default StyleHome;

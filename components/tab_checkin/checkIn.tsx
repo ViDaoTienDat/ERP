@@ -6,19 +6,25 @@ import {
   Modal,
 } from "react-native";
 import React, { useState } from "react";
-import CustomHeader from "./CustomHeader";
+import CustomHeader from "../CustomHeader";
 import AppStyle from "@/constants/theme";
-import CardCheckIn from "./CardCheckIn";
+import CardCheckIn from "../CardCheckIn";
 import { useSelector } from "react-redux";
-
+import { useCameraPermission } from 'react-native-vision-camera';
+import hasLocationPermission from "@/app/map/locationPermission";
+import { getAllBranch } from "@/app/axios/API/branchApi";
+import CheckInDetail from "./checkInDetail";
+import { useDispatch } from 'react-redux';
+import { setOfficeId } from '@/app/state/reducers/officeSlice'; 
 export default function CheckIn() {
   const [officeVisible, setOfficeVisible] = useState(false);
+  const [checkInVisible, setCheckInVisible] = useState(false);
   const [office, setOffice] = useState("");
   const [officeValue, setOfficeValue] = useState("");
   const [location, seteLocation] = useState(false);
   const branchs = useSelector((state: any) => state.userdata.branch);
-  //   const {hasPermission, requestPermission} = useCameraPermission();
-  const [hasPermission, requestPermission] = useState(true);
+  const {hasPermission, requestPermission} = useCameraPermission();
+  const dispatch = useDispatch();
   const handlePressOffice = () => {
     setOfficeVisible(true);
   };
@@ -27,32 +33,31 @@ export default function CheckIn() {
     setOffice(label);
     setOfficeValue(value);
     setOfficeVisible(false);
+
+    dispatch(setOfficeId(value));  // Cập nhật officeId vào Redux
+    setOfficeVisible(false);
   };
   //Camera Permission
 
-  const handlePermissionCamera = () => {
-    // if (!hasPermission) {
-    //   requestPermission();
-    // }
+  const handlePermissionCamera = async() => {
+    if (!hasPermission) {
+      requestPermission();
+    }
   };
   //Location Permission
   const getPermissionLocation = async () => {
-    // const hasPermission = await hasLocationPermission();
-    // if (!hasPermission) {
-    //   seteLocation(false);
-    // } else {
-    //   seteLocation(true);
-    // }
-  };
-  const handlePressCheckIn = () => {
-    // navigation.navigate('CheckIn', {officeId: officeValue});
-  };
-  const HandlePressTab = (num: Number) => {
-    if (num === 1) {
-      //   navigation.navigate('HistoryCheckIn');
+    const hasPermission = await hasLocationPermission();
+    if (!hasPermission) {
+      seteLocation(false);
+    } else {
+      seteLocation(true);
     }
   };
-  return (
+  const handlePressCheckIn = () => {
+    setCheckInVisible(true);
+  };
+  
+  return !checkInVisible ? (
     <View>
       <View style={AppStyle.StyleCheckIn.container}>
         <Text style={AppStyle.StyleCheckIn.textNote}>
@@ -60,7 +65,7 @@ export default function CheckIn() {
         </Text>
         <CardCheckIn
           key={0}
-          img={require("../assets/images/map.png")}
+          img={require("../../assets/images/map.png")}
           name="Chọn văn phòng"
           state={office != "" ? true : false}
           stateStr={office != "" ? "Đã chọn" : "Chưa chọn"}
@@ -69,7 +74,7 @@ export default function CheckIn() {
         />
         <CardCheckIn
           key={1}
-          img={require("../assets/images/camera.png")}
+          img={require("../../assets/images/camera.png")}
           name="Truy cập camera"
           state={hasPermission ? true : false}
           stateStr={hasPermission ? "Đã cho phép" : "Chưa cho phép"}
@@ -78,7 +83,7 @@ export default function CheckIn() {
         />
         <CardCheckIn
           key={2}
-          img={require("../assets/images/location.png")}
+          img={require("../../assets/images/location.png")}
           name="Truy cập vị trí"
           state={location ? true : false}
           stateStr={location ? "Đã cho phép" : "Chưa cho phép"}
@@ -86,6 +91,7 @@ export default function CheckIn() {
           note={""}
         />
       </View>
+  
       <Modal
         transparent={true}
         animationType="slide"
@@ -117,6 +123,7 @@ export default function CheckIn() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+  
       {office != "" && hasPermission && location && (
         <TouchableOpacity
           style={AppStyle.StyleCheckIn.buttonCheckIn}
@@ -126,5 +133,7 @@ export default function CheckIn() {
         </TouchableOpacity>
       )}
     </View>
-  );
+  ) : (
+    <CheckInDetail></CheckInDetail>
+  );  
 }

@@ -18,8 +18,8 @@ export const HomeIcon = ({ focused }: DataIcon) => (
     focused={focused}
     img={
       focused
-        ? require("../assets/images/home_007aff.png")
-        : require("../assets/images/home.png")
+        ? require("../assets/images/house-fill.png")
+        : require("../assets/images/house.png")
     }
   />
 );
@@ -29,8 +29,8 @@ export const CheckInIcon = ({ focused }: DataIcon) => (
     focused={focused}
     img={
       focused
-        ? require("../assets/images/face-scanner_007aff.png")
-        : require("../assets/images/face-scanner.png")
+        ? require("../assets/images/person-bounding-box-fill.png")
+        : require("../assets/images/person-bounding-box.png")
     }
   />
 );

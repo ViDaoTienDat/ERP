@@ -6,14 +6,27 @@ const width = Dimension.window.width - 38; //  paddingHorizontal = 15 in checkin
 const StyleHeader = StyleSheet.create({
   header: {
     width: "100%",
-    height: 100,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    paddingTop: 30,
-    paddingHorizontal: 10,
-    borderBottomColor: Color.color1,
-    borderBottomWidth: 5,
+    height: 170,
+    justifyContent: "flex-end",
+    backgroundColor: Color.color_header_red,
+    borderBottomLeftRadius: 36,
+    borderBottomRightRadius: 36,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+  },
+  text_name:{
+    color: Color.color_white,
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+  text_position:{
+    color: Color.color_white,
   },
   header_item: {
     width: "auto",
@@ -21,9 +34,22 @@ const StyleHeader = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  topRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    margin: 12,
+  },
+  profileContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  textContainer: {
+    marginLeft: 10,
+  },
   size_avt: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: 50,
   },
   border_white: {
@@ -33,16 +59,32 @@ const StyleHeader = StyleSheet.create({
   boxsearch: {
     height: 40,
     flexDirection: "row",
+    backgroundColor: Color.color_header_red,
+    borderRadius: 20,
+    alignItems: "center",
+    borderWidth: 1,
+    marginHorizontal: 15,
+    marginBottom: 18,
+    marginTop: 10,
     paddingHorizontal: 15,
-    backgroundColor: Color.color1,
-    borderRadius: 50,
+    borderColor: Color.color_white,
   },
   size_iconsearch: {
     width: 20,
     height: 20,
   },
+  size_iconnotificaton:{
+    width: 32,
+    height: 32,
+  },
+  size_iconBack:{
+    width: 20,
+    height: 20,
+  },
   boxinput: {
-    width: "60%",
+    width: "80%",
+    paddingLeft: 10,
+    color: Color.color_white,
   },
   customHeader: {
     width: "100%",
@@ -54,10 +96,6 @@ const StyleHeader = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-
-    // borderBottomWidth: 0.8,
-    // borderBottomColor: Color.color1,
-    // paddingVertical: 18,
   },
   customHeaderBox: {
     backgroundColor: Color.color1,

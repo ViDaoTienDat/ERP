@@ -3,7 +3,6 @@ import Color from "./Color";
 const StyleCheckIn = StyleSheet.create({
   boxContainer: {
     flex: 1,
-    backgroundColor: "#000",
   },
   container: {
     width: "100%",
@@ -73,6 +72,7 @@ const StyleCheckIn = StyleSheet.create({
   },
   buttonCheckIn: {
     width: "50%",
+    height: 40,
     backgroundColor: Color.color3,
     alignSelf: "center",
     justifyContent: "center",
@@ -126,6 +126,8 @@ const StyleCheckIn = StyleSheet.create({
     borderWidth: 1,
     borderColor: Color.color4,
     width: "70%",
+    height: 40,
+    padding: 10,
     borderRadius: 10,
   },
   ItemInfo: {

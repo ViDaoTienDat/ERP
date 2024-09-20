@@ -11,4 +11,7 @@ export default {
   color9: "#FEF7FF",
   color10: "#ececec",
   color11: "#b7b7b7",
+  color_header_red: "#B51B01",
+  color_white: "#FAFAFA",
+  color_gray5: "#DBDBDB"
 };
