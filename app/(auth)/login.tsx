@@ -15,8 +15,23 @@ import AppStyle from "../../constants/theme";
 import { useState } from "react";
 import { router } from "expo-router";
 import { signIn } from "../axios/API/loginAPI";
+import { getUser, getWorkShift } from "../axios/API/dataUserAPI";
+import { useDispatch } from "react-redux";
+import {
+  setBranch,
+  setDataIntern,
+  setDateHisCheckIn,
+  setUser,
+  setWorkShift,
+} from "../state/reducers/dataSlice";
+import { getAllBranch } from "../axios/API/branchApi";
+import { getHisCheckIn } from "../axios/API/checkInApi";
+import { handleSplitHisCheckIn } from "../axios/func/createCalendar";
+import { GetInternSchedule } from "../axios/API/InternAPI";
+import { splitWorkShift } from "../axios/func/loadDataUser";
 
 export default function Index() {
+  const dispatch = useDispatch();
   const [showPass, setShowPass] = useState(false);
   const [wrongPass, setWrongPass] = useState(false);
   const [textwrong, setTextWrong] = useState("");
@@ -34,30 +49,35 @@ export default function Index() {
       if (result.code === 200) {
         setWrongPass(false);
         setTextWrong("");
-        // getAllBranch().then(result => {
-        //   if (result.code === 200) {
-        //     dispatch(setBranch(result.data));
-        //   }
-        // });
-        // getHisCheckIn().then(async result => {
-        //   if (result.code === 200) {
-        //     const datehis = await handleSplitHisCheckIn(result.data);
-        //     dispatch(setDateHisCheckIn(datehis));
-        //   }
-        // });
-        // GetInternSchedule().then(async result => {
-        //   if (result.code === 200) {
-        //     dispatch(setDataIntern(result.data));
-        //   }
-        // });
-        // getWorkShift().then(async result => {
-        //   if (result.code === 200) {
-        //     const workshift = await splitWorkShift(result.data);
-        //     dispatch(setWorkShift(workshift));
-        //   }
-        // });
-        // navigation.navigate('HomeTab');
-        router.push("./home");
+        getUser(result.data.access_token).then(async (result) => {
+          if (result.code === 200) {
+            dispatch(setUser(result.data));
+          }
+        });
+        getAllBranch().then(async (result) => {
+          if (result.code === 200) {
+            dispatch(setBranch(result.data));
+          }
+        });
+        getHisCheckIn().then(async (result) => {
+          if (result.code === 200) {
+            const datehis = await handleSplitHisCheckIn(result.data);
+            dispatch(setDateHisCheckIn(datehis));
+          }
+        });
+        GetInternSchedule().then(async (result) => {
+          if (result.code === 200) {
+            dispatch(setDataIntern(result.data));
+          }
+        });
+        getWorkShift().then(async (result) => {
+          if (result.code === 200) {
+            const workshift = await splitWorkShift(result.data);
+            dispatch(setWorkShift(workshift));
+          }
+        });
+
+        router.push("/(tabs)/home");
       } else if (result.code === 401) {
         setWrongPass(true);
         setTextWrong("Email hoặc mật khẩu không đúng!");
