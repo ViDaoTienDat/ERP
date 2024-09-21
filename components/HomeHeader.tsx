@@ -55,7 +55,10 @@ function HomeHeader(): React.JSX.Element {
 
       <View style={[AppStyle.StyleHeader.boxsearch]}>
         <Image
-          style={[AppStyle.StyleHeader.size_iconsearch]}
+          style={[
+            AppStyle.StyleHeader.size_iconsearch,
+            { width: 16, height: 16 },
+          ]}
           source={require("../assets/images/search.png")}
         />
         <TextInput

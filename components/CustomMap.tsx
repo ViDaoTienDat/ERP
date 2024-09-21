@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions, Text, Alert } from 'react-native';
-import { LeafletView, LatLng, MapShapeType } from 'react-native-leaflet-view';
-import Geolocation from '@react-native-community/geolocation';
-import hasLocationPermission from '@/app/map/locationPermission';
-import generateCircleCoordinates from '@/app/map/circle';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLocation } from '@/app/state/reducers/locationSlice';
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Dimensions, Text, Alert } from "react-native";
+import { LeafletView, LatLng, MapShapeType } from "react-native-leaflet-view";
+import Geolocation from "@react-native-community/geolocation";
+import hasLocationPermission from "@/app/map/locationPermission";
+import generateCircleCoordinates from "@/app/map/circle";
+import { useDispatch, useSelector } from "react-redux";
+import { setLocation } from "@/app/state/reducers/locationSlice";
 
 const DEFAULT_COORDINATE: LatLng = {
   lat: 10.781271,
@@ -24,14 +24,20 @@ const CustomMap = ({ showCir, location_business }: any) => {
     location_business.lat, // Latitude
   ];
 
-  const circleCoordinates = generateCircleCoordinates(businessLocation, radius, numPoints);
+  const circleCoordinates = generateCircleCoordinates(
+    businessLocation,
+    radius,
+    numPoints
+  );
   const dispatch = useDispatch();
-  
 
   const getLocation = async () => {
     const hasPermission = await hasLocationPermission();
     if (!hasPermission) {
-      Alert.alert("Permission denied", "Vui lòng cấp quyền truy cập vị trí để tiếp tục.");
+      Alert.alert(
+        "Permission denied",
+        "Vui lòng cấp quyền truy cập vị trí để tiếp tục."
+      );
       setIsLoading(false);
       return;
     }
@@ -49,7 +55,9 @@ const CustomMap = ({ showCir, location_business }: any) => {
       (error) => {
         switch (error.code) {
           case 1:
-            console.log("Permission denied: Vui lòng cấp quyền truy cập vị trí.");
+            console.log(
+              "Permission denied: Vui lòng cấp quyền truy cập vị trí."
+            );
             break;
           case 2:
             console.log("Position unavailable: Không thể xác định vị trí.");
@@ -85,13 +93,13 @@ const CustomMap = ({ showCir, location_business }: any) => {
         mapMarkers={[
           {
             position: coordinates || location,
-            icon: '📍',
-            id: 'user_marker',
+            icon: "📍",
+            id: "user_marker",
           },
           {
             position: location_business,
-            icon: '🏢',
-            id: 'business_marker',
+            icon: "🏢",
+            id: "business_marker",
           },
         ]}
         mapShapes={
@@ -100,7 +108,7 @@ const CustomMap = ({ showCir, location_business }: any) => {
                 {
                   shapeType: MapShapeType.POLYGON,
                   positions: circleCoordinates,
-                  color: 'rgba(0, 122, 255, 0.2)',
+                  color: "rgba(0, 122, 255, 0.2)",
                 },
               ]
             : []
@@ -113,12 +121,12 @@ const CustomMap = ({ showCir, location_business }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 });
 

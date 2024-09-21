@@ -5,51 +5,30 @@ const width = Dimension.window.width - 38; //  paddingHorizontal = 15 in checkin
 
 const StyleHeader = StyleSheet.create({
   header: {
+    justifyContent: "space-evenly",
     width: "100%",
-    height: 170,
-    justifyContent: "flex-end",
-    backgroundColor: Color.color_header_red,
+    height: 128,
+    paddingHorizontal: 15,
+    paddingBottom: 5,
+    backgroundColor: Color.color3,
     borderBottomLeftRadius: 36,
     borderBottomRightRadius: 36,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
   },
-  text_name: {
-    color: Color.color_white,
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  text_position: {
-    color: Color.color_white,
+  boxInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 15,
   },
   header_item: {
     width: "auto",
     height: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    gap: 15,
     alignItems: "center",
-  },
-  topRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    margin: 12,
-  },
-  profileContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  textContainer: {
-    marginLeft: 10,
   },
   size_avt: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 50,
   },
   border_white: {
@@ -57,34 +36,21 @@ const StyleHeader = StyleSheet.create({
     borderColor: "#fff",
   },
   boxsearch: {
+    alignItems: "center",
+    gap: 5,
     height: 40,
     flexDirection: "row",
-    backgroundColor: Color.color_header_red,
-    borderRadius: 20,
-    alignItems: "center",
-    borderWidth: 1,
-    marginHorizontal: 15,
-    marginBottom: 18,
-    marginTop: 10,
     paddingHorizontal: 15,
-    borderColor: Color.color_white,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#fff",
   },
   size_iconsearch: {
-    width: 20,
-    height: 20,
-  },
-  size_iconnotificaton: {
-    width: 32,
+    width: 28,
     height: 32,
   },
-  size_iconBack: {
-    width: 20,
-    height: 20,
-  },
   boxinput: {
-    width: "80%",
-    paddingLeft: 10,
-    color: Color.color_white,
+    width: "60%",
   },
   customHeader: {
     width: "100%",
@@ -96,6 +62,10 @@ const StyleHeader = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+
+    // borderBottomWidth: 0.8,
+    // borderBottomColor: Color.color1,
+    // paddingVertical: 18,
   },
   customHeaderBox: {
     backgroundColor: Color.color1,

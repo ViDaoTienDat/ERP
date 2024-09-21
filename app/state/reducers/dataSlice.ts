@@ -29,7 +29,7 @@ const initialState: {
   branch: [],
   dateHisCheckIn: [],
   dataIntern: [],
-  workshift: ["2c1e165e-8", "78546471-a", "All"],
+  workshift: [],
   user: undefined,
 };
 

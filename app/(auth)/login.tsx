@@ -15,7 +15,7 @@ import AppStyle from "../../constants/theme";
 import { useState } from "react";
 import { router } from "expo-router";
 import { signIn } from "../axios/API/loginAPI";
-import { getUser, getWorkShift } from "../axios/API/dataUserAPI";
+import { getAllBranch, getUser, getWorkShift } from "../axios/API/dataUserAPI";
 import { useDispatch } from "react-redux";
 import {
   setBranch,
@@ -24,10 +24,9 @@ import {
   setUser,
   setWorkShift,
 } from "../state/reducers/dataSlice";
-import { getAllBranch } from "../axios/API/branchApi";
+import { GetInternSchedule } from "../axios/API/InternAPI";
 import { getHisCheckIn } from "../axios/API/checkInApi";
 import { handleSplitHisCheckIn } from "../axios/func/createCalendar";
-import { GetInternSchedule } from "../axios/API/InternAPI";
 import { splitWorkShift } from "../axios/func/loadDataUser";
 
 export default function Index() {
@@ -113,13 +112,14 @@ export default function Index() {
             style={[
               AppStyle.StyleCommon.alignCenter,
               AppStyle.StyleLogin.flexLogo,
+              ,
             ]}
           >
             <Image
+              resizeMode="contain"
               style={AppStyle.StyleLogin.logo}
-              source={require("../../assets/images/avt.png")}
+              source={require("../../assets/images/logo.png")}
             />
-            <Text style={AppStyle.StyleLogin.appName}>APP CHẤM CÔNG</Text>
           </View>
           <View style={AppStyle.StyleLogin.flexLogin}>
             <View style={AppStyle.StyleLogin.boxLogin}>
@@ -170,11 +170,29 @@ export default function Index() {
               {wrongPass && (
                 <Text style={AppStyle.StyleLogin.wrongPass}>{textwrong}</Text>
               )}
+              <View
+                style={{
+                  flex: 1,
+                  alignSelf: "flex-end",
+                  marginRight: 20,
+                  marginBottom: 15,
+                }}
+              >
+                <TouchableOpacity onPress={handleForgotPassword}>
+                  <Text style={AppStyle.StyleLogin.textHref}>
+                    Quên mật khẩu?
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 style={[
                   AppStyle.StyleLogin.boxItem,
                   AppStyle.StyleLogin.button,
                   AppStyle.StyleCommon.alignCenter,
+                  ,
+                  {
+                    backgroundColor: email && password ? "black" : "#ccc", // Điều kiện đổi màu nền
+                  },
                 ]}
                 onPress={handleLogin}
                 disabled={loading} // Vô hiệu hóa nút khi đang tải
@@ -182,21 +200,16 @@ export default function Index() {
                 {loading ? ( // Hiển thị ActivityIndicator nếu đang tải
                   <ActivityIndicator size="small" color="#fff" />
                 ) : (
-                  <Text style={AppStyle.StyleCommon.textWhite15}>
+                  <Text
+                    style={[
+                      AppStyle.StyleCommon.textWhite15,
+                      { color: email && password ? "#fff" : "#A8A8A8" },
+                    ]}
+                  >
                     Đăng nhập
                   </Text>
                 )}
               </TouchableOpacity>
-              <View style={AppStyle.StyleLogin.boxItem}>
-                <TouchableOpacity
-                  style={AppStyle.StyleLogin.boxHref}
-                  onPress={handleForgotPassword}
-                >
-                  <Text style={AppStyle.StyleLogin.textHref}>
-                    Quên mật khẩu?
-                  </Text>
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
           <View style={AppStyle.StyleLogin.flexVer}>
