@@ -1,4 +1,4 @@
-import { checkInAPI } from "@/app/axios/API/checkInApi";
+import { checkInAPI } from "@/app/axios/api/checkInApi";
 import {
   CameraView,
   CameraType,

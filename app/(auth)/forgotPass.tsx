@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
 import { router } from "expo-router";
-import { sendCode } from "../axios/API/loginAPI";
+import { sendCode } from "../axios/api/loginAPI";
 
 export default function forgotPass() {
   const [email, setEmail] = useState("");

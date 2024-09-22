@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
 import { router, useLocalSearchParams } from "expo-router";
-import { verifyPassword } from "../axios/API/loginAPI";
+import { verifyPassword } from "../axios/api/loginAPI";
 
 export default function verifyCode() {
   const [code, setCode] = useState("");

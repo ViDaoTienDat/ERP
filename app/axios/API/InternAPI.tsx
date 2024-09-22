@@ -8,7 +8,7 @@ import { Buffer } from "buffer";
 import { getUserIdFromAccessToken } from "../func/getUserIdFromAccessToken";
 const serverAPI = process.env.EXPO_PUBLIC_API_URL;
 const apiKey = process.env.EXPO_PUBLIC_X_API_KEY;
-const key = "shh";
+
 export const GetInternSchedule = async () => {
   try {
     const token = await getTokens();

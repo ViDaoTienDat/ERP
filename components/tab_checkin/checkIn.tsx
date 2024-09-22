@@ -12,7 +12,7 @@ import CardCheckIn from "../CardCheckIn";
 import { useSelector } from "react-redux";
 import { useCameraPermission } from 'react-native-vision-camera';
 import hasLocationPermission from "@/app/map/locationPermission";
-import { getAllBranch } from "@/app/axios/API/branchApi";
+import { getAllBranch } from "@/app/axios/api/branchApi";
 import CheckInDetail from "./checkInDetail";
 import { useDispatch } from 'react-redux';
 import { setOfficeId } from '@/app/state/reducers/officeSlice'; 

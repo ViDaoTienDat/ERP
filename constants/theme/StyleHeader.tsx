@@ -105,5 +105,9 @@ const StyleHeader = StyleSheet.create({
     color: Color.color9,
     fontWeight: "bold",
   },
+  size_iconBack:{
+    width: 20,
+    height: 20,
+  },
 });
 export default StyleHeader;

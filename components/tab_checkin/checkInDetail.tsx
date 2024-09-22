@@ -1,4 +1,4 @@
-import { checkInAPI, getHisCheckIn } from '@/app/axios/API/checkInApi';
+import { checkInAPI, getHisCheckIn } from '@/app/axios/api/checkInApi';
 import { getCurrentTime, getFormatDateTimeCheckIn, getFormattedDate } from '@/app/axios/func/getDateTime';
 import { setDateHisCheckIn } from '@/app/state/reducers/dataSlice';
 import CustomCamera from '@/components/CustomCamera';
@@ -24,7 +24,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomMap from '../CustomMap';
-import { getLocation } from '@/app/axios/func/getLocation';
+//import { getLocation } from '@/app/axios/func/getLocation';
 import { handleSplitHisCheckIn } from '@/app/axios/func/createCalendar';
 
 
@@ -136,11 +136,9 @@ function CheckInDetail({ route, navigation }: any): React.JSX.Element {
     sethasSuccess(false);
     navigation.goBack();
   }
-/*************  ✨ Codeium Command ⭐  *************/
   /**
    * Reset the state of failure check-in to false
    */
-/******  5bbebf24-08bf-4416-a96b-4cf9587b75ed  *******/
   const FailureCheckIn = () => {
     sethasFailure(false);
   }

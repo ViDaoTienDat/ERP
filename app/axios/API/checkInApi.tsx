@@ -1,9 +1,10 @@
 import axios from "axios";
-import { CustomJwtPayload, serverAPI } from "./dev_env";
+
 import { getTokens } from "./storeToken";
 import { jwtDecode } from "jwt-decode";
 
 import { getUserIdFromAccessToken } from "../func/getUserIdFromAccessToken";
+import { serverAPI } from "./dev_env";
 
 const apiKey = process.env.EXPO_PUBLIC_X_API_KEY;
 export const getHisCheckIn = async () => {

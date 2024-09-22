@@ -12,7 +12,7 @@ import CardCheckIn from "../CardCheckIn";
 import { useSelector } from "react-redux";
 
 import hasLocationPermission from "@/app/map/locationPermission";
-import { getAllBranch } from "@/app/axios/API/branchApi";
+import { getAllBranch } from "@/app/axios/api/branchApi";
 import ExpoCheckInDetail from "./ExpoCheckInDetail";
 import { useDispatch } from "react-redux";
 import { setOfficeId } from "@/app/state/reducers/officeSlice";

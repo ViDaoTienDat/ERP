@@ -1,4 +1,4 @@
-import { checkInAPI, getHisCheckIn } from "@/app/axios/API/checkInApi";
+import { checkInAPI, getHisCheckIn } from "@/app/axios/api/checkInApi";
 import {
   getCurrentTime,
   getFormatDateTimeCheckIn,

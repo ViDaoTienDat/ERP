@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
 import { router, useLocalSearchParams } from "expo-router";
 import { checkPassword } from "../axios/func/checkPassword";
-import { resetPassword } from "../axios/API/loginAPI";
+import { resetPassword } from "../axios/api/loginAPI";
 
 export default function enterNewPass() {
   const params = useLocalSearchParams();

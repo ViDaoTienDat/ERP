@@ -14,8 +14,8 @@ import AppStyle from "../../constants/theme";
 
 import { useState } from "react";
 import { router } from "expo-router";
-import { signIn } from "../axios/API/loginAPI";
-import { getAllBranch, getUser, getWorkShift } from "../axios/API/dataUserAPI";
+import { signIn } from "../axios/api/loginAPI";
+import { getUser } from "../axios/api/dataUserAPI";
 import { useDispatch } from "react-redux";
 import {
   setBranch,
@@ -24,10 +24,12 @@ import {
   setUser,
   setWorkShift,
 } from "../state/reducers/dataSlice";
-import { GetInternSchedule } from "../axios/API/InternAPI";
-import { getHisCheckIn } from "../axios/API/checkInApi";
+import { GetInternSchedule } from "../axios/api/InternAPI";
+import { getHisCheckIn } from "../axios/api/checkInApi";
 import { handleSplitHisCheckIn } from "../axios/func/createCalendar";
 import { splitWorkShift } from "../axios/func/loadDataUser";
+import { getAllBranch } from "../axios/api/branchApi";
+import { getWorkShift } from "../axios/api/workShirtApi";
 
 export default function Index() {
   const dispatch = useDispatch();

@@ -18,7 +18,7 @@ import {
   ChangeInternSchedule,
   GetInternSchedule,
   RegisterInternSchedule,
-} from "@/app/axios/API/InternAPI";
+} from "@/app/axios/api/InternAPI";
 import { Picker } from "@react-native-picker/picker";
 import Color from "@/constants/theme/Color";
 import CustomDropdown from "./DropDown";
