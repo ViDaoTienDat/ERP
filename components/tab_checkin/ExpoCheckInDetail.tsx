@@ -7,7 +7,7 @@ import {
 import { setDateHisCheckIn } from "@/app/state/reducers/dataSlice";
 import CustomCamera from "@/components/CustomCamera";
 import { CustomCheckBox } from "@/components/CustomCheckBox";
-import CustomDropdown from "@/components/CustomDropDown";
+import CustomDropdown from "@/components/DropDown";
 import CustomHeader from "@/components/CustomHeader";
 import CustomMessage from "@/components/CustomMessage";
 import AppStyle from "@/constants/theme";
@@ -16,6 +16,7 @@ import { useFocusEffect } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 // import RNFS from "react-native-fs";
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
@@ -26,17 +27,13 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { router } from "expo-router";
 import CustomMap from "../CustomMap";
 // import { getLocation } from "@/app/axios/func/getLocation";
 import { handleSplitHisCheckIn } from "@/app/axios/func/createCalendar";
 import ExpoCustomMap from "../ExpoCustomMap";
 import ExpoCustomCamera from "../ExpoCustomCamera";
 
-const dataworkShift = [
-  { label: "Ca sáng", value: "2c1e165e-8" },
-  { label: "Ca chiều", value: "78546471-a" },
-  { label: "Fulltime", value: "All" },
-];
 
 type CustomCameraRef = {
   takePhoto: () => any | null;
@@ -87,6 +84,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
     };
   }, []);
   const handlePressCheckIn = async () => {
+    setIsLoading(true);
     try {
       if (cameraRef.current) {
         const dataPhoto = await cameraRef.current.takePhoto();
@@ -94,6 +92,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
         const image = "data:image/" + type + ";base64," + dataPhoto.base64;
         const time = getFormatDateTimeCheckIn();
         setSuccessTime(time);
+        
         await checkInAPI(
           time,
           image,
@@ -103,6 +102,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           location.lat,
           location.lng
         ).then((result) => {
+          console.log(result);
           if (result.code === 201) {
             sethasSuccess(true);
             setMessage("");
@@ -110,12 +110,15 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
               if (result.code === 200) {
                 const datehis = await handleSplitHisCheckIn(result.data);
                 dispatch(setDateHisCheckIn(datehis));
+                setIsLoading(false);
               }
             });
           } else if (result.code === 500) {
+            setIsLoading(false);
             setMessage(result.message);
             sethasFailure(true);
           } else {
+            setIsLoading(false);
             setMessage(result.message);
             sethasFailure(true);
           }
@@ -142,7 +145,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
 
   const SuccessCheckIn = () => {
     sethasSuccess(false);
-    navigation.goBack();
+    router.back();
   };
   /*************  ✨ Codeium Command ⭐  *************/
   /**
@@ -164,6 +167,14 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
         >
+
+          <Text style={AppStyle.StyleCheckIn.textCamera}>
+            Chụp ảnh gương mặt
+          </Text>
+          <View style={AppStyle.StyleCheckIn.boxCamera}>
+            {/* <CustomCamera ref={cameraRef} /> */}
+            <ExpoCustomCamera ref={cameraRef} />
+          </View>
           <Text style={AppStyle.StyleCheckIn.textCamera}>Vị trí của tôi</Text>
           <View style={AppStyle.StyleCheckIn.boxMap}>
             <ExpoCustomMap
@@ -184,13 +195,6 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
             <Text style={[AppStyle.StyleCheckIn.textNote, { paddingLeft: 5 }]}>
               Hiển thị bán kính và vị trí văn phòng
             </Text>
-          </View>
-          <Text style={AppStyle.StyleCheckIn.textCamera}>
-            Chụp ảnh gương mặt
-          </Text>
-          <View style={AppStyle.StyleCheckIn.boxCamera}>
-            {/* <CustomCamera ref={cameraRef} /> */}
-            <ExpoCustomCamera ref={cameraRef} />
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <Text style={AppStyle.StyleCheckIn.ItemLabel}>Thời gian</Text>
@@ -232,7 +236,9 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
             style={AppStyle.StyleCheckIn.buttonCheckIn}
             onPress={handlePressCheckIn}
           >
-            <Text style={AppStyle.StyleCheckIn.textCheckIn}>Chấm Công</Text>
+            {isLoading ? (<ActivityIndicator size="small" color="#fff"/>):(
+              <Text style={AppStyle.StyleCheckIn.textCheckIn}>Chấm Công</Text>
+            )}
           </TouchableOpacity>
         </ScrollView>
         <CustomMessage

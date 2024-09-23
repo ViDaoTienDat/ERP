@@ -25,7 +25,6 @@ const StyleHome = StyleSheet.create({
     },
     background:{
         flex: 1,
-        
     }
   })
   export default StyleHome;

@@ -3,7 +3,6 @@ import Color from "./Color";
 const StyleCheckIn = StyleSheet.create({
   boxContainer: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   container: {
     width: "100%",
@@ -80,7 +79,7 @@ const StyleCheckIn = StyleSheet.create({
     alignItems: "center",
     padding: 5,
     marginVertical: 15,
-    borderRadius: 50,
+    borderRadius: 10,
   },
   textCheckIn: {
     color: "#fff",
@@ -100,6 +99,7 @@ const StyleCheckIn = StyleSheet.create({
     width: "100%",
     height: 200,
     marginVertical: 10,
+    borderRadius: 10
   },
   textCamera: {
     color: Color.color2,

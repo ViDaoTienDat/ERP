@@ -30,6 +30,7 @@ import { handleSplitHisCheckIn } from "../axios/func/createCalendar";
 import { splitWorkShift } from "../axios/func/loadDataUser";
 import { getAllBranch } from "../axios/api/branchApi";
 import { getWorkShift } from "../axios/api/workShirtApi";
+import Color from "@/constants/theme/Color";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -193,7 +194,7 @@ export default function Index() {
                   AppStyle.StyleCommon.alignCenter,
                   ,
                   {
-                    backgroundColor: email && password ? "black" : "#ccc", // Điều kiện đổi màu nền
+                    backgroundColor: email && password ? Color.color_header_red : "#ccc", // Điều kiện đổi màu nền
                   },
                 ]}
                 onPress={handleLogin}

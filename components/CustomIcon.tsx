@@ -40,8 +40,8 @@ export const RegisterIcon = ({ focused }: DataIcon) => (
     focused={focused}
     img={
       focused
-        ? require("../assets/images/Subtract.png")
-        : require("../assets/images/Subtractunfocused.png")
+        ? require("../assets/images/file-earmark-plus-fill.png")
+        : require("../assets/images/file-earmark-plus.png")
     }
   />
 );
@@ -51,8 +51,8 @@ export const ApplicationIcon = ({ focused }: DataIcon) => (
     focused={focused}
     img={
       focused
-        ? require("../assets/images/application_007aff.png")
-        : require("../assets/images/application.png")
+        ? require("../assets/images/grid-fill.png")
+        : require("../assets/images/menu.png")
     }
   />
 );

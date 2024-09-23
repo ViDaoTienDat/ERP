@@ -2,7 +2,7 @@ import { View, Text, ImageBackground } from "react-native";
 import React, { useState } from "react";
 import CustomHeader from "@/components/CustomHeader";
 import CheckIn from "../../components/tab_checkin/checkIn";
-import History from "../../components/tab_checkin/history";
+import HistoryCheckIn from "../../components/tab_checkin/history";
 import AppStyle from "@/constants/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ExpoCheckIn from "@/components/tab_checkin/ExpoCheckIn";
@@ -30,7 +30,7 @@ export default function checkin() {
           onchangeTab={false}
         />
         {/* Conditionally render the screen based on numTab */}
-        {numTab == 0 ? <ExpoCheckIn /> : <History />}
+        {numTab == 0 ? <ExpoCheckIn /> : <HistoryCheckIn />}
       </ImageBackground>
     </SafeAreaView>
   );

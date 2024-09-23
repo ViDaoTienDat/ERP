@@ -91,7 +91,6 @@ export function ItemDropDown({
   return (
     <View style={AppStyle.StyleRegister.boxItem}>
       <Text style={AppStyle.StyleRegister.label}>{label}</Text>
-
       <CustomDropdown
         data={data}
         firstValue={firstValue}

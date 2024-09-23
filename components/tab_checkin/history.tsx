@@ -12,7 +12,6 @@ import {
   } from 'react-native';
 import { useSelector } from 'react-redux';
 import CustomHeader from '../CustomHeader';
-import { selfstyle } from '@/constants/theme/StyleHistory';
 import { RowCalendar } from '../ComHisCheckIn';
 
 
@@ -47,26 +46,26 @@ const currdate = new Date();
     }, []);
       return (
         <View style={AppStyle.StyleCheckIn.boxContainer}>
-            <View style={selfstyle.boxmonth}>
-                <TouchableOpacity style={selfstyle.button} onPress={handlePressBack}>
-                    <Image style={selfstyle.icon} source={require('../../assets/images/arrow-sm-left.png')}/>
+            <View style={AppStyle.StyleHistory.boxmonth}>
+                <TouchableOpacity style={[AppStyle.StyleHistory.button]} onPress={handlePressBack}>
+                    <Image style={AppStyle.StyleHistory.icon} source={require('../../assets/images/arrow-sm-left.png')}/>
                 </TouchableOpacity>
-                <Text style={selfstyle.text_large}>Tháng {currmonth} {curryear}</Text>
-                <TouchableOpacity style={selfstyle.button} onPress={handlePressNext}>
-                    <Image style={selfstyle.icon} source={require('../../assets/images/arrow-sm-right.png')}/>
+                <Text style={AppStyle.StyleHistory.text_large}>Tháng {currmonth}, {curryear}</Text>
+                <TouchableOpacity style={[AppStyle.StyleHistory.button, {justifyContent: "flex-end", flexDirection: "row", alignItems: "center"}]} onPress={handlePressNext}>
+                    <Image style={AppStyle.StyleHistory.icon} source={require('../../assets/images/arrow-sm-right.png')}/>
                 </TouchableOpacity>
             </View>
-            <View style={selfstyle.calendar}>
-                <View style={selfstyle.dayofweek}>
-                    <Text style={selfstyle.text_medium}>CN</Text>
-                    <Text style={selfstyle.text_medium}>T2</Text>
-                    <Text style={selfstyle.text_medium}>T3</Text>
-                    <Text style={selfstyle.text_medium}>T4</Text>
-                    <Text style={selfstyle.text_medium}>T5</Text>
-                    <Text style={selfstyle.text_medium}>T6</Text>
-                    <Text style={selfstyle.text_medium}>T7</Text>
+            <View style={AppStyle.StyleHistory.calendar}>
+                <View style={AppStyle.StyleHistory.dayofweek}>
+                    <Text style={AppStyle.StyleHistory.text_medium}>CN</Text>
+                    <Text style={AppStyle.StyleHistory.text_medium}>T2</Text>
+                    <Text style={AppStyle.StyleHistory.text_medium}>T3</Text>
+                    <Text style={AppStyle.StyleHistory.text_medium}>T4</Text>
+                    <Text style={AppStyle.StyleHistory.text_medium}>T5</Text>
+                    <Text style={AppStyle.StyleHistory.text_medium}>T6</Text>
+                    <Text style={AppStyle.StyleHistory.text_medium}>T7</Text>
                 </View>
-                <ScrollView style={selfstyle.boxcalendar} >
+                <ScrollView style={AppStyle.StyleHistory.boxcalendar} >
                     {datamonth.map((item: { [key: string]: any; }, idx) => (
                         <RowCalendar key={idx} data={item} month={currmonth} year={curryear}/>
                     ))}

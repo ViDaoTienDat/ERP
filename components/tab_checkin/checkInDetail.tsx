@@ -10,7 +10,7 @@ import AppStyle from '@/constants/theme';
 import Color from '@/constants/theme/Color';
 import { useFocusEffect } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import RNFS from 'react-native-fs';
+//import RNFS from 'react-native-fs';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CustomMap from '../CustomMap';
 //import { getLocation } from '@/app/axios/func/getLocation';
 import { handleSplitHisCheckIn } from '@/app/axios/func/createCalendar';
+import ExpoCustomCamera from '../ExpoCustomCamera';
 
 
 type CustomCameraRef = {
@@ -77,60 +78,62 @@ function CheckInDetail({ route, navigation }: any): React.JSX.Element {
   }, []);
 
   const handlePressCheckIn = async () => {
-    try {
-      if (cameraRef.current) {
-        const photo = await cameraRef.current.takePhoto();
-        const type = photo ? await photo.split('.').pop() : null;
-        const base64String = photo ? await RNFS.readFile(photo, 'base64') : null;
-        if (!base64String) {
-          console.error('Failed to read file as base64');
-          return;
-        } else { 
-          console.log('base64', base64String.substring(0, 100))
-          saveImageDataToDownloads(base64String);
-         }
-        const image = "data:image/" + type + ";base64," + base64String;
-        const time = getFormatDateTimeCheckIn();
-        setSuccessTime(time);
+  //   try {
+  //     if (cameraRef.current) {
+  //       const photo = await cameraRef.current.takePhoto();
+  //       const type = photo ? await photo.split('.').pop() : null;
+  //       const base64String = photo ? await RNFS.readFile(photo, 'base64') : null;
+  //       if (!base64String) {
+  //         console.error('Failed to read file as base64');
+  //         return;
+  //       } else { 
+  //         console.log('base64', base64String.substring(0, 100))
+  //         saveImageDataToDownloads(base64String);
+  //        }
+  //       const image = "data:image/" + type + ";base64," + base64String;
+  //       const time = getFormatDateTimeCheckIn();
+  //       setSuccessTime(time);
         
-        await checkInAPI(time, image, officeId, wsSelected,  note, location.lat, location.lng).then((result) => {
-          if (result.code === 201) {
-            sethasSuccess(true);
-            setMessage("");
-            getHisCheckIn().then(async (result)=> {
-              if (result.code === 200){
-                const datehis = await handleSplitHisCheckIn(result.data);
-                dispatch(setDateHisCheckIn(datehis));
-              }
-            });
-          }
-          else if (result.code === 500) {
-            setMessage(result.message);
-            sethasFailure(true);
-          }
-          else {
-            setMessage(result.message);
-            sethasFailure(true);
-          }
-        }
-        );
-      }
+  //       await checkInAPI(time, image, officeId, wsSelected,  note, location.lat, location.lng).then((result) => {
+  //         if (result.code === 201) {
+  //           sethasSuccess(true);
+  //           setMessage("");
+  //           getHisCheckIn().then(async (result)=> {
+  //             if (result.code === 200){
+  //               const datehis = await handleSplitHisCheckIn(result.data);
+  //               dispatch(setDateHisCheckIn(datehis));
+  //             }
+  //           });
+  //         }
+  //         else if (result.code === 500) {
+  //           setMessage(result.message);
+  //           sethasFailure(true);
+  //         }
+  //         else {
+  //           setMessage(result.message);
+  //           sethasFailure(true);
+  //         }
+  //       }
+  //       );
+  //     }
       
-    } catch (error) {
-      console.error('Error in handlePressCheckIn:', error);
-    }
-  }
-  const saveImageDataToDownloads = async (imageData: string, fileName = 'imageData1.txt') => {
-    try {
+  //   } catch (error) {
+  //     console.error('Error in handlePressCheckIn:', error);
+  //   }
+  // }
+  // const saveImageDataToDownloads = async (imageData: string, fileName = 'imageData1.txt') => {
+  //   try {
 
-      const filePath = `${RNFS.DownloadDirectoryPath}/${fileName}`;
+  //     const filePath = `${RNFS.DownloadDirectoryPath}/${fileName}`;
 
-      await RNFS.writeFile(filePath, imageData, 'utf8');
-      console.log('File written to:', filePath);
-    } catch (error) {
-      console.error('Error writing file:', error);
-    }
+  //     await RNFS.writeFile(filePath, imageData, 'utf8');
+  //     console.log('File written to:', filePath);
+  //   } catch (error) {
+  //     console.error('Error writing file:', error);
+  //   }
   };
+
+  
   
   const SuccessCheckIn = () => {
     sethasSuccess(false);
@@ -161,7 +164,8 @@ function CheckInDetail({ route, navigation }: any): React.JSX.Element {
           </View>
           <Text style={AppStyle.StyleCheckIn.textCamera}>Chụp ảnh gương mặt</Text>
           <View style={AppStyle.StyleCheckIn.boxCamera}>
-            <CustomCamera ref={cameraRef} />
+            {/* <CustomCamera ref={cameraRef} /> */}
+            <ExpoCustomCamera ref={cameraRef} />
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <Text style={AppStyle.StyleCheckIn.ItemLabel}>Thời gian</Text>

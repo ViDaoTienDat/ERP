@@ -1,24 +1,32 @@
 export type DayNameOfWeek = "T2" | "T3" | "T4" | "T5" | "T6" | "T7" | "CN";
 
 export type HisCheckIn = {
-  record_id: string;
-  user_id: string;
-  user_name: string;
-  image: string;
-  position: string;
-  branch_name: string;
-  branch_id: string;
-  date_time: string;
-  record_latitude: number;
-  record_longitude: number;
-  branch_latitude: number;
-  branch_longitude: number;
-  note: string;
+  record_id: string; // ID của bản ghi
+  user_id: string; // ID của người dùng
+  user_name: string; // Tên người dùng
+  image: string; // Đường dẫn đến hình ảnh
+  position: string; // Chức vụ
+  branch_name: string; // Tên chi nhánh
+  branch_id: string; // ID của chi nhánh
+  date_time: string; // Thời gian ghi nhận (ngày giờ)
+  record_latitude: number; // Vĩ độ ghi nhận
+  record_longitude: number; // Kinh độ ghi nhận
+  branch_latitude: number; // Vĩ độ của chi nhánh
+  branch_longitude: number; // Kinh độ của chi nhánh
+  note: string; // Ghi chú
+  start_time_of_work_shift: string; // Thời gian bắt đầu ca làm việc
+  end_time_of_work_shift: string; // Thời gian kết thúc ca làm việc
+  work_units: number; // Đơn vị làm việc (ví dụ: số giờ làm việc)
+  department_name: string; // Tên phòng ban
+  work_shift_name: string; // Tên ca làm việc
 };
+
 
 type DayData = {
   day: number;
   data: string[];
+  start_time_of_work_shift?: string; // Thuộc tính mới
+  end_time_of_work_shift?: string; // Thuộc tính mới
 };
 type DateHisCheckInMonth = {
   month: number;
@@ -33,6 +41,8 @@ type CalendarDayCheckIn = {
   checkout: string;
   day: number;
   month: number;
+  start_time_of_work_shift: string; // Thêm thuộc tính này
+  end_time_of_work_shift: string;     // Thêm thuộc tính này
 };
 export type CalendarWeekCheckIn = {
   T2: CalendarDayCheckIn;
@@ -71,12 +81,19 @@ export const handleSplitHisCheckIn = async (
           monthData.datamonth.push({
             day: itemday,
             data: [`${hour}:${minute}`],
+            start_time_of_work_shift: item.start_time_of_work_shift, // Lưu start_time_of_work_shift
+            end_time_of_work_shift: item.end_time_of_work_shift, // Lưu end_time_of_work_shift
           });
         }
       } else {
         yearData.datayear.push({
           month: itemmonth,
-          datamonth: [{ day: itemday, data: [`${hour}:${minute}`] }],
+          datamonth: [{
+            day: itemday,
+            data: [`${hour}:${minute}`],
+            start_time_of_work_shift: item.start_time_of_work_shift, // Lưu start_time_of_work_shift
+            end_time_of_work_shift: item.end_time_of_work_shift, // Lưu end_time_of_work_shift
+          }],
         });
       }
     } else {
@@ -85,7 +102,12 @@ export const handleSplitHisCheckIn = async (
         datayear: [
           {
             month: itemmonth,
-            datamonth: [{ day: itemday, data: [`${hour}:${minute}`] }],
+            datamonth: [{
+              day: itemday,
+              data: [`${hour}:${minute}`],
+              start_time_of_work_shift: item.start_time_of_work_shift, // Lưu start_time_of_work_shift
+              end_time_of_work_shift: item.end_time_of_work_shift, // Lưu end_time_of_work_shift
+            }],
           },
         ],
       });
@@ -106,7 +128,7 @@ const getSunDayOfWeek = (date: Date) => {
 export const getCalendarCheckIn = async (
   month: number,
   year: number,
-  dateHisCheckIn: DateHisCheckIn[]
+  dateHisCheckIn: DateHisCheckIn[],
 ) => {
   let data: CalendarCheckIn = { month: month, year: year, calendar: [] };
   const dataYearHis = dateHisCheckIn.find((y) => y.year === year);
@@ -134,17 +156,17 @@ const getWeekCheckIn = (
   dataYearHis: DateHisCheckIn | undefined
 ) => {
   let dataweek: CalendarWeekCheckIn = {
-    T2: { checkin: "", checkout: "", day: 0, month: 0 },
-    T3: { checkin: "", checkout: "", day: 0, month: 0 },
-    T4: { checkin: "", checkout: "", day: 0, month: 0 },
-    T5: { checkin: "", checkout: "", day: 0, month: 0 },
-    T6: { checkin: "", checkout: "", day: 0, month: 0 },
-    T7: { checkin: "", checkout: "", day: 0, month: 0 },
-    CN: { checkin: "", checkout: "", day: 0, month: 0 },
+    T2: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
+    T3: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
+    T4: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
+    T5: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
+    T6: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
+    T7: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
+    CN: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
   };
   const days: DayNameOfWeek[] = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
-  const dayOfWeek = date.getDay();
+  //const dayOfWeek = date.getDay();
   const startDate = getSunDayOfWeek(date);
 
   dataweek.CN.day = startDate.getDate();
@@ -157,6 +179,7 @@ const getWeekCheckIn = (
     const newmonth = newDate.getMonth() + 1;
     const dayName = days[i % 7];
 
+    
     dataweek[dayName].day = newDate.getDate();
     dataweek[dayName].month = newDate.getMonth() + 1;
 
@@ -169,6 +192,8 @@ const getWeekCheckIn = (
       if (dayData.data.length >= 2) {
         dataweek[dayName].checkout = dayData.data[1];
       }
+      dataweek[dayName].start_time_of_work_shift = dayData.start_time_of_work_shift ?? ''; // Thêm
+      dataweek[dayName].end_time_of_work_shift = dayData.end_time_of_work_shift ?? '';     
     }
   }
 

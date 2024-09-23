@@ -14,7 +14,7 @@ function CardInternalNews({ item }: any) {
   return (
     <Image
       resizeMode="stretch"
-      source={require("../assets/images/thongbaonghile.png")}
+      source={require("../assets/images/news_sample.png")}
       style={selfstyle.container}
     ></Image>
   );

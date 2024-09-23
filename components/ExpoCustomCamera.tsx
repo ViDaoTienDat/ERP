@@ -50,6 +50,7 @@ const ExpoCustomCamera = forwardRef((props, ref) => {
     let options = {
       quality: 1,
       base64: true,
+      slient: true,
     };
     if (camera) {
       const data = await camera.takePictureAsync(options);

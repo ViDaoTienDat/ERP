@@ -14,6 +14,11 @@ const StyleHeader = StyleSheet.create({
     borderBottomLeftRadius: 36,
     borderBottomRightRadius: 36,
   },
+  topRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   boxInfo: {
     flexDirection: "row",
     alignItems: "center",

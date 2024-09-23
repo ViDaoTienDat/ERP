@@ -1,7 +1,7 @@
 import StyleCheckIn from "./StyleCheckIn";
 import StyleCommon from "./StyleCommon";
 import StyleHeader from "./StyleHeader";
-import { selfstyle } from "./StyleHistory";
+import {StyleHistory} from "./StyleHistory";
 import StyleHome from "./StyleHome";
 import StyleLogin from "./StyleLogin";
 import StyleRegister from "./StyleRegister";
@@ -12,7 +12,7 @@ const AppStyle = {
   StyleLogin,
   StyleHeader,
   StyleHome,
-  selfstyle,
+  StyleHistory,
   StyleCheckIn,
   StyleReq,
   StyleRegister,

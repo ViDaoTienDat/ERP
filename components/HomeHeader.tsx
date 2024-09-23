@@ -16,13 +16,7 @@ function HomeHeader(): React.JSX.Element {
   return (
     <View style={[AppStyle.StyleHeader.header]}>
       <View
-        style={[
-          {
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          },
-        ]}
+        style={[AppStyle.StyleHeader.topRow]}
       >
         <View style={[AppStyle.StyleHeader.boxInfo]}>
           <TouchableOpacity>
@@ -47,7 +41,7 @@ function HomeHeader(): React.JSX.Element {
           <TouchableOpacity style={{}}>
             <Image
               style={[AppStyle.StyleHeader.size_iconsearch]}
-              source={require("../assets/images/bell.png")}
+              source={require("../assets/images/bell-fill.png")}
             />
           </TouchableOpacity>
         </View>

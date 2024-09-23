@@ -3,7 +3,7 @@ import Dimension from "./Dimension";
 import { StyleSheet } from "react-native";
 
 const height = Dimension.window.height;
-export const selfstyle = StyleSheet.create({
+export const StyleHistory = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f4f4f4",
@@ -16,11 +16,11 @@ export const selfstyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 25,
+    paddingHorizontal: 20,
   },
   icon: {
-    width: 15,
-    height: 15,
+    width: 10,
+    height: 10,
   },
   text_large: {
     fontWeight: "bold",
@@ -40,6 +40,11 @@ export const selfstyle = StyleSheet.create({
     fontSize: 12,
     fontWeight: "400",
     color: "#44b678",
+  },
+  text_check_late: {
+    fontSize: 12,
+    fontWeight: "400",
+    color: Color.color_header_red,
   },
   calendar: {},
   dayofweek: {
@@ -65,6 +70,8 @@ export const selfstyle = StyleSheet.create({
   },
   boxcheck: {
     alignItems: "center",
+    gap: 10,
+    marginTop: 5
   },
   button: {
     width: 40,

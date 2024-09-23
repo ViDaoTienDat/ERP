@@ -10,7 +10,8 @@ import CustomHeader from "../CustomHeader";
 import AppStyle from "@/constants/theme";
 import CardCheckIn from "../CardCheckIn";
 import { useSelector } from "react-redux";
-import { useCameraPermission } from 'react-native-vision-camera';
+//import { useCameraPermission } from 'react-native-vision-camera';
+import { useCameraPermissions } from "expo-camera";
 import hasLocationPermission from "@/app/map/locationPermission";
 import { getAllBranch } from "@/app/axios/api/branchApi";
 import CheckInDetail from "./checkInDetail";
@@ -23,7 +24,8 @@ export default function CheckIn() {
   const [officeValue, setOfficeValue] = useState("");
   const [location, seteLocation] = useState(false);
   const branchs = useSelector((state: any) => state.userdata.branch);
-  const {hasPermission, requestPermission} = useCameraPermission();
+  //const {hasPermission, requestPermission} = useCameraPermission();
+  const [hasPermission, requestPermission] = useCameraPermissions();
   const dispatch = useDispatch();
   const handlePressOffice = () => {
     setOfficeVisible(true);

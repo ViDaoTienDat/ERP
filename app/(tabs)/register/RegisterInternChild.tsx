@@ -51,7 +51,7 @@ function RegisterInternChild(): React.JSX.Element {
         >
           <Image
             style={AppStyle.StyleTable.icon}
-            source={require("../../../assets/images/backmonth.png")}
+            source={require("../../../assets/images/arrow-sm-left.png")}
           />
         </TouchableOpacity>
         <Text style={AppStyle.StyleTable.text_large}>
@@ -63,7 +63,7 @@ function RegisterInternChild(): React.JSX.Element {
         >
           <Image
             style={AppStyle.StyleTable.icon}
-            source={require("../../../assets/images/nextmonth.png")}
+            source={require("../../../assets/images/arrow-sm-right.png")}
           />
         </TouchableOpacity>
       </View>

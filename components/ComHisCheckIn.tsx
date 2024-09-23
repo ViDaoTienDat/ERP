@@ -1,5 +1,5 @@
 import Color from "@/constants/theme/Color";
-import { selfstyle } from "@/constants/theme/StyleHistory";
+import AppStyle from "@/constants/theme";
 import { View, Text } from "react-native";
 
 type DataJson = {
@@ -18,7 +18,7 @@ export function RowCalendar({
   year,
 }: DataJson): React.JSX.Element {
   return (
-    <View style={selfstyle.rowcalendar}>
+    <View style={AppStyle.StyleHistory.rowcalendar}>
       <CellCalendar data={data.CN} month={month} year={year} />
       <CellCalendar data={data.T2} month={month} year={year} />
       <CellCalendar data={data.T3} month={month} year={year} />
@@ -30,25 +30,31 @@ export function RowCalendar({
   );
 }
 function CellCalendar({ data, month, year }: DataJson): React.JSX.Element {
+  const isToday = data.day == day && data.month == currmonth && year == curryear;
+  const isDifferentMonth = data.month != month;
+ 
+  // So sánh với ca làm việc
+  const isLateForWorkShift = data.checkin > data.start_time_of_work_shift;
+  const isEarlyForWorkShift = data.checkout < data.end_time_of_work_shift;
   return (
-    <View style={selfstyle.cellcalendar}>
+    <View style={AppStyle.StyleHistory.cellcalendar}>
       <Text
         style={[
-          selfstyle.text_small,
-          data.day == day && data.month == currmonth && year == curryear
-            ? { color: Color.color3 }
-            : data.month != month
-            ? { color: "#ccc" }
-            : {},
+          AppStyle.StyleHistory.text_small,
+          isToday
+          ? { backgroundColor: Color.color_header_red, color: "white", paddingHorizontal: 5, paddingVertical: 5, borderRadius: 4 }
+          : isDifferentMonth
+          ? { color: "#ccc" }
+          : {}
         ]}
       >
         {data.day}
       </Text>
-      <View style={selfstyle.boxcheck}>
-        <Text style={selfstyle.text_check}>
+      <View style={AppStyle.StyleHistory.boxcheck}>
+        <Text style={isLateForWorkShift ? AppStyle.StyleHistory.text_check_late : AppStyle.StyleHistory.text_check  }>
           {data.checkin ? data.checkin : ""}
         </Text>
-        <Text style={selfstyle.text_check}>
+        <Text style={isEarlyForWorkShift ? AppStyle.StyleHistory.text_check_late : AppStyle.StyleHistory.text_check  }>
           {data.checkout ? data.checkout : ""}
         </Text>
       </View>
