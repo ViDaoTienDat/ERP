@@ -8,6 +8,7 @@ export default function _layout() {
   return (
     <Tabs
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarLabelStyle: {
           fontSize: 13,
@@ -16,12 +17,13 @@ export default function _layout() {
         },
         tabBarActiveTintColor: Color.color3,
         tabBarInactiveTintColor: Color.color2,
+        
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
-          tabBarLabel: "Trang chủ",
+          tabBarLabel: "Trang hủ",
           tabBarIcon: ({ focused }) => <HomeIcon focused={focused} />,
         }}
       />

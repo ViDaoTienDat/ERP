@@ -5,18 +5,19 @@ import {
   TouchableWithoutFeedback,
   Modal,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomHeader from "../CustomHeader";
 import AppStyle from "@/constants/theme";
 import CardCheckIn from "../CardCheckIn";
 import { useSelector } from "react-redux";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import hasLocationPermission from "@/app/map/locationPermission";
 import { getAllBranch } from "@/app/axios/api/branchApi";
 import ExpoCheckInDetail from "./ExpoCheckInDetail";
 import { useDispatch } from "react-redux";
 import { setOfficeId } from "@/app/state/reducers/officeSlice";
 import { useCameraPermissions } from "expo-camera";
+
 import * as Location from "expo-location";
 export default function ExpoCheckIn() {
   const [officeVisible, setOfficeVisible] = useState(false);
@@ -26,10 +27,7 @@ export default function ExpoCheckIn() {
   const [location, seteLocation] = useState(false);
   const branchs = useSelector((state: any) => state.userdata.branch);
 
-  //react native camera
-  //  const {hasPermission, requestPermission} = useCameraPermission();
-  //expo camera
-  const [hasPermission, requestPermission] = useCameraPermissions();
+  const [permission, requestPermission] = useCameraPermissions();
   const dispatch = useDispatch();
   const handlePressOffice = () => {
     setOfficeVisible(true);
@@ -39,35 +37,49 @@ export default function ExpoCheckIn() {
     setOffice(label);
     setOfficeValue(value);
     setOfficeVisible(false);
-
     dispatch(setOfficeId(value)); // Cập nhật officeId vào Redux
     setOfficeVisible(false);
   };
   //Camera Permission
-
   const handlePermissionCamera = async () => {
-    if (!hasPermission) {
+    if (!permission?.granted) {
       requestPermission();
     }
   };
   //Location Permission
   const getPermissionLocation = async () => {
-    const hasPermission = await hasLocationPermission(); 
-    if (!hasPermission) {
-      seteLocation(false); // Không có quyền
-      return;
-    }
-    const { status } = await Location.requestForegroundPermissionsAsync();
-
-    if (status === 'granted') {
-      seteLocation(true); // Được cấp quyền
-    } else {
-      seteLocation(false); // Không được cấp quyền
+    try {
+      // Kiểm tra nếu đã lưu quyền trong AsyncStorage
+      const savedPermission = await AsyncStorage.getItem('locationPermission');
+      if (savedPermission === 'granted') {
+        seteLocation(true); // Đã có quyền
+        return;
+      }
+    } catch (error) {
+      console.log('Error checking location permission:', error);
     }
   };
+  const requestLocation = async () =>{
+    try {
+      // Yêu cầu quyền vị trí nếu chưa lưu
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === 'granted') {
+        seteLocation(true); // Được cấp quyền
+        await AsyncStorage.setItem('locationPermission', 'granted'); // Lưu quyền vào AsyncStorage
+      } else {
+        seteLocation(false); // Không được cấp quyền
+        await AsyncStorage.setItem('locationPermission', 'denied'); // Lưu trạng thái bị từ chối
+      }
+    } catch (error) {
+      console.log('Error checking location permission:', error);
+    }
+  }
   const handlePressCheckIn = () => {
     setCheckInVisible(true);
   };
+  useEffect(() => {
+    getPermissionLocation();
+  }, []);
 
   return !checkInVisible ? (
     <View>
@@ -88,8 +100,8 @@ export default function ExpoCheckIn() {
           key={1}
           img={require("../../assets/images/camera.png")}
           name="Truy cập camera"
-          state={hasPermission ? true : false}
-          stateStr={hasPermission ? "Đã cho phép" : "Chưa cho phép"}
+          state={permission?.granted ? true : false}
+          stateStr={permission?.granted ? "Đã cho phép" : "Chưa cho phép"}
           func={handlePermissionCamera}
           note={""}
         />
@@ -99,7 +111,7 @@ export default function ExpoCheckIn() {
           name="Truy cập vị trí"
           state={location ? true : false}
           stateStr={location ? "Đã cho phép" : "Chưa cho phép"}
-          func={getPermissionLocation}
+          func={requestLocation}
           note={""}
         />
       </View>
@@ -136,7 +148,7 @@ export default function ExpoCheckIn() {
         </TouchableWithoutFeedback>
       </Modal>
 
-      {office != "" && hasPermission && location && (
+      {office != "" && permission && location && (
         <TouchableOpacity
           style={AppStyle.StyleCheckIn.buttonCheckIn}
           onPress={handlePressCheckIn}
