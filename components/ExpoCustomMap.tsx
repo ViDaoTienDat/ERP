@@ -14,18 +14,18 @@ const ExpoCustomMap = ({ showCir, location_business }: any) => {
   const [location, setLocationState] = useState<Location>();
   const dispatch = useDispatch();
   const getLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      alert("Permission to access location was denied");
-      return;
-    }
+    // let { status } = await Location.requestForegroundPermissionsAsync();
+    // if (status !== "granted") {
+    //   alert("Permission to access location was denied");
+    //   return;
+    // }
 
     let loc = await Location.getCurrentPositionAsync({});
     setLocationState({
       latitude: loc.coords.latitude,
       longitude: loc.coords.longitude,
-      latitudeDelta: 0.01, // Zoom level
-      longitudeDelta: 0.01, // Zoom level
+      latitudeDelta: 0.001, // Zoom level
+      longitudeDelta: 0.001, // Zoom level
     });
     const newLocation = {
       lat: loc.coords.latitude,

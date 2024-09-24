@@ -102,7 +102,6 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           location.lat,
           location.lng
         ).then((result) => {
-          console.log(result);
           if (result.code === 201) {
             sethasSuccess(true);
             setMessage("");

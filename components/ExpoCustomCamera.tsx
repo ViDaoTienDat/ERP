@@ -22,6 +22,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image
 } from "react-native";
 
 const ExpoCustomCamera = forwardRef((props, ref) => {
@@ -50,7 +51,6 @@ const ExpoCustomCamera = forwardRef((props, ref) => {
     let options = {
       quality: 1,
       base64: true,
-      slient: true,
     };
     if (camera) {
       const data = await camera.takePictureAsync(options);
@@ -103,13 +103,10 @@ const ExpoCustomCamera = forwardRef((props, ref) => {
       >
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
+            <Image style={{width: 40, height: 40}} resizeMode="stretch" source={require("../assets/images/camera-rotate.png")} ></Image>
           </TouchableOpacity>
         </View>
       </CameraView>
-      {/* <TouchableOpacity onPress={handleTakePhoto}>
-        <Text>CHUP HINH</Text>
-      </TouchableOpacity> */}
     </View>
   );
 });
@@ -124,18 +121,18 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   camera: {
-    flex: 1,
+    flex: 1
   },
   buttonContainer: {
     flex: 1,
     flexDirection: "row",
     backgroundColor: "transparent",
-    margin: 64,
   },
   button: {
     flex: 1,
-    alignSelf: "flex-end",
-    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    padding: 5
   },
   text: {
     fontSize: 24,

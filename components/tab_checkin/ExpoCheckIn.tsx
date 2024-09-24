@@ -17,6 +17,7 @@ import ExpoCheckInDetail from "./ExpoCheckInDetail";
 import { useDispatch } from "react-redux";
 import { setOfficeId } from "@/app/state/reducers/officeSlice";
 import { useCameraPermissions } from "expo-camera";
+import * as Location from "expo-location";
 export default function ExpoCheckIn() {
   const [officeVisible, setOfficeVisible] = useState(false);
   const [checkInVisible, setCheckInVisible] = useState(false);
@@ -51,11 +52,17 @@ export default function ExpoCheckIn() {
   };
   //Location Permission
   const getPermissionLocation = async () => {
-    const hasPermission = await hasLocationPermission();
+    const hasPermission = await hasLocationPermission(); 
     if (!hasPermission) {
-      seteLocation(false);
+      seteLocation(false); // Không có quyền
+      return;
+    }
+    const { status } = await Location.requestForegroundPermissionsAsync();
+
+    if (status === 'granted') {
+      seteLocation(true); // Được cấp quyền
     } else {
-      seteLocation(true);
+      seteLocation(false); // Không được cấp quyền
     }
   };
   const handlePressCheckIn = () => {
