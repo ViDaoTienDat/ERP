@@ -34,7 +34,8 @@ export const StyleHistory = StyleSheet.create({
     fontSize: 15,
     fontWeight: "400",
     color: Color.color2,
-    paddingVertical: 10,
+    paddingVertical: 7,
+    paddingHorizontal: 5,
   },
   text_check: {
     fontSize: 12,

@@ -42,7 +42,7 @@ function CellCalendar({ data, month, year }: DataJson): React.JSX.Element {
         style={[
           AppStyle.StyleHistory.text_small,
           isToday
-          ? { backgroundColor: Color.color_header_red, color: "white", paddingHorizontal: 5, paddingVertical: 5, borderRadius: 4 }
+          ? { backgroundColor: Color.color_header_red, color: "white", borderRadius: 4 }
           : isDifferentMonth
           ? { color: "#ccc" }
           : {}
