@@ -27,7 +27,6 @@ import {
 
 const ExpoCustomCamera = forwardRef((props, ref) => {
   const [facing, setFacing] = useState<CameraType>("back");
-  const [permission, requestPermission] = useCameraPermissions();
 
   const [camera, setCamera] = useState<any>(null);
   const [photo, setPhoto] = useState<string | null>(null);
@@ -36,18 +35,8 @@ const ExpoCustomCamera = forwardRef((props, ref) => {
     takePhoto: handleTakePhoto,
   }));
 
-  useEffect(() => {
-    if (!permission) {
-      requestPermission();
-    }
-  }, [permission]);
 
   const handleTakePhoto = async () => {
-    // if (cameraRef.current) {
-    //   const photo = await cameraRef.current.takePictureAsync();
-    //   setPhoto(photo.path);
-    //   return photo.path;
-    // }
     let options = {
       quality: 1,
       base64: true,
@@ -58,37 +47,8 @@ const ExpoCustomCamera = forwardRef((props, ref) => {
       return data;
     }
 
-    // try {
-    //   console.log("🚀🚀🚀🚀🚀🚀🚀🚀  try");
-    //   await checkInAPI(image).then((result) => {
-    //     console.log(
-    //       "🚀 ~ ).then ~ result.code",
-    //       result.code,
-    //       "message:",
-    //       result.message
-    //     );
-    //   });
-    // } catch (err) {
-    //   console.error("Error in handleTakePhoto:", err);
-    // }
   };
 
-  if (!permission) {
-    // Camera permissions are still loading.
-    return <ActivityIndicator />;
-  }
-
-  if (!permission.granted) {
-    // Camera permissions are not granted yet.
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>
-          We need your permission to show the camera
-        </Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
-  }
 
   function toggleCameraFacing() {
     setFacing((current) => (current === "back" ? "front" : "back"));

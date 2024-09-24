@@ -24,7 +24,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.7.7",
     "buffer": "^6.0.3",
-    "expo": "~51.0.28",
+    "expo": "~51.0.34",
     "expo-camera": "~15.0.16",
     "expo-constants": "~16.0.2",
     "expo-document-picker": "~12.0.2",
@@ -58,7 +58,8 @@
     "react-native-web": "~0.19.10",
     "react-native-webview": "^13.8.6",
     "react-redux": "^9.1.2",
-    "simple-swizzle": "^0.2.2"
+    "simple-swizzle": "^0.2.2",
+    "@react-native-async-storage/async-storage": "1.23.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
