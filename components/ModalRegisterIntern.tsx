@@ -16,6 +16,7 @@ import AppStyle from "@/constants/theme";
 import { setDataIntern } from "@/app/state/reducers/dataSlice";
 import {
   ChangeInternSchedule,
+  DeleteInternSchedule,
   GetInternSchedule,
   RegisterInternSchedule,
 } from "@/app/axios/api/InternAPI";
@@ -34,6 +35,12 @@ const dataworkShift = [
   { label: "Ca sáng", value: "2c1e165e-8" },
   { label: "Ca chiều", value: "78546471-a" },
   { label: "Fulltime", value: "All" },
+];
+const dataworkShiftforChange = [
+  { label: "Ca sáng", value: "2c1e165e-8" },
+  { label: "Ca chiều", value: "78546471-a" },
+  { label: "Fulltime", value: "All" },
+  { label: "Hủy ca", value: "Cancel" },
 ];
 const dataBranches: any = [];
 export function ModalResIntern({
@@ -89,41 +96,43 @@ export function ModalResIntern({
     try {
       let result;
       if (add) {
+        console.log("add tru");
         result = await RegisterInternSchedule(date, workshiftSend);
-        if (result.code === 200) {
-          funcHide();
+      } else {
+        if (workshiftSend.includes("Cancel")) {
+          result = await DeleteInternSchedule(date);
+        } else result = await ChangeInternSchedule(date, workshiftSend);
+        // result = await ChangeInternSchedule(date, workshiftSend);
+        // let textWorkShift = "";
+        // if (
+        //   workshiftSend.includes("2c1e165e-8") &&
+        //   workshiftSend.includes("78546471-a")
+        // ) {
+        //   textWorkShift = "08:30 - 17:30";
+        // } else if (workshiftSend.includes("2c1e165e-8")) {
+        //   textWorkShift = "08:30 - 12:00";
+        // } else {
+        //   textWorkShift = "01:30 - 17:30";
+        // }
 
-          const item = await GetInternSchedule();
-          if (item.code === 200) {
-            dispatch(setDataIntern(item.data));
-          } else {
-            console.log(item);
-          }
+        // onChangeSchedule(
+        //   `${date.getDate()}/${
+        //     date.getMonth() + 1
+        //   }/${date.getFullYear()} ${textWorkShift}`
+        // );
+      }
+      if (result.code === 200) {
+        funcHide();
+
+        const item = await GetInternSchedule();
+        if (item.code === 200) {
+          dispatch(setDataIntern(item.data));
         } else {
-          setIsError(true);
-          console.log(result);
+          console.log(item);
         }
       } else {
-        console.log("ChangeInternSchedule" + date);
-        // result = await ChangeInternSchedule(date, workshiftSend);
-        let textWorkShift = "";
-        if (
-          workshiftSend.includes("2c1e165e-8") &&
-          workshiftSend.includes("78546471-a")
-        ) {
-          textWorkShift = "08:30 - 17:30";
-        } else if (workshiftSend.includes("2c1e165e-8")) {
-          textWorkShift = "08:30 - 12:00";
-        } else {
-          textWorkShift = "01:30 - 17:30";
-        }
-
-        onChangeSchedule(
-          `${date.getDate()}/${
-            date.getMonth() + 1
-          }/${date.getFullYear()} ${textWorkShift}`
-        );
-        funcHide();
+        setIsError(true);
+        console.log(result);
       }
     } catch (error) {
       setIsError(true);
@@ -230,7 +239,7 @@ export function ModalResIntern({
                   </Text>
                   <View style={AppStyle.StyleTable.addValue}>
                     <CustomDropdown
-                      data={dataworkShift}
+                      data={add ? dataworkShift : dataworkShiftforChange}
                       firstValue={workShift}
                       onChange={(value: React.SetStateAction<string>) => {
                         setWorkShift(value);

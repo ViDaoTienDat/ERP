@@ -66,6 +66,11 @@ function CellResIntern({
   const [addVisible, setAddVisible] = useState(false);
   const [add, setAdd] = useState(data.add);
   const today = new Date();
+  const registerDate = new Date(
+    data.register_year,
+    data.register_month - 1,
+    data.register_day
+  );
 
   const isToday = () => {
     return (
@@ -80,6 +85,7 @@ function CellResIntern({
       setAdd(false);
     }
   }, [data]);
+
   return (
     <View style={AppStyle.StyleTable.cellcalendar}>
       <View
@@ -108,30 +114,19 @@ function CellResIntern({
         </Text>
       </View>
       <View style={AppStyle.StyleTable.boxValue}>
-        {data.register_shift != "" && add ? (
+        {/* Điều kiện thay đổi lịch khi có ca đăng ký , không phải ngày trong tuần và lớn hơn ngày hiện tại  */}
+        {data.register_shift != "" && !curr && registerDate > today ? (
           <TouchableOpacity
             style={AppStyle.StyleTable.boxValue}
             onPress={() => {
               setAddVisible(true);
+              setAdd(false);
             }}
           >
-            {/*<Text style={[AppStyle.StyleTable.textValue, data.curr ? { color: Color.color3 } : {}]}>
-                {data.location ? data.location : ''}
-              </Text> */}
-            <Text
-              style={[
-                AppStyle.StyleTable.textValue,
-                curr ? { color: Color.color3 } : {},
-              ]}
-            >
+            <Text style={[AppStyle.StyleTable.textValue]}>
               {data.start_time ? data.start_time : "--/--"}
             </Text>
-            <Text
-              style={[
-                AppStyle.StyleTable.textValue,
-                curr ? { color: Color.color3 } : {},
-              ]}
-            >
+            <Text style={[AppStyle.StyleTable.textValue]}>
               {data.end_time ? data.end_time : "--/--"}
             </Text>
           </TouchableOpacity>

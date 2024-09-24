@@ -96,6 +96,44 @@ export const ChangeInternSchedule = async (date: Date, workShift: string[]) => {
       const response = await axios.put(url, data, {
         headers: {
           Authorization: `Bearer ${token.accessToken}`,
+          "x-api-key": apiKey,
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    }
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      return error.response.data;
+    } else {
+      console.error(error);
+      throw new Error("An unknown error occurred.");
+    }
+  }
+};
+
+export const DeleteInternSchedule = async (date: Date) => {
+  console.log("🚀 ~ DeleteInternSchedule ~ DeleteInternSchedule:");
+  try {
+    const token = await getTokens();
+    let userId = null;
+    if (token.accessToken) {
+      // const decodedToken = jwtDecode<CustomJwtPayload>(token.accessToken);
+
+      userId = getUserIdFromAccessToken(token.accessToken);
+    }
+    if (userId) {
+      const url = `${serverAPI}/api/v1/schedules/users/${userId}`;
+      const formattedDate = formatDateToLocal(date);
+      const data = {
+        register_time: {
+          [formattedDate]: [],
+        },
+      };
+      const response = await axios.put(url, data, {
+        headers: {
+          Authorization: `Bearer ${token.accessToken}`,
+          "x-api-key": apiKey,
           "Content-Type": "application/json",
         },
       });
