@@ -18,12 +18,12 @@ const CustomMap = ({ showCir, location_business }: any) => {
 
   // Hàm lấy vị trí hiện tại
   const getLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert("Permission denied", "Vui lòng cấp quyền truy cập vị trí để tiếp tục.");
-      setIsLoading(false);
-      return;
-    }
+    // let { status } = await Location.requestForegroundPermissionsAsync();
+    // if (status !== 'granted') {
+    //   Alert.alert("Permission denied", "Vui lòng cấp quyền truy cập vị trí để tiếp tục.");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     let location = await Location.getCurrentPositionAsync({});
     const newLocation = {
@@ -64,7 +64,7 @@ const CustomMap = ({ showCir, location_business }: any) => {
     <body>
       <div id="map"></div>
       <script>
-        var map = L.map('map').setView([${location.lat}, ${location.lng}], 15);
+        var map = L.map('map').setView([${location.lat}, ${location.lng}], 18);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
