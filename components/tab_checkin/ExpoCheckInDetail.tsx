@@ -176,13 +176,14 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           </View>
           <Text style={AppStyle.StyleCheckIn.textCamera}>Vị trí của tôi</Text>
           <View style={AppStyle.StyleCheckIn.boxMap}>
-            <ExpoCustomMap
+            {/* <ExpoCustomMap
               showCir={checkbox}
               location_business={{
                 lat: office.latitude,
                 lng: office.longitude,
               }}
-            />
+            /> */}
+            <CustomMap showCir={checkbox} location_business={{ lat: office.latitude, lng: office.longitude }}  />
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <CustomCheckBox
