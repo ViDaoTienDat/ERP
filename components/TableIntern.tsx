@@ -47,7 +47,7 @@ export function RowResIntern({
     }
   }, [data.CN]);
   return (
-    <View style={AppStyle.StyleTable.rowcalendar}>
+    <View style={AppStyle.StyleHistory.rowcalendar}>
       <CellResInternDayOff data={data.CN} month={month} curr={currweek} />
       <CellResIntern data={data.T2} month={month} curr={currweek} />
       <CellResIntern data={data.T3} month={month} curr={currweek} />
@@ -93,7 +93,7 @@ function CellResIntern({
           AppStyle.StyleTable.boxday,
           {
             borderRadius: 5,
-            backgroundColor: isToday() ? Color.color3 : "#fff",
+            backgroundColor: isToday() ? Color.color3 : 'transparent',
           },
         ]}
       >
@@ -222,7 +222,7 @@ function CellResInternDayOff({
           AppStyle.StyleTable.boxday,
           {
             borderRadius: 5,
-            backgroundColor: isToday() ? Color.color3 : "#fff",
+            backgroundColor: isToday() ? Color.color3 : "transparent",
           },
         ]}
       >

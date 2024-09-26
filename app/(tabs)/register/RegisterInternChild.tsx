@@ -44,41 +44,41 @@ function RegisterInternChild(): React.JSX.Element {
   }, [dataIntern]);
   return (
     <View style={{ flex: 1 }}>
-      <View style={AppStyle.StyleTable.boxmonth}>
+      <View style={AppStyle.StyleHistory.boxmonth}>
         <TouchableOpacity
-          style={AppStyle.StyleTable.button}
+          style={AppStyle.StyleHistory.button}
           onPress={handlePressBack}
         >
           <Image
-            style={AppStyle.StyleTable.icon}
+            style={AppStyle.StyleHistory.icon}
             source={require("../../../assets/images/arrow-sm-left.png")}
           />
         </TouchableOpacity>
-        <Text style={AppStyle.StyleTable.text_large}>
-          Tháng {currmonth} {curryear}
+        <Text style={AppStyle.StyleHistory.text_large}>
+          Tháng {currmonth}, {curryear}
         </Text>
         <TouchableOpacity
-          style={AppStyle.StyleTable.button}
+          style={[AppStyle.StyleHistory.button, {justifyContent: "flex-end", flexDirection: "row", alignItems: "center"}]}
           onPress={handlePressNext}
         >
           <Image
-            style={AppStyle.StyleTable.icon}
+            style={AppStyle.StyleHistory.icon}
             source={require("../../../assets/images/arrow-sm-right.png")}
           />
         </TouchableOpacity>
       </View>
-      <View style={AppStyle.StyleTable.calendar}>
-        <View style={AppStyle.StyleTable.dayofweek}>
-          <Text style={AppStyle.StyleTable.text_medium}>CN</Text>
-          <Text style={AppStyle.StyleTable.text_medium}>T2</Text>
-          <Text style={AppStyle.StyleTable.text_medium}>T3</Text>
-          <Text style={AppStyle.StyleTable.text_medium}>T4</Text>
-          <Text style={AppStyle.StyleTable.text_medium}>T5</Text>
-          <Text style={AppStyle.StyleTable.text_medium}>T6</Text>
-          <Text style={AppStyle.StyleTable.text_medium}>T7</Text>
+      <View style={AppStyle.StyleHistory.calendar}>
+        <View style={AppStyle.StyleHistory.dayofweek}>
+          <Text style={AppStyle.StyleHistory.text_medium}>CN</Text>
+          <Text style={AppStyle.StyleHistory.text_medium}>T2</Text>
+          <Text style={AppStyle.StyleHistory.text_medium}>T3</Text>
+          <Text style={AppStyle.StyleHistory.text_medium}>T4</Text>
+          <Text style={AppStyle.StyleHistory.text_medium}>T5</Text>
+          <Text style={AppStyle.StyleHistory.text_medium}>T6</Text>
+          <Text style={AppStyle.StyleHistory.text_medium}>T7</Text>
         </View>
         <ScrollView
-          style={AppStyle.StyleTable.boxcalendar}
+          style={AppStyle.StyleHistory.boxcalendar}
           showsVerticalScrollIndicator={false}
         >
           {datamonth.map((item: { [key: string]: any }, idx) => {

@@ -16,11 +16,11 @@ export const StyleHistory = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   icon: {
-    width: 10,
-    height: 10,
+    width: 12,
+    height: 12,
   },
   text_large: {
     fontWeight: "bold",
@@ -34,7 +34,7 @@ export const StyleHistory = StyleSheet.create({
     fontSize: 15,
     fontWeight: "400",
     color: Color.color2,
-    paddingVertical: 7,
+    paddingVertical: 5,
     paddingHorizontal: 5,
   },
   text_check: {
