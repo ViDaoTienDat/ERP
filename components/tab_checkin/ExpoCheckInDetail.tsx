@@ -34,7 +34,6 @@ import { handleSplitHisCheckIn } from "@/app/axios/func/createCalendar";
 import ExpoCustomMap from "../ExpoCustomMap";
 import ExpoCustomCamera from "../ExpoCustomCamera";
 
-
 type CustomCameraRef = {
   takePhoto: () => any | null;
 };
@@ -92,7 +91,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
         const image = "data:image/" + type + ";base64," + dataPhoto.base64;
         const time = getFormatDateTimeCheckIn();
         setSuccessTime(time);
-        
+
         await checkInAPI(
           time,
           image,
@@ -166,7 +165,6 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
         >
-
           <Text style={AppStyle.StyleCheckIn.textCamera}>
             Chụp ảnh gương mặt
           </Text>
@@ -176,14 +174,14 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           </View>
           <Text style={AppStyle.StyleCheckIn.textCamera}>Vị trí của tôi</Text>
           <View style={AppStyle.StyleCheckIn.boxMap}>
-            {/* <ExpoCustomMap
+            <ExpoCustomMap
               showCir={checkbox}
               location_business={{
                 lat: office.latitude,
                 lng: office.longitude,
               }}
-            /> */}
-            <CustomMap showCir={checkbox} location_business={{ lat: office.latitude, lng: office.longitude }}  />
+            />
+            {/* <CustomMap showCir={checkbox} location_business={{ lat: office.latitude, lng: office.longitude }}  /> */}
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <CustomCheckBox
@@ -236,7 +234,9 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
             style={AppStyle.StyleCheckIn.buttonCheckIn}
             onPress={handlePressCheckIn}
           >
-            {isLoading ? (<ActivityIndicator size="small" color="#fff"/>):(
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
               <Text style={AppStyle.StyleCheckIn.textCheckIn}>Chấm Công</Text>
             )}
           </TouchableOpacity>

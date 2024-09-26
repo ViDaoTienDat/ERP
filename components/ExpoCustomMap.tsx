@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import * as Location from "expo-location";
-import MapView, { Circle, Marker } from "react-native-maps";
+import MapView, { Circle, Marker, PROVIDER_GOOGLE } from "react-native-maps";
+console.log("🚀 ~ PROVIDER_GOOGLE:", PROVIDER_GOOGLE);
 import { useDispatch } from "react-redux";
 import { setLocation } from "@/app/state/reducers/locationSlice";
 type Location = {
@@ -41,7 +42,11 @@ const ExpoCustomMap = ({ showCir, location_business }: any) => {
   }
 
   return (
-    <MapView style={{ flex: 1 }} initialRegion={location}>
+    <MapView
+      provider={PROVIDER_GOOGLE}
+      style={{ flex: 1 }}
+      initialRegion={location}
+    >
       <Marker
         coordinate={{
           latitude: location.latitude,
