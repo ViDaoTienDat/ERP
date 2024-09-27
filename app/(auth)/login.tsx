@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { signIn } from "../axios/api/loginAPI";
 import { getUser } from "../axios/api/dataUserAPI";
@@ -31,9 +31,13 @@ import { splitWorkShift } from "../axios/func/loadDataUser";
 import { getAllBranch } from "../axios/api/branchApi";
 import { getWorkShift } from "../axios/api/workShirtApi";
 import Color from "@/constants/theme/Color";
+import { getTokens } from "../axios/api/storeToken";
+import { CustomCheckBox } from "@/components/CustomCheckBox";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Index() {
   const dispatch = useDispatch();
+  const [isSavedPassword, setisSavedPassword] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [wrongPass, setWrongPass] = useState(false);
   const [textwrong, setTextWrong] = useState("");
@@ -45,10 +49,51 @@ export default function Index() {
     setShowPass(!showPass);
   };
 
+  const getSavedLoginInfo = async () => {
+    const email = await AsyncStorage.getItem("email");
+    console.log("🚀 ~ getSavedLoginInfo ~ email:", email);
+    const password = await AsyncStorage.getItem("password");
+    console.log("🚀 ~ getSavedLoginInfo ~ password:", password);
+    const isSavedPassword = await AsyncStorage.getItem("isSavedPassword");
+    console.log("🚀 ~ getSavedLoginInfo ~ isSavedPassword:", isSavedPassword);
+    return { email, password, isSavedPassword };
+  };
+
+  useEffect(() => {
+    const fetchSavedLoginInfo = async () => {
+      const dataSavedLogin = await getSavedLoginInfo();
+      if (dataSavedLogin.email) {
+        setEmail(dataSavedLogin.email);
+      }
+      if (dataSavedLogin.isSavedPassword == "true") {
+        setisSavedPassword(true);
+      } else setisSavedPassword(false);
+      if (dataSavedLogin.password) {
+        setPassword(dataSavedLogin.password);
+      } else setPassword("");
+    };
+
+    fetchSavedLoginInfo();
+  }, []);
+
   const handleLogin = () => {
     setLoading(true);
     signIn(email, password).then(async (result) => {
       if (result.code === 200) {
+        await AsyncStorage.setItem("email", email);
+        if (isSavedPassword) {
+          await AsyncStorage.setItem(
+            "isSavedPassword",
+            isSavedPassword.toString()
+          );
+          await AsyncStorage.setItem("password", password);
+        } else {
+          await AsyncStorage.setItem(
+            "isSavedPassword",
+            isSavedPassword.toString()
+          );
+          await AsyncStorage.setItem("password", ""); // Đặt giá trị password thành null
+        }
         setWrongPass(false);
         setTextWrong("");
         getUser(result.data.access_token).then(async (result) => {
@@ -88,6 +133,7 @@ export default function Index() {
         console.log(result);
         setTextWrong("Lỗi không xác định!");
       }
+
       setLoading(false);
     });
   };
@@ -171,7 +217,14 @@ export default function Index() {
                 </TouchableOpacity>
               </View>
               {wrongPass && (
-                <Text style={AppStyle.StyleLogin.wrongPass}>{textwrong}</Text>
+                <View
+                  style={[
+                    AppStyle.StyleLogin.boxItem,
+                    { marginVertical: 0, marginLeft: 4 },
+                  ]}
+                >
+                  <Text style={AppStyle.StyleLogin.wrongPass}>{textwrong}</Text>
+                </View>
               )}
               <View
                 style={{
@@ -187,6 +240,26 @@ export default function Index() {
                   </Text>
                 </TouchableOpacity>
               </View>
+              <View
+                style={[
+                  {
+                    flexDirection: "row",
+                    width: "90%",
+                    alignSelf: "center",
+                    marginLeft: 4,
+                    marginBottom: 10,
+                    gap: 10,
+                  },
+                ]}
+              >
+                <CustomCheckBox
+                  checked={isSavedPassword}
+                  func={() => {
+                    setisSavedPassword(!isSavedPassword);
+                  }}
+                />
+                <Text>Lưu mật khẩu</Text>
+              </View>
               <TouchableOpacity
                 style={[
                   AppStyle.StyleLogin.boxItem,
@@ -194,11 +267,12 @@ export default function Index() {
                   AppStyle.StyleCommon.alignCenter,
                   ,
                   {
-                    backgroundColor: email && password ? Color.color_header_red : "#ccc", // Điều kiện đổi màu nền
+                    backgroundColor:
+                      email && password ? Color.color_header_red : "#ccc", // Điều kiện đổi màu nền
                   },
                 ]}
                 onPress={handleLogin}
-                disabled={loading} // Vô hiệu hóa nút khi đang tải
+                disabled={loading || !(email && password)} // Vô hiệu hóa nút khi đang tải
               >
                 {loading ? ( // Hiển thị ActivityIndicator nếu đang tải
                   <ActivityIndicator size="small" color="#fff" />

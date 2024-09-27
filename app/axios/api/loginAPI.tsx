@@ -2,6 +2,7 @@ import axios from "axios";
 import { getTokens, storeToken } from "./storeToken";
 
 const serverAPI = process.env.EXPO_PUBLIC_API_URL;
+const apiKey = process.env.EXPO_PUBLIC_X_API_KEY;
 export const signIn = async (email: string, password: string) => {
   try {
     const url = `${serverAPI}/api/v1/sign-in`;
@@ -10,8 +11,12 @@ export const signIn = async (email: string, password: string) => {
       password: password,
     };
 
-    const response = await axios.post(url, data);
-
+    const response = await axios.post(url, data, {
+      headers: {
+        "x-api-key": apiKey,
+        "Content-Type": "application/json",
+      },
+    });
     await storeToken(
       response.data.data.access_token,
       response.data.data.refresh_token
