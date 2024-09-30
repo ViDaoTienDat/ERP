@@ -18,6 +18,7 @@ export function CustomCheckBox({
     <TouchableOpacity style={styles.container} onPress={changeState}>
       {checked && (
         <Image
+          tintColor={Color.color13}
           style={styles.img}
           source={require("../assets/images/check.png")}
         />
@@ -31,8 +32,8 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 1,
-    borderColor: Color.color2,
-    borderRadius: 2,
+    borderColor: Color.color13,
+    borderRadius: 4,
   },
   img: {
     width: "100%",

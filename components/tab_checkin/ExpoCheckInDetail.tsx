@@ -14,13 +14,17 @@ import AppStyle from "@/constants/theme";
 import Color from "@/constants/theme/Color";
 import { useFocusEffect } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 // import RNFS from "react-native-fs";
 import {
   ActivityIndicator,
+  Image,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -33,6 +37,7 @@ import CustomMap from "../CustomMap";
 import { handleSplitHisCheckIn } from "@/app/axios/func/createCalendar";
 import ExpoCustomMap from "../ExpoCustomMap";
 import ExpoCustomCamera from "../ExpoCustomCamera";
+import { CameraType, CameraView } from "expo-camera";
 
 type CustomCameraRef = {
   takePhoto: () => any | null;
@@ -63,6 +68,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
 
   const [message, setMessage] = useState("");
+  const [isCameraVisible, setIsCameraVisible] = useState(true);
   // useFocusEffect(
   //   React.useCallback(() => {
   //     navigation.getParent().setOptions({ tabBarStyle: { display: 'none' } });
@@ -84,11 +90,34 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
   }, []);
   const handlePressCheckIn = async () => {
     setIsLoading(true);
+    const startTime = new Date().getTime();
     try {
       if (cameraRef.current) {
         const dataPhoto = await cameraRef.current.takePhoto();
+        setIsCameraVisible(false);
         const type = dataPhoto ? await dataPhoto.uri.split(".").pop() : null;
         const image = "data:image/" + type + ";base64," + dataPhoto.base64;
+        // try {
+        //   if (dataPhoto && dataPhoto.base64) {
+        //     const fileUri = `${FileSystem.documentDirectory}photoBase64.txt`; // Đường dẫn file
+        //     await FileSystem.writeAsStringAsync(fileUri, dataPhoto.base64, {
+        //       encoding: FileSystem.EncodingType.UTF8,
+        //     });
+        //     console.log(`🚀 Dữ liệu base64 đã được ghi vào file: ${fileUri}`);
+
+        //     const fileExists = await FileSystem.getInfoAsync(fileUri);
+        //     if (fileExists.exists) {
+        //       console.log(`🚀 chia se file`);
+        //       await Sharing.shareAsync(fileUri);
+        //     } else {
+        //       console.log("File không tồn tại");
+        //     }
+        //   } else {
+        //     console.log("Không có dữ liệu base64 để ghi vào file");
+        //   }
+        // } catch (error) {
+        //   console.log("Lỗi khi ghi file:", error);
+        // }
         const time = getFormatDateTimeCheckIn();
         setSuccessTime(time);
 
@@ -104,6 +133,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           if (result.code === 201) {
             sethasSuccess(true);
             setMessage("");
+            setIsLoading(false);
             getHisCheckIn().then(async (result) => {
               if (result.code === 200) {
                 const datehis = await handleSplitHisCheckIn(result.data);
@@ -111,45 +141,34 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
                 setIsLoading(false);
               }
             });
+            setIsCameraVisible(true);
           } else if (result.code === 500) {
             setIsLoading(false);
             setMessage(result.message);
             sethasFailure(true);
+            setIsCameraVisible(true);
           } else {
             setIsLoading(false);
             setMessage(result.message);
             sethasFailure(true);
+            setIsCameraVisible(true);
           }
         });
+        const endTime = new Date().getTime();
+        const duration = endTime - startTime;
+
+        console.log(`🚀 API call took: ${duration} ms`);
       }
     } catch (error) {
       console.error("Error in handlePressCheckIn:", error);
     }
   };
 
-  // const saveImageDataToDownloads = async (
-  //   imageData: string,
-  //   fileName = "imageData1.txt"
-  // ) => {
-  //   try {
-  //     const filePath = `${RNFS.DownloadDirectoryPath}/${fileName}`;
-
-  //     await RNFS.writeFile(filePath, imageData, "utf8");
-  //     console.log("File written to:", filePath);
-  //   } catch (error) {
-  //     console.error("Error writing file:", error);
-  //   }
-  // };
-
   const SuccessCheckIn = () => {
     sethasSuccess(false);
     router.back();
   };
-  /*************  ✨ Codeium Command ⭐  *************/
-  /**
-   * Reset the state of failure check-in to false
-   */
-  /******  5bbebf24-08bf-4416-a96b-4cf9587b75ed  *******/
+
   const FailureCheckIn = () => {
     sethasFailure(false);
   };
@@ -170,7 +189,10 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           </Text>
           <View style={AppStyle.StyleCheckIn.boxCamera}>
             {/* <CustomCamera ref={cameraRef} /> */}
-            <ExpoCustomCamera ref={cameraRef} />
+            <ExpoCustomCamera
+              isCameraVisible={isCameraVisible}
+              ref={cameraRef}
+            />
           </View>
           <Text style={AppStyle.StyleCheckIn.textCamera}>Vị trí của tôi</Text>
           <View style={AppStyle.StyleCheckIn.boxMap}>
