@@ -9,7 +9,9 @@ import {
   Modal,
   Image,
   TouchableWithoutFeedback,
-  StyleSheet
+  StyleSheet,
+  BackHandler,
+  ToastAndroid
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -25,6 +27,35 @@ import RowCategory from "@/components/RowCategory";
 import { useRouter } from "expo-router";
 export default function home() {
   const router = useRouter();
+  const [backPressedOnce, setBackPressedOnce] = useState(false);
+  // Effect
+  useEffect(() => {
+    console.log(userInfo);
+    const backAction = () => {
+      if (backPressedOnce) {
+        BackHandler.exitApp(); // Thoát ứng dụng nếu bấm lần thứ 2
+      } else {
+        setBackPressedOnce(true); // Cập nhật trạng thái là đã bấm lần đầu
+        ToastAndroid.show("Bấm quay về lần nữa để thoát", ToastAndroid.SHORT); // Hiện toast
+
+        setTimeout(() => {
+          setBackPressedOnce(false); // Reset trạng thái sau 2 giây
+        }, 2000);
+      }
+      return true; // Chặn hành động quay về mặc định
+    };
+
+    // Lắng nghe sự kiện nút quay lại
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    // Dọn dẹp sự kiện khi component bị hủy
+    return () => backHandler.remove();
+  }, [backPressedOnce]);
+
+
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef(null);
   const handleOnScroll = Animated.event(
@@ -118,7 +149,7 @@ export default function home() {
                 <View style={{alignItems: 'center', gap: 10}}>
                   <Image
                     style={[AppStyle.StyleCommon.size_avt_large]}
-                    source={userInfo ? { uri: userInfo.avatar } : require("../../../assets/images/avt.png")}
+                    source={userInfo?.avatar ? { uri: userInfo.avatar } : require("../../../assets/images/avt.png")}
                   />
                   <Text style={AppStyle.StyleCommon.textBlack18}>{userInfo ? userInfo.full_name : "..."}</Text>
                   <Text style={AppStyle.StyleCommon.textBlack14}>{userInfo ? userInfo.position : "..."}</Text>
