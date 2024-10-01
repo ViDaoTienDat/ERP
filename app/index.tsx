@@ -22,7 +22,7 @@ import { getExpiredTimeFromAccessToken } from "./axios/func/getUserIdFromAccessT
 export default function index() {
   const [redirectTo, setRedirectTo] = useState<Href>();
   const dispatch = useDispatch();
-  const currentTime = new Date("2024-09-30T17:35:20.731715287+07:00").getTime();
+  const currentTime = new Date().getTime();
 
   useEffect(() => {
     const checkToken = async () => {

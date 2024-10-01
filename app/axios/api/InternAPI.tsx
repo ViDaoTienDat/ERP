@@ -125,12 +125,12 @@ export const DeleteInternSchedule = async (date: Date) => {
     if (userId) {
       const url = `${serverAPI}/api/v1/schedules/users/${userId}`;
       const formattedDate = formatDateToLocal(date);
-      const data = {
-        register_time: {
-          [formattedDate]: [],
+      const response = await axios.delete(url, {
+        data: {
+          register_time: {
+            [formattedDate]: ["2c1e165e-8", "78546471-a"],
+          },
         },
-      };
-      const response = await axios.put(url, data, {
         headers: {
           Authorization: `Bearer ${token.accessToken}`,
           "x-api-key": apiKey,

@@ -76,8 +76,12 @@ const StyleLogin = StyleSheet.create({
   },
   wrongPass: {
     color: "red",
-    width: "90%",
-    alignSelf: "center",
+  },
+  rememberMe: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderColor: "##EF9F48",
   },
   showPassResetPass: {
     flexDirection: "row",

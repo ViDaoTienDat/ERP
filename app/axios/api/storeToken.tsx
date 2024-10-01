@@ -12,7 +12,6 @@ export const storeToken = async (accessToken: string, refreshToken: string) => {
 export const getTokens = async () => {
   try {
     const accessToken = await SecureStore.getItemAsync("access");
-    // console.log("getTokens access token: " + accessToken);
     const refreshToken = await SecureStore.getItemAsync("refresh");
     return { accessToken, refreshToken };
   } catch (error) {
