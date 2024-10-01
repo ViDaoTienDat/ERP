@@ -23,7 +23,7 @@ export default function _layout() {
       <Tabs.Screen
         name="home"
         options={{
-          tabBarLabel: "Trang hủ",
+          tabBarLabel: "Trang chủ",
           tabBarIcon: ({ focused }) => <HomeIcon focused={focused} />,
         }}
       />

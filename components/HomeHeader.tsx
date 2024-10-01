@@ -11,18 +11,15 @@ import Color from "../constants/theme/Color";
 import AppStyle from "../constants/theme";
 import { useSelector } from "react-redux";
 
-function HomeHeader(): React.JSX.Element {
-  const userInfo = useSelector((state: any) => state.userdata.user);
+function HomeHeader({ userInfo, onPress }: any): React.JSX.Element {
   return (
     <View style={[AppStyle.StyleHeader.header]}>
-      <View
-        style={[AppStyle.StyleHeader.topRow]}
-      >
+      <View style={[AppStyle.StyleHeader.topRow]}>
         <View style={[AppStyle.StyleHeader.boxInfo]}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPress}>
             <Image
               style={[AppStyle.StyleHeader.size_avt]}
-              source={require("../assets/images/avt.png")}
+              source={userInfo.avatar ? { uri: userInfo.avatar } : require("../assets/images/avt.png")}
             />
           </TouchableOpacity>
           <View>

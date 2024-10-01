@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ImageBackground } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "@/constants/theme";
@@ -20,14 +20,20 @@ export default function register() {
         { paddingHorizontal: 15, backgroundColor: "#fff" },
       ]}
     >
-      <CustomHeader
-        title="Đăng ký"
-        tabs={["Đăng ký", "Danh sách yêu cầu"]}
-        state={tab}
-        func={HandlePressTab}
-        onchangeTab={false}
-      />
-      {tab == 0 ? <RegisterChild /> : <ReqScreen />}
+      <ImageBackground
+        source={require("../../../assets/images/logo-background.png")}
+        resizeMode="contain"
+        style={AppStyle.StyleHome.background}
+      >
+        <CustomHeader
+          title="Đăng ký"
+          tabs={["Đăng ký", "Danh sách yêu cầu"]}
+          state={tab}
+          func={HandlePressTab}
+          onchangeTab={false}
+        />
+        {tab == 0 ? <RegisterChild /> : <ReqScreen />}
+      </ImageBackground>
     </SafeAreaView>
   );
 }

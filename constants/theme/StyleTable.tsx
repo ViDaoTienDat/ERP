@@ -30,11 +30,10 @@ export const StyleTable = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 25,
-    backgroundColor: "#fff",
   },
   icon: {
-    width: 15,
-    height: 15,
+    width: 13,
+    height: 13,
   },
   text_large: {
     fontWeight: "bold",
@@ -42,8 +41,7 @@ export const StyleTable = StyleSheet.create({
     fontSize: 20,
   },
   text_medium: {
-    fontSize: 12,
-    fontWeight: "500",
+    //fontWeight: "500",
     color: Color.color2,
   },
   text_small: {
@@ -58,21 +56,21 @@ export const StyleTable = StyleSheet.create({
     color: "#44b678",
   },
   calendar: {
-    backgroundColor: "#fff",
+    //backgroundColor: "#fff",
   },
   dayofweek: {
     flexDirection: "row",
     justifyContent: "space-around",
     paddingVertical: 10,
     paddingHorizontal: "5%",
-    borderBottomWidth: 1,
-    borderColor: "#ccc",
+    padding: 10,
+    backgroundColor: Color.color1,
   },
   boxcalendar: {
     width: "90%",
     alignSelf: "center",
     marginTop: 20,
-    backgroundColor: "#fff",
+    //backgroundColor: "#fff",
     height: height - 300,
   },
   rowcalendar: {

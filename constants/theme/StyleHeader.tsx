@@ -67,10 +67,6 @@ const StyleHeader = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-
-    // borderBottomWidth: 0.8,
-    // borderBottomColor: Color.color1,
-    // paddingVertical: 18,
   },
   customHeaderBox: {
     backgroundColor: Color.color1,
@@ -94,12 +90,12 @@ const StyleHeader = StyleSheet.create({
   list_option: {
     width: "100%",
     padding: 4,
-    borderRadius: 15,
+    borderRadius: 16,
     backgroundColor: Color.color10,
   },
   boxTab: {
     width: width / 2,
-    borderRadius: 15,
+    borderRadius: 12,
     paddingVertical: 15,
   },
   textTab: {
