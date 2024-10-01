@@ -67,10 +67,6 @@ const StyleHeader = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-
-    // borderBottomWidth: 0.8,
-    // borderBottomColor: Color.color1,
-    // paddingVertical: 18,
   },
   customHeaderBox: {
     backgroundColor: Color.color1,

@@ -1,3 +1,4 @@
+import Color from "@/constants/theme/Color";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -6,10 +7,10 @@ type Category = {
   img: any;
   onPress?: () => void;
 };
-function CardCategory({ name, img, onPress }: Category): React.JSX.Element {
+function RowCategory({ name, img, onPress }: Category): React.JSX.Element {
   return (
     <View style={selfstyle.container}>
-      <TouchableOpacity style={selfstyle.container} onPress={onPress}>
+      <TouchableOpacity style={selfstyle.container_content} onPress={onPress}>
         <View style={[selfstyle.box_icon]}>
           <Image style={selfstyle.icon} source={img} />
         </View>
@@ -21,22 +22,29 @@ function CardCategory({ name, img, onPress }: Category): React.JSX.Element {
 
 const selfstyle = StyleSheet.create({
   container: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
+    width: "95%",
+    height: 60,
+    borderBottomWidth: 1,
+    borderColor: Color.color1,
     alignSelf: "center",
+  },
+  container_content:{
+    flexDirection: "row", 
+    alignSelf: 'flex-start',
     alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
   box_icon: {
-    width: "60%",
-    height: "60%",
+    width: 60,
+    height: 60,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
   },
   icon: {
-    width: "50%",
-    height: "50%",
+    width: 30,
+    height: 30,
   },
   text_name: {
     width: "auto",
@@ -46,4 +54,4 @@ const selfstyle = StyleSheet.create({
     alignSelf: "center",
   },
 });
-export default CardCategory;
+export default RowCategory;
