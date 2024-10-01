@@ -10,7 +10,7 @@ import CustomHeader from "../CustomHeader";
 import AppStyle from "@/constants/theme";
 import CardCheckIn from "../CardCheckIn";
 import { useSelector } from "react-redux";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import hasLocationPermission from "@/app/map/locationPermission";
 import { getAllBranch } from "@/app/axios/api/branchApi";
 import ExpoCheckInDetail from "./ExpoCheckInDetail";
@@ -19,11 +19,17 @@ import { setOfficeId } from "@/app/state/reducers/officeSlice";
 import { useCameraPermissions } from "expo-camera";
 
 import * as Location from "expo-location";
-export default function ExpoCheckIn() {
+type ExpoCheckInType = {
+  showDetailCheckIn: boolean;
+  handlePressCheckIn: Function;
+};
+function ExpoCheckIn({
+  showDetailCheckIn,
+  handlePressCheckIn,
+}: ExpoCheckInType): React.JSX.Element {
   const [officeVisible, setOfficeVisible] = useState(false);
-  const [checkInVisible, setCheckInVisible] = useState(false);
   const [office, setOffice] = useState("");
-  const [officeValue, setOfficeValue] = useState("");
+
   const [location, seteLocation] = useState(false);
   const branchs = useSelector((state: any) => state.userdata.branch);
 
@@ -35,7 +41,6 @@ export default function ExpoCheckIn() {
   //Office
   const handleChooseOffice = (label: any, value: any) => {
     setOffice(label);
-    setOfficeValue(value);
     setOfficeVisible(false);
     dispatch(setOfficeId(value)); // Cập nhật officeId vào Redux
     setOfficeVisible(false);
@@ -50,38 +55,34 @@ export default function ExpoCheckIn() {
   const getPermissionLocation = async () => {
     try {
       // Kiểm tra nếu đã lưu quyền trong AsyncStorage
-      const savedPermission = await AsyncStorage.getItem('locationPermission');
-      if (savedPermission === 'granted') {
+      const { status } = await Location.getForegroundPermissionsAsync();
+      if (status === "granted") {
         seteLocation(true); // Đã có quyền
         return;
       }
     } catch (error) {
-      console.log('Error checking location permission:', error);
+      console.log("Error checking location permission:", error);
     }
   };
-  const requestLocation = async () =>{
+  const requestLocation = async () => {
     try {
       // Yêu cầu quyền vị trí nếu chưa lưu
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === 'granted') {
+      if (status === "granted") {
         seteLocation(true); // Được cấp quyền
-        await AsyncStorage.setItem('locationPermission', 'granted'); // Lưu quyền vào AsyncStorage
       } else {
         seteLocation(false); // Không được cấp quyền
-        await AsyncStorage.setItem('locationPermission', 'denied'); // Lưu trạng thái bị từ chối
       }
     } catch (error) {
-      console.log('Error checking location permission:', error);
+      console.log("Error checking location permission:", error);
     }
-  }
-  const handlePressCheckIn = () => {
-    setCheckInVisible(true);
   };
+
   useEffect(() => {
     getPermissionLocation();
   }, []);
 
-  return !checkInVisible ? (
+  return !showDetailCheckIn ? (
     <View>
       <View style={AppStyle.StyleCheckIn.container}>
         <Text style={AppStyle.StyleCheckIn.textNote}>
@@ -151,7 +152,7 @@ export default function ExpoCheckIn() {
       {office != "" && permission && location && (
         <TouchableOpacity
           style={AppStyle.StyleCheckIn.buttonCheckIn}
-          onPress={handlePressCheckIn}
+          onPress={() => handlePressCheckIn()}
         >
           <Text style={AppStyle.StyleCheckIn.textCheckIn}>Chấm Công</Text>
         </TouchableOpacity>
@@ -161,3 +162,4 @@ export default function ExpoCheckIn() {
     <ExpoCheckInDetail></ExpoCheckInDetail>
   );
 }
+export default ExpoCheckIn;

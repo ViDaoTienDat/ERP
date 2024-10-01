@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import * as Location from "expo-location";
 import MapView, { Circle, Marker, PROVIDER_GOOGLE } from "react-native-maps";
-console.log("🚀 ~ PROVIDER_GOOGLE:", PROVIDER_GOOGLE);
 import { useDispatch } from "react-redux";
 import { setLocation } from "@/app/state/reducers/locationSlice";
 type Location = {

@@ -52,9 +52,8 @@ export const checkInAPI = async (
       const userId = getUserIdFromAccessToken(token.accessToken);
 
       if (userId) {
-        const url = `${serverAPI}/api/v1/attendance-records/${userId}`;
+        const url = `${serverAPI}/api/v1/attendance-records`;
         const data = {
-          date_time: date_time,
           image: image,
           branch_id: branch_id,
           work_shift_id: work_shift_id,
@@ -69,6 +68,7 @@ export const checkInAPI = async (
             "x-api-key": apiKey,
           },
         });
+
         return response.data;
       }
     }
