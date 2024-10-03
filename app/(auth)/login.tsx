@@ -12,8 +12,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
 
-import { useEffect, useState } from "react";
-import { router } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
 import { signIn } from "../axios/api/loginAPI";
 import { getUser } from "../axios/api/dataUserAPI";
 import { useDispatch } from "react-redux";
@@ -59,22 +59,33 @@ export default function Index() {
     return { email, password, isSavedPassword };
   };
 
-  useEffect(() => {
-    const fetchSavedLoginInfo = async () => {
-      const dataSavedLogin = await getSavedLoginInfo();
-      if (dataSavedLogin.email) {
-        setEmail(dataSavedLogin.email);
-      }
-      if (dataSavedLogin.isSavedPassword == "true") {
-        setisSavedPassword(true);
-      } else setisSavedPassword(false);
-      if (dataSavedLogin.password) {
-        setPassword(dataSavedLogin.password);
-      } else setPassword("");
-    };
+  useFocusEffect(
+    useCallback(() => {
+      const fetchSavedLoginInfo = async () => {
+        const dataSavedLogin = await getSavedLoginInfo();
+        if (dataSavedLogin.email) {
+          setEmail(dataSavedLogin.email);
+        }
+        if (dataSavedLogin.isSavedPassword === "true") {
+          setisSavedPassword(true);
+        } else {
+          setisSavedPassword(false);
+        }
+        if (dataSavedLogin.password) {
+          setPassword(dataSavedLogin.password);
+        } else {
+          setPassword("");
+        }
+      };
 
-    fetchSavedLoginInfo();
-  }, []);
+      fetchSavedLoginInfo();
+
+      // Cleanup function (nếu cần), chạy khi màn hình mất focus
+      return () => {
+        // Optional: Logic để dọn dẹp hoặc reset khi màn hình bị unmount
+      };
+    }, []) // Nếu có biến nào muốn phụ thuộc có thể thêm vào array này
+  );
 
   const handleLogin = () => {
     setLoading(true);

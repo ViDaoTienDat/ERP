@@ -21,7 +21,7 @@ function CardReq({
   avt,
 }: DataReq): React.JSX.Element {
   const handlePress = () => {
-    router.navigate("./DetailsReq");
+    router.navigate("./register/DetailsReq");
   };
   return (
     <TouchableOpacity
