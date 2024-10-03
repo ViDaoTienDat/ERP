@@ -22,7 +22,7 @@ function RowCategory({ name, img, onPress }: Category): React.JSX.Element {
 
 const selfstyle = StyleSheet.create({
   container: {
-    width: "95%",
+    width: "100%",
     height: 60,
     borderBottomWidth: 1,
     borderColor: Color.color1,
@@ -48,7 +48,7 @@ const selfstyle = StyleSheet.create({
   },
   text_name: {
     width: "auto",
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: "500",
     color: "black",
     alignSelf: "center",

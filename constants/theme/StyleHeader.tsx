@@ -67,6 +67,7 @@ const StyleHeader = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 15,
   },
   customHeaderBox: {
     backgroundColor: Color.color1,
@@ -80,7 +81,7 @@ const StyleHeader = StyleSheet.create({
   buttonBack: {
     position: "absolute",
     top: 25,
-    left: 10,
+    left: 15,
   },
   textButton: {
     color: Color.color3,

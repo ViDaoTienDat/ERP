@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Color from "@/constants/theme/Color";
 import RowCategory from "@/components/RowCategory";
 import { useRouter } from "expo-router";
+
 import { storeToken } from "@/app/axios/api/storeToken";
 import {
   clearBranch,
@@ -33,6 +34,7 @@ import {
   clearUser,
   clearWorkShift,
 } from "@/app/state/reducers/dataSlice";
+
 export default function home() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -89,7 +91,13 @@ export default function home() {
     }).start();
   };
 
+  const handlegoProfile = () => {
+    handleClose();
+    router.push("/home/profileTab");
+  };
+
   const handleLogout = async () => {
+    setModalVisible(false);
     await storeToken("", "");
     dispatch(clearUser());
     dispatch(clearWorkShift());
@@ -133,13 +141,14 @@ export default function home() {
             <CardCategory
               name="Hồ sơ"
               img={require("../../../assets/images/person-lines-fill.png")}
-              onPress={() => {
-                router.navigate("/home/profileTab");
-              }}
+              onPress={handlegoProfile}
             />
             <CardCategory
               name="Chấm công"
               img={require("../../../assets/images/person-bounding-box-fill.png")}
+              onPress={() => {
+                router.navigate("/(tabs)/checkin");
+              }}
             />
             <CardCategory
               name="Nghỉ phép"
@@ -160,55 +169,58 @@ export default function home() {
       >
         <TouchableWithoutFeedback onPress={handleClose}>
           <View style={styles.modalContainer}>
-            <Animated.View
-              style={[
-                styles.modalView,
-                { transform: [{ translateX: slideAnim }] },
-              ]}
-            >
-              <View style={{ gap: 20 }}>
-                <TouchableOpacity
-                  onPress={handleClose}
-                  style={{
-                    alignSelf: "flex-end",
-                    padding: 10,
-                    borderRadius: 10,
-                  }}
-                >
-                  <Image
-                    style={AppStyle.StyleHeader.size_iconBack}
-                    source={require("../../../assets/images/filter-right.png")}
-                  />
-                </TouchableOpacity>
-                <View style={{ alignItems: "center", gap: 10 }}>
-                  <Image
-                    style={[AppStyle.StyleCommon.size_avt_large]}
-                    source={
-                      userInfo?.avatar
-                        ? { uri: userInfo.avatar }
-                        : require("../../../assets/images/avt.png")
-                    }
-                  />
-                  <Text style={AppStyle.StyleCommon.textBlack18}>
-                    {userInfo ? userInfo.full_name : "..."}
-                  </Text>
-                  <Text style={AppStyle.StyleCommon.textBlack14}>
-                    {userInfo ? userInfo.position : "..."}
-                  </Text>
+            <TouchableWithoutFeedback>
+              <Animated.View
+                style={[
+                  styles.modalView,
+                  { transform: [{ translateX: slideAnim }] },
+                ]}
+              >
+                <View style={{ gap: 20 }}>
+                  <TouchableOpacity
+                    onPress={handleClose}
+                    style={{
+                      alignSelf: "flex-end",
+                      padding: 10,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Image
+                      style={AppStyle.StyleHeader.size_iconBack}
+                      source={require("../../../assets/images/filter-right.png")}
+                    />
+                  </TouchableOpacity>
+                  <View style={{ alignItems: "center", gap: 10 }}>
+                    <Image
+                      style={[AppStyle.StyleCommon.size_avt_large]}
+                      source={
+                        userInfo?.avatar
+                          ? { uri: userInfo.avatar }
+                          : require("../../../assets/images/avt.png")
+                      }
+                    />
+                    <Text style={AppStyle.StyleCommon.textBlack18}>
+                      {userInfo ? userInfo.full_name : "..."}
+                    </Text>
+                    <Text style={AppStyle.StyleCommon.textBlack14}>
+                      {userInfo ? userInfo.position : "..."}
+                    </Text>
+                  </View>
+                  <View>
+                    <RowCategory
+                      name="Hồ sơ nhân viên"
+                      img={require("../../../assets/images/person-lines-fill.png")}
+                      onPress={handlegoProfile}
+                    />
+                    <RowCategory
+                      name="Đăng xuất"
+                      img={require("../../../assets/images/sign_out.png")}
+                      onPress={handleLogout}
+                    />
+                  </View>
                 </View>
-                <View>
-                  <RowCategory
-                    name="Hồ sơ nhân viên"
-                    img={require("../../../assets/images/person-lines-fill.png")}
-                  />
-                  <RowCategory
-                    name="Đăng xuất"
-                    img={require("../../../assets/images/sign_out.png")}
-                    onPress={handleLogout}
-                  />
-                </View>
-              </View>
-            </Animated.View>
+              </Animated.View>
+            </TouchableWithoutFeedback>
           </View>
         </TouchableWithoutFeedback>
       </Modal>

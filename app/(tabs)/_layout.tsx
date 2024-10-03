@@ -15,9 +15,11 @@ export default function _layout() {
           fontWeight: "bold",
           marginBottom: 0,
         },
+        tabBarStyle: {
+          paddingVertical: 10,
+        },
         tabBarActiveTintColor: Color.color3,
         tabBarInactiveTintColor: Color.color2,
-        
       }}
     >
       <Tabs.Screen

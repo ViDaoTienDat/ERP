@@ -25,6 +25,10 @@ const StyleHome = StyleSheet.create({
     },
     background:{
         flex: 1,
+    },
+    containerPadding:{
+        flex: 1,
+        paddingHorizontal: 15
     }
   })
   export default StyleHome;

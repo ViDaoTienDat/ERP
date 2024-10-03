@@ -15,7 +15,7 @@ import Color from "@/constants/theme/Color";
 import { useFocusEffect } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
+//import * as Sharing from "expo-sharing";
 // import RNFS from "react-native-fs";
 import {
   ActivityIndicator,
@@ -69,12 +69,6 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
 
   const [message, setMessage] = useState("");
   const [isCameraVisible, setIsCameraVisible] = useState(true);
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     navigation.getParent().setOptions({ tabBarStyle: { display: 'none' } });
-  //     return () => navigation.getParent().setOptions({ tabBarStyle: { display: 'flex' } });
-  //   }, [navigation])
-  // );
 
   useEffect(() => {
     const formattedDate = getFormattedDate();
@@ -274,7 +268,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
         <CustomMessage
           hasVisible={hasFailure}
           title={"Chấm công thất bại"}
-          content={message}
+          content={"Vui lòng thực hiện chấm công lại"}
           func={FailureCheckIn}
           textFunc={"Quay lại"}
         />

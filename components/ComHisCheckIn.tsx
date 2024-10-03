@@ -1,6 +1,7 @@
 import Color from "@/constants/theme/Color";
 import AppStyle from "@/constants/theme";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 
 type DataJson = {
   month: Number;
@@ -29,35 +30,81 @@ export function RowCalendar({
     </View>
   );
 }
+
 function CellCalendar({ data, month, year }: DataJson): React.JSX.Element {
+  const router = useRouter();
   const isToday = data.day == day && data.month == currmonth && year == curryear;
   const isDifferentMonth = data.month != month;
- 
+
   // So sánh với ca làm việc
-  const isLateForWorkShift = data.checkin > data.start_time_of_work_shift;
-  const isEarlyForWorkShift = data.checkout < data.end_time_of_work_shift;
+  const isLateForWorkShift = data.checkin.time > data.start_time_of_work_shift;
+  const isEarlyForWorkShift = data.checkout.time < data.end_time_of_work_shift;
+
+  // Function to navigate to checkinDetailHistory with necessary data
+  const goToCheckinDetailHistory = (type: string) => {
+    const detail = type === "checkin" ? data.checkin : data.checkout;
+
+    router.push({
+      pathname: '/(tabs)/checkin/checkinDetailHistory',
+      params: {
+        time: data.day + "/" + data.month + "/" + year + " " +   detail.time,
+        image: detail.image,
+        branch_name: data.branch_name,
+        work_shift_name: data.work_shift_name,
+        note: detail.note,
+        record_latitude: detail.record_latitude,
+        record_longitude: detail.record_longitude,
+        branch_latitude: detail.branch_latitude,
+        branch_longitude: detail.branch_longitude,
+      },
+    });
+  };
+
   return (
     <View style={AppStyle.StyleHistory.cellcalendar}>
       <Text
         style={[
           AppStyle.StyleHistory.text_small,
           isToday
-          ? { backgroundColor: Color.color_header_red, color: "white", borderRadius: 4 }
-          : isDifferentMonth
-          ? { color: "#ccc" }
-          : {}
+            ? { backgroundColor: Color.color_header_red, color: "white", borderRadius: 4 }
+            : isDifferentMonth
+            ? { color: "#ccc" }
+            : {}
         ]}
       >
         {data.day}
       </Text>
       <View style={AppStyle.StyleHistory.boxcheck}>
-        <Text style={isLateForWorkShift ? AppStyle.StyleHistory.text_check_late : AppStyle.StyleHistory.text_check  }>
-          {data.checkin ? data.checkin : ""}
-        </Text>
-        <Text style={isEarlyForWorkShift ? AppStyle.StyleHistory.text_check_late : AppStyle.StyleHistory.text_check  }>
-          {data.checkout ? data.checkout : ""}
-        </Text>
+        {/* Check-in Touchable */}
+        <TouchableOpacity onPress={() => goToCheckinDetailHistory("checkin")}>
+          <Text
+            style={
+              isLateForWorkShift
+                ? AppStyle.StyleHistory.text_check_late
+                : AppStyle.StyleHistory.text_check
+            }
+          >
+            {data.checkin.time ? formatTime(data.checkin.time) :  ""}
+          </Text>
+        </TouchableOpacity>
+
+        {/* Check-out Touchable */}
+        <TouchableOpacity onPress={() => goToCheckinDetailHistory("checkout")}>
+          <Text
+            style={
+              isEarlyForWorkShift
+                ? AppStyle.StyleHistory.text_check_late
+                : AppStyle.StyleHistory.text_check
+            }
+          >
+            {data.checkout.time ? formatTime(data.checkout.time) : ""}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
+const formatTime = (time: string): string => {
+  const [hours, minutes] = time.split(":");
+  return `${hours}:${minutes}`;
+};
