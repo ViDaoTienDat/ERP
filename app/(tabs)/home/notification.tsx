@@ -24,7 +24,8 @@ export default function Notification() {
       type={item.type} 
       time={item.time} 
       content={item.content} 
-      isRead={item.isRead} 
+      isRead={item.isRead}
+      onPress={()=>{}}
     />
   );
 
@@ -38,7 +39,6 @@ export default function Notification() {
             data={data}
             renderItem={renderItem}
             keyExtractor={item => item.id}
-            //contentContainerStyle={{ paddingBottom: 20 }} // Để có khoảng trống dưới cùng
           />
         </ImageBackground>
       </View>

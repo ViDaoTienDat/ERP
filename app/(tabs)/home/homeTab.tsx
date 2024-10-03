@@ -97,6 +97,7 @@ export default function home() {
   };
 
   const handleLogout = async () => {
+    setModalVisible(false);
     await storeToken("", "");
     dispatch(clearUser());
     dispatch(clearWorkShift());

@@ -29,8 +29,8 @@ export const StyleReq = StyleSheet.create({
     // height: Dimension.window.height - 350,
   },
   imgIcon: {
-    width: 32,
-    height: 32,
+    width: 20,
+    height: 20,
   },
   boxOptionIcon: {
     width: "90%",

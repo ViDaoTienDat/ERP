@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Color from '@/constants/theme/Color';
 import AppStyle from '@/constants/theme';
@@ -8,31 +8,33 @@ interface NotificationItemProps {
   time: string;
   content: string;
   isRead: boolean;
+  onPress?: () => void;
 }
 
-export default function NotificationItem({ type, time, content, isRead }: NotificationItemProps) {
+export default function NotificationItem({ type, time, content, isRead, onPress }: NotificationItemProps) {
   return (
-    <View style={[styles.container, { backgroundColor: isRead ? 'transparent' : Color.color_primary }]}>
-      <Image 
-        style={AppStyle.StyleCommon.size_avt_small} 
-        source={require('../assets/images/avt.png')} 
-      />
-
-      <View style={styles.contentContainer}>
-        <View style={styles.messageRow}>
-          <Text style={[AppStyle.StyleCommon.textBlack16w500, styles.type]}>[{type}]</Text>
-          <Text 
-            numberOfLines={1} 
-            ellipsizeMode="tail" 
-            style={[AppStyle.StyleCommon.textBlack16w400, styles.content]}
-          >
-            {content}
-          </Text>
+    <TouchableOpacity onPress={onPress}>
+      <View style={[styles.container, { backgroundColor: isRead ? 'transparent' : Color.color_primary }]}>
+        <Image 
+          style={AppStyle.StyleCommon.size_avt_small} 
+          source={require('../assets/images/avt.png')} 
+        />
+        <View style={styles.contentContainer}>
+          <View style={styles.messageRow}>
+            <Text style={[AppStyle.StyleCommon.textBlack16w500, styles.type]}>[{type}]</Text>
+            <Text 
+              numberOfLines={1} 
+              ellipsizeMode="tail" 
+              style={[AppStyle.StyleCommon.textBlack16w400, styles.content]}
+            >
+              {content}
+            </Text>
+          </View>
+          <Text style={[AppStyle.StyleCommon.textBlack14w400, styles.time]}>{time}</Text>
         </View>
-        <Text style={[AppStyle.StyleCommon.textBlack14w400, styles.time]}>{time}</Text>
+          {!isRead && <View style={styles.dot} />}
       </View>
-        {!isRead && <View style={styles.dot} />}
-    </View>
+    </TouchableOpacity>
   );
 }
 
