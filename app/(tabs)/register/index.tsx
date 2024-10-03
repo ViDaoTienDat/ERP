@@ -17,7 +17,7 @@ export default function register() {
     <SafeAreaView
       style={[
         AppStyle.StyleCommon.container,
-        { paddingHorizontal: 15, backgroundColor: "#fff" },
+        { backgroundColor: "#fff" },
       ]}
     >
       <ImageBackground
@@ -32,7 +32,9 @@ export default function register() {
           func={HandlePressTab}
           onchangeTab={false}
         />
-        {tab == 0 ? <RegisterChild /> : <ReqScreen />}
+        <View style={AppStyle.StyleHome.containerPadding}>
+          {tab == 0 ? <RegisterChild /> : <ReqScreen />}
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );

@@ -20,13 +20,25 @@ export type HisCheckIn = {
   department_name: string; // Tên phòng ban
   work_shift_name: string; // Tên ca làm việc
 };
+type TimeKeeping = {
+  time: string;
+  image: string;
+  record_latitude: number;
+  record_longitude: number;
+  branch_latitude: number;
+  branch_longitude: number;
+  note: string;
+}
 
 
 type DayData = {
   day: number;
-  data: string[];
-  start_time_of_work_shift?: string; // Thuộc tính mới
-  end_time_of_work_shift?: string; // Thuộc tính mới
+  checkin: TimeKeeping;
+  checkout: TimeKeeping;
+  start_time_of_work_shift?: string; 
+  end_time_of_work_shift?: string;
+  branch_name?: string;
+  work_shift_name?: string;
 };
 type DateHisCheckInMonth = {
   month: number;
@@ -37,12 +49,14 @@ export type DateHisCheckIn = {
   datayear: DateHisCheckInMonth[];
 };
 type CalendarDayCheckIn = {
-  checkin: string;
-  checkout: string;
+  checkin: TimeKeeping;
+  checkout: TimeKeeping;
   day: number;
   month: number;
-  start_time_of_work_shift: string; // Thêm thuộc tính này
-  end_time_of_work_shift: string;     // Thêm thuộc tính này
+  start_time_of_work_shift: string;
+  end_time_of_work_shift: string;
+  branch_name: string;
+  work_shift_name: string;
 };
 export type CalendarWeekCheckIn = {
   T2: CalendarDayCheckIn;
@@ -68,7 +82,6 @@ export const handleSplitHisCheckIn = async (
     const dateTime = item.date_time;
     const [date, time] = dateTime.split(" ");
     const [itemday, itemmonth, itemyear] = date.split("/").map(Number);
-    const [hour, minute] = time.split(":");
 
     let yearData = result.find((y) => y.year === itemyear);
     if (yearData) {
@@ -76,24 +89,74 @@ export const handleSplitHisCheckIn = async (
       if (monthData) {
         let dayData = monthData.datamonth.find((d) => d.day === itemday);
         if (dayData) {
-          dayData.data.push(`${hour}:${minute}`);
+          if (!dayData.checkout.time) {
+            dayData.checkout = {
+              time: time,
+              image: item.image,
+              record_latitude: item.record_latitude,
+              record_longitude: item.record_longitude,
+              branch_latitude: item.branch_latitude,
+              branch_longitude: item.branch_longitude,
+              note: item.note,
+            };
+          }
         } else {
           monthData.datamonth.push({
             day: itemday,
-            data: [`${hour}:${minute}`],
-            start_time_of_work_shift: item.start_time_of_work_shift, // Lưu start_time_of_work_shift
-            end_time_of_work_shift: item.end_time_of_work_shift, // Lưu end_time_of_work_shift
+            checkin: {
+              time: time,
+              image: item.image,
+              record_latitude: item.record_latitude,
+              record_longitude: item.record_longitude,
+              branch_latitude: item.branch_latitude,
+              branch_longitude: item.branch_longitude,
+              note: item.note,
+            },
+            checkout: {
+              time: "",
+              image: "",
+              record_latitude: 0,
+              record_longitude: 0,
+              branch_latitude: 0,
+              branch_longitude: 0,
+              note: "",
+            },
+            start_time_of_work_shift: item.start_time_of_work_shift,
+            end_time_of_work_shift: item.end_time_of_work_shift,
+            branch_name: item.branch_name,
+            work_shift_name: item.work_shift_name,
           });
         }
       } else {
         yearData.datayear.push({
           month: itemmonth,
-          datamonth: [{
-            day: itemday,
-            data: [`${hour}:${minute}`],
-            start_time_of_work_shift: item.start_time_of_work_shift, // Lưu start_time_of_work_shift
-            end_time_of_work_shift: item.end_time_of_work_shift, // Lưu end_time_of_work_shift
-          }],
+          datamonth: [
+            {
+              day: itemday,
+              checkin: {
+                time: time,
+                image: item.image,
+                record_latitude: item.record_latitude,
+                record_longitude: item.record_longitude,
+                branch_latitude: item.branch_latitude,
+                branch_longitude: item.branch_longitude,
+                note: item.note,
+              },
+              checkout: {
+                time: "",
+                image: "",
+                record_latitude: 0,
+                record_longitude: 0,
+                branch_latitude: 0,
+                branch_longitude: 0,
+                note: "",
+              },
+              start_time_of_work_shift: item.start_time_of_work_shift,
+              end_time_of_work_shift: item.end_time_of_work_shift,
+              branch_name: item.branch_name,
+              work_shift_name: item.work_shift_name,
+            },
+          ],
         });
       }
     } else {
@@ -102,12 +165,33 @@ export const handleSplitHisCheckIn = async (
         datayear: [
           {
             month: itemmonth,
-            datamonth: [{
-              day: itemday,
-              data: [`${hour}:${minute}`],
-              start_time_of_work_shift: item.start_time_of_work_shift, // Lưu start_time_of_work_shift
-              end_time_of_work_shift: item.end_time_of_work_shift, // Lưu end_time_of_work_shift
-            }],
+            datamonth: [
+              {
+                day: itemday,
+                checkin: {
+                  time: time,
+                  image: item.image,
+                  record_latitude: item.record_latitude,
+                  record_longitude: item.record_longitude,
+                  branch_latitude: item.branch_latitude,
+                  branch_longitude: item.branch_longitude,
+                  note: item.note,
+                },
+                checkout: {
+                  time: "",
+                  image: "",
+                  record_latitude: 0,
+                  record_longitude: 0,
+                  branch_latitude: 0,
+                  branch_longitude: 0,
+                  note: "",
+                },
+                start_time_of_work_shift: item.start_time_of_work_shift,
+                end_time_of_work_shift: item.end_time_of_work_shift,
+                branch_name: item.branch_name,
+                work_shift_name: item.work_shift_name,
+              },
+            ],
           },
         ],
       });
@@ -151,22 +235,30 @@ export const getCalendarCheckIn = async (
   }
   return data;
 };
+const emptyTimeKeeping = (): TimeKeeping => ({
+  time: "",
+  image: "",
+  record_latitude: 0,
+  record_longitude: 0,
+  branch_latitude: 0,
+  branch_longitude: 0,
+  note: ""
+});
 const getWeekCheckIn = (
   date: Date,
   dataYearHis: DateHisCheckIn | undefined
-) => {
+): CalendarWeekCheckIn => {
   let dataweek: CalendarWeekCheckIn = {
-    T2: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
-    T3: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
-    T4: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
-    T5: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
-    T6: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
-    T7: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
-    CN: { checkin: "", checkout: "", day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "" },
+    T2: { checkin: emptyTimeKeeping(), checkout: emptyTimeKeeping(), day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "", branch_name: "", work_shift_name: "" },
+    T3: { checkin: emptyTimeKeeping(), checkout: emptyTimeKeeping(), day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "", branch_name: "", work_shift_name: "" },
+    T4: { checkin: emptyTimeKeeping(), checkout: emptyTimeKeeping(), day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "", branch_name: "", work_shift_name: "" },
+    T5: { checkin: emptyTimeKeeping(), checkout: emptyTimeKeeping(), day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "", branch_name: "", work_shift_name: "" },
+    T6: { checkin: emptyTimeKeeping(), checkout: emptyTimeKeeping(), day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "", branch_name: "", work_shift_name: "" },
+    T7: { checkin: emptyTimeKeeping(), checkout: emptyTimeKeeping(), day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "", branch_name: "", work_shift_name: "" },
+    CN: { checkin: emptyTimeKeeping(), checkout: emptyTimeKeeping(), day: 0, month: 0, start_time_of_work_shift: "", end_time_of_work_shift: "", branch_name: "", work_shift_name: "" },
   };
-  const days: DayNameOfWeek[] = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
-  //const dayOfWeek = date.getDay();
+  const days: DayNameOfWeek[] = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
   const startDate = getSunDayOfWeek(date);
 
   dataweek.CN.day = startDate.getDate();
@@ -179,21 +271,19 @@ const getWeekCheckIn = (
     const newmonth = newDate.getMonth() + 1;
     const dayName = days[i % 7];
 
-    
     dataweek[dayName].day = newDate.getDate();
     dataweek[dayName].month = newDate.getMonth() + 1;
 
     let monthData = dataYearHis?.datayear.find((m) => m.month === newmonth);
     let dayData = monthData?.datamonth.find((d) => d.day === newday);
+
     if (dayData) {
-      if (dayData.data.length >= 1) {
-        dataweek[dayName].checkin = dayData.data[0];
-      }
-      if (dayData.data.length >= 2) {
-        dataweek[dayName].checkout = dayData.data[1];
-      }
-      dataweek[dayName].start_time_of_work_shift = dayData.start_time_of_work_shift ?? ''; // Thêm
-      dataweek[dayName].end_time_of_work_shift = dayData.end_time_of_work_shift ?? '';     
+      dataweek[dayName].checkin = dayData.checkin;
+      dataweek[dayName].checkout = dayData.checkout;
+      dataweek[dayName].start_time_of_work_shift = dayData.start_time_of_work_shift ?? '';
+      dataweek[dayName].end_time_of_work_shift = dayData.end_time_of_work_shift ?? '';
+      dataweek[dayName].branch_name = dayData.branch_name ?? '';
+      dataweek[dayName].work_shift_name = dayData.work_shift_name ?? '';
     }
   }
 

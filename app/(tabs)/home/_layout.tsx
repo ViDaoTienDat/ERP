@@ -11,6 +11,8 @@ export default function _layout() {
     >
       <Stack.Screen name="homeTab" />
       <Stack.Screen name="profileTab" />
+      <Stack.Screen name="profileDetail"/>
+      <Stack.Screen name="notification" />
     </Stack>
   );
 }
