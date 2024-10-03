@@ -73,9 +73,15 @@ export function ModalReqFilter({
                 ]}
               >
                 <TouchableOpacity
+                  style={[AppStyle.StyleReq.filterButton]}
+                  onPress={Hide}
+                >
+                  <Text style={[AppStyle.StyleReq.filterText]}>Hủy bỏ</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={[
                     AppStyle.StyleReq.filterButton,
-                    { backgroundColor: Color.color_blue },
+                    { backgroundColor: Color.color3 },
                   ]}
                   onPress={Hide}
                 >
@@ -83,22 +89,6 @@ export function ModalReqFilter({
                     style={[AppStyle.StyleReq.filterText, { color: "#fff" }]}
                   >
                     Đồng ý
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    AppStyle.StyleReq.filterButton,
-                    { backgroundColor: Color.color1 },
-                  ]}
-                  onPress={Hide}
-                >
-                  <Text
-                    style={[
-                      AppStyle.StyleReq.filterText,
-                      { color: Color.color_blue },
-                    ]}
-                  >
-                    Hủy bỏ
                   </Text>
                 </TouchableOpacity>
               </View>

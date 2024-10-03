@@ -235,6 +235,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
                 data={workShift}
                 firstValue={workShift[0].value}
                 onChange={(value: any) => {
+                  console.log("🚀 ~ ExpoCheckInDetail ~ value:", value);
                   setWSSelected(value);
                 }}
               />
