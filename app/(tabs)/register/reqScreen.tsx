@@ -7,7 +7,7 @@ import { ModalReqFilter } from "../../../components/ModalReqFilter";
 import ReqView from "../../../components/ReqView";
 import ReqApprove from "../../../components/ReqApprove";
 
-const data_option = ["Đề xuất của tôi", "Gửi đến tôi", "Đang theo dõi"];
+const data_option = ["Của tôi", "Gửi đến tôi", "Đang theo dõi"];
 function reqScreen(): React.JSX.Element {
   const [option, setoption] = useState(0);
   const [visiable, setVisiable] = useState(false);
@@ -24,36 +24,32 @@ function reqScreen(): React.JSX.Element {
   return (
     <View style={{ flex: 1 }}>
       <View style={AppStyle.StyleReq.boxpropose}>
-        <TouchableOpacity
-          style={
-            option == 0
-              ? AppStyle.StyleReq.itemOption_spec
-              : AppStyle.StyleReq.itemOption
-          }
-          onPress={() => handlePressOption(0)}
-        >
-          <Text style={AppStyle.StyleReq.textOption}>{data_option[0]}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={
-            option == 1
-              ? AppStyle.StyleReq.itemOption_spec
-              : AppStyle.StyleReq.itemOption
-          }
-          onPress={() => handlePressOption(1)}
-        >
-          <Text style={AppStyle.StyleReq.textOption}>{data_option[1]}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={
-            option == 2
-              ? AppStyle.StyleReq.itemOption_spec
-              : AppStyle.StyleReq.itemOption
-          }
-          onPress={() => handlePressOption(2)}
-        >
-          <Text style={AppStyle.StyleReq.textOption}>{data_option[2]}</Text>
-        </TouchableOpacity>
+        <FlatList
+          scrollEnabled={false}
+          data={data_option}
+          horizontal
+          contentContainerStyle={{
+            justifyContent: "space-around", // Căn đều các item
+            flexGrow: 1, // Đảm bảo danh sách chiếm hết chiều rộng
+          }}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              style={AppStyle.StyleReq.itemOption}
+              onPress={() => handlePressOption(index)}
+            >
+              <Text
+                style={
+                  option == index
+                    ? AppStyle.StyleReq.textOption_spec
+                    : AppStyle.StyleReq.textOption
+                }
+              >
+                {item}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
       </View>
       <View style={AppStyle.StyleReq.boxOptionIcon}>
         <View>
@@ -77,6 +73,7 @@ function reqScreen(): React.JSX.Element {
           }}
         >
           <Image
+            resizeMode="cover"
             style={AppStyle.StyleReq.imgIcon}
             source={require("../../../assets/images/filter.png")}
           />

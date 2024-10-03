@@ -96,7 +96,6 @@ export function ModalResIntern({
     try {
       let result;
       if (add) {
-        console.log("add tru");
         result = await RegisterInternSchedule(date, workshiftSend);
       } else {
         if (workshiftSend.includes("Cancel")) {
