@@ -21,7 +21,11 @@ function HomeHeader({ userInfo, onPress }: any): React.JSX.Element {
           <TouchableOpacity onPress={onPress}>
             <Image
               style={[AppStyle.StyleHeader.size_avt]}
-              source={userInfo?.avatar ? { uri: userInfo.avatar } : require("../assets/images/avt.png")}
+              source={
+                userInfo?.avatar
+                  ? { uri: userInfo.avatar }
+                  : require("../assets/images/avt.png")
+              }
             />
           </TouchableOpacity>
           <View>
