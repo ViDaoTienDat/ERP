@@ -9,9 +9,12 @@ import {
 } from "react-native";
 import Color from "../constants/theme/Color";
 import AppStyle from "../constants/theme";
-import { useSelector } from "react-redux";
 
-function HomeHeader({ userInfo, onPress }: any): React.JSX.Element {
+function HomeHeader({
+  userInfo,
+  onPress,
+  handlePressNotificationIcon,
+}: any): React.JSX.Element {
   return (
     <View style={[AppStyle.StyleHeader.header]}>
       <View style={[AppStyle.StyleHeader.topRow]}>
@@ -19,7 +22,11 @@ function HomeHeader({ userInfo, onPress }: any): React.JSX.Element {
           <TouchableOpacity onPress={onPress}>
             <Image
               style={[AppStyle.StyleHeader.size_avt]}
-              source={userInfo?.avatar ? { uri: userInfo.avatar } : require("../assets/images/avt.png")}
+              source={
+                userInfo?.avatar
+                  ? { uri: userInfo.avatar }
+                  : require("../assets/images/avt.png")
+              }
             />
           </TouchableOpacity>
           <View>
@@ -35,7 +42,7 @@ function HomeHeader({ userInfo, onPress }: any): React.JSX.Element {
         </View>
         <View>
           <View style={[selfstyle.dot, { backgroundColor: "#E6224D" }]}></View>
-          <TouchableOpacity style={{}}>
+          <TouchableOpacity onPress={handlePressNotificationIcon}>
             <Image
               style={[AppStyle.StyleHeader.size_iconsearch]}
               source={require("../assets/images/bell-fill.png")}

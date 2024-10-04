@@ -33,18 +33,28 @@ import {
   clearUser,
   clearWorkShift,
 } from "@/app/state/reducers/dataSlice";
+import { useIsFocused } from "@react-navigation/native";
 export default function home() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [backPressedOnce, setBackPressedOnce] = useState(false);
-  // Effect
+  const handlePressNotificationIcon = () => {
+    router.push("/(tabs)/home/notificationTab");
+  };
+  const isFocused = useIsFocused(); // Kiểm tra xem trang chủ có đang được focus không
   useEffect(() => {
+    // Nếu trang chủ không được focus, không cần thêm sự kiện quay lại
+    if (!isFocused) return;
+
     const backAction = () => {
       if (backPressedOnce) {
         BackHandler.exitApp(); // Thoát ứng dụng nếu bấm lần thứ 2
       } else {
         setBackPressedOnce(true); // Cập nhật trạng thái là đã bấm lần đầu
-        ToastAndroid.show("Bấm quay về lần nữa để thoát", ToastAndroid.SHORT); // Hiện toast
+        ToastAndroid.show(
+          "Bấm quay về lần nữa để thoát ứng dụng",
+          ToastAndroid.SHORT
+        ); // Hiện toast
 
         setTimeout(() => {
           setBackPressedOnce(false); // Reset trạng thái sau 2 giây
@@ -59,9 +69,9 @@ export default function home() {
       backAction
     );
 
-    // Dọn dẹp sự kiện khi component bị hủy
+    // Dọn dẹp sự kiện khi component bị hủy hoặc mất focus
     return () => backHandler.remove();
-  }, [backPressedOnce]);
+  }, [isFocused, backPressedOnce]);
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef(null);
@@ -113,7 +123,11 @@ export default function home() {
           resizeMode="contain"
           style={[AppStyle.StyleHome.background]}
         >
-          <HomeHeader userInfo={userInfo} onPress={handleOpen} />
+          <HomeHeader
+            userInfo={userInfo}
+            onPress={handleOpen}
+            handlePressNotificationIcon={handlePressNotificationIcon}
+          />
           <View style={AppStyle.StyleHome.boxInternalNews}>
             <Text style={AppStyle.StyleHome.textTitleLarge}>
               Tin tức nội bộ
