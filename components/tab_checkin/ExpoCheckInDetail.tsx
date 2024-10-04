@@ -15,12 +15,12 @@ import Color from "@/constants/theme/Color";
 import { useFocusEffect } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
 // import RNFS from "react-native-fs";
 import {
   ActivityIndicator,
   Image,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -257,11 +257,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
             style={AppStyle.StyleCheckIn.buttonCheckIn}
             onPress={handlePressCheckIn}
           >
-            {isLoading ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <Text style={AppStyle.StyleCheckIn.textCheckIn}>Chấm Công</Text>
-            )}
+            <Text style={AppStyle.StyleCheckIn.textCheckIn}>Chấm Công</Text>
           </TouchableOpacity>
         </ScrollView>
         <CustomMessage
@@ -278,9 +274,61 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           func={FailureCheckIn}
           textFunc={"Quay lại"}
         />
+        <Modal transparent={true} animationType="slide" visible={isLoading}>
+          <View style={AppStyle.StyleCheckIn.overlay}>
+            <View style={styles.modalView}>
+              <Text style={styles.textTitle}>Đang chấm công</Text>
+              <Text style={styles.textContent}>
+                Vui lòng đợi trong giây lát...
+              </Text>
+              <ActivityIndicator size={"small"} color={Color.color3} />
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
 }
-
+const styles = StyleSheet.create({
+  modalView: {
+    width: "70%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    padding: 20,
+  },
+  textTitle: {
+    color: Color.color2,
+    fontWeight: "bold",
+    fontSize: 18,
+    alignSelf: "center",
+  },
+  textContent: {
+    color: Color.color2,
+    fontWeight: "400",
+    fontSize: 15,
+    alignSelf: "center",
+    textAlignVertical: "center",
+    paddingVertical: 10,
+  },
+  boxButton: {
+    width: "100%",
+    borderTopWidth: 1,
+    borderTopColor: Color.color1,
+  },
+  textButton: {
+    color: Color.color3,
+    fontWeight: "bold",
+    fontSize: 15,
+    alignSelf: "center",
+    paddingTop: 10,
+  },
+});
 export default ExpoCheckInDetail;
