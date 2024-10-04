@@ -9,12 +9,11 @@ import {
 } from "react-native";
 import Color from "../constants/theme/Color";
 import AppStyle from "../constants/theme";
+import { useSelector } from "react-redux";
+import { useRouter } from "expo-router";
 
-function HomeHeader({
-  userInfo,
-  onPress,
-  handlePressNotificationIcon,
-}: any): React.JSX.Element {
+function HomeHeader({ userInfo, onPress }: any): React.JSX.Element {
+  const router = useRouter();
   return (
     <View style={[AppStyle.StyleHeader.header]}>
       <View style={[AppStyle.StyleHeader.topRow]}>
@@ -42,7 +41,7 @@ function HomeHeader({
         </View>
         <View>
           <View style={[selfstyle.dot, { backgroundColor: "#E6224D" }]}></View>
-          <TouchableOpacity onPress={handlePressNotificationIcon}>
+          <TouchableOpacity onPress={() => {router.navigate("/home/notification")}}>
             <Image
               style={[AppStyle.StyleHeader.size_iconsearch]}
               source={require("../assets/images/bell-fill.png")}

@@ -24,7 +24,6 @@ const selfstyle = StyleSheet.create({
   container: {
     width: width - 30,
     height: 140,
-
     borderRadius: 10,
     flexDirection: "row",
     alignSelf: "center",

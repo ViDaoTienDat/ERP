@@ -16,7 +16,7 @@ function registerIntern(): React.JSX.Element {
     <SafeAreaView
       style={[
         AppStyle.StyleCommon.container,
-        { paddingHorizontal: 15, backgroundColor: "#fff" },
+        { backgroundColor: "#fff" },
       ]}
     >
       <ImageBackground
@@ -26,13 +26,15 @@ function registerIntern(): React.JSX.Element {
       >
         <CustomHeader
           title="Đăng ký lịch thực tập"
-          tabs={["Đăng ký", "Thay đổi lịch"]}
+          tabs={["Đăng ký", "Thay đổi lịch"]} 
           func={HandlePressTab}
           state={tab}
           onchangeTab={true}
         />
-        {tab === 0 && <RegisterInternChild />}
-        {tab === 1 && <ChangeSchedule />}
+        <View style={AppStyle.StyleHome.containerPadding}>
+          {tab === 0 && <RegisterInternChild />}
+          {tab === 1 && <ChangeSchedule />}
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );

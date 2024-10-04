@@ -17,4 +17,5 @@ export default {
   color_white: "#FAFAFA",
   color_gray5: "#DBDBDB",
   color_secondary: "#DF6C1A",
+  color_primary: "#F5E0DC"
 };

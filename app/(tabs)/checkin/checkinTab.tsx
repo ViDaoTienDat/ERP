@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import CustomHeader from "@/components/CustomHeader";
-
 import AppStyle from "@/constants/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ExpoCheckIn from "@/components/tab_checkin/ExpoCheckIn";
@@ -61,7 +60,7 @@ export default function checkin() {
   );
   return (
     <SafeAreaView
-      style={{ flex: 1, paddingHorizontal: 15, backgroundColor: "#fff" }}
+      style={{ flex: 1, backgroundColor: "#fff" }}
     >
       <ImageBackground
         source={require("../../../assets/images/logo-background.png")}
@@ -75,15 +74,16 @@ export default function checkin() {
           state={numTab}
           onchangeTab={false}
         />
-        {/* Conditionally render the screen based on numTab */}
-        {numTab == 0 ? (
-          <ExpoCheckIn
-            showDetailCheckIn={showDetailCheckIn}
-            handlePressCheckIn={() => setShowDetailCheckIn(true)}
-          />
-        ) : (
-          <HistoryCheckIn />
-        )}
+        <View style={AppStyle.StyleHome.containerPadding}>
+          {numTab == 0 ? (
+            <ExpoCheckIn
+              showDetailCheckIn={showDetailCheckIn}
+              handlePressCheckIn={() => setShowDetailCheckIn(true)}
+            />
+          ) : (
+            <HistoryCheckIn />
+          )}
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );

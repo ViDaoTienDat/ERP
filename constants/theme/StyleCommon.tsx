@@ -6,9 +6,9 @@ const StyleCommon = StyleSheet.create({
     backgroundColor: "#fff",
   },
   size_avt_large: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
   },
   size_avt_small: {
     width: 40,
@@ -29,19 +29,40 @@ const StyleCommon = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  textBlack15: {
-    fontSize: 16,
+  textBlack15:{
+    fontSize: 15,
     color: Color.color2,
     fontWeight: "500",
   },
-  textBlack18:{
+  textBlack18: {
     fontSize: 18,
+    color: Color.color2,
+    fontWeight: "500",
+  },
+  textBlack14w400:{
+    fontSize: 14,
+    color: Color.color2,
+    fontWeight: "400",
+  },
+  textBlack18w400:{
+    fontSize: 18,
+    color: Color.color2,
+    fontWeight: "400",
+  },
+  textBlack16w400:{
+    fontSize: 16,
+    color: Color.color2,
+    fontWeight: "400",
+  },
+  textBlack16w500:{
+    fontSize: 16,
     color: Color.color2,
     fontWeight: "500",
   },
   textBlack14:{
     fontSize: 14,
     color: Color.color2,
+    fontWeight: "500",
   },
   textBlue15: {
     fontSize: 16,
