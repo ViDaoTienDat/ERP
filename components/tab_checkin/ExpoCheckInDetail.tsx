@@ -57,7 +57,9 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
   const [successTime, setSuccessTime] = useState(``);
   const [currentDate, setCurrentDate] = useState(``);
   const [currentTime, setCurrentTime] = useState(``);
-  const [wsSelected, setWSSelected] = useState<string>(workShift[0].value);
+  const [wsSelected, setWSSelected] = useState<string>(
+    workShift.length > 0 ? workShift[0].value : ""
+  );  
 
   const [note, setNote] = useState("");
   const [position, setPosition] = useState([0, 0]);
@@ -194,8 +196,8 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
             <ExpoCustomMap
               showCir={checkbox}
               location_business={{
-                lat: office.latitude,
-                lng: office.longitude,
+                lat: office ? office.latitude : 0,
+                lng: office ? office.longitude : 0,
               }}
             />
             {/* <CustomMap showCir={checkbox} location_business={{ lat: office.latitude, lng: office.longitude }}  /> */}
@@ -220,20 +222,28 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <Text style={AppStyle.StyleCheckIn.ItemLabel}>Văn phòng</Text>
             <View style={AppStyle.StyleCheckIn.ItemInfo}>
-              <Text style={AppStyle.StyleCheckIn.ItemValue}>{office.name}</Text>
+              {office && office.name ? (
+                <Text style={AppStyle.StyleCheckIn.ItemValue}>{office.name}</Text>
+              ) : (
+                <Text>Không có thông tin văn phòng</Text>
+              )}
             </View>
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <Text style={AppStyle.StyleCheckIn.ItemLabel}>Ca làm việc</Text>
             <View style={AppStyle.StyleCheckIn.boxDropdown}>
-              <CustomDropdown
-                data={workShift}
-                firstValue={workShift[0].value}
-                onChange={(value: any) => {
-                  console.log("🚀 ~ ExpoCheckInDetail ~ value:", value);
-                  setWSSelected(value);
-                }}
-              />
+              {workShift.length > 0 ? (
+                <CustomDropdown
+                  data={workShift}
+                  firstValue={workShift[0].value}
+                  onChange={(value: any) => {
+                    console.log("🚀 ~ ExpoCheckInDetail ~ value:", value);
+                    setWSSelected(value);
+                  }}
+                />
+              ) : (
+                <Text>Không có ca làm việc</Text>
+              )}
             </View>
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>

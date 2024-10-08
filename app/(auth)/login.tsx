@@ -1,11 +1,13 @@
 import {
   ActivityIndicator,
+  BackHandler,
   Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -34,6 +36,7 @@ import Color from "@/constants/theme/Color";
 import { getTokens } from "../axios/api/storeToken";
 import { CustomCheckBox } from "@/components/CustomCheckBox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -44,10 +47,40 @@ export default function Index() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [backPressedOnce, setBackPressedOnce] = useState(false);
   const handleShowPass = () => {
     setShowPass(!showPass);
   };
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    
+    if (!isFocused) return;
+
+    const backAction = () => {
+      if (backPressedOnce) {
+        BackHandler.exitApp();
+      } else {
+        setBackPressedOnce(true);
+        ToastAndroid.show(
+          "Bấm quay về lần nữa để thoát ứng dụng",
+          ToastAndroid.SHORT
+        );
+
+        setTimeout(() => {
+          setBackPressedOnce(false); 
+        }, 2000);
+      }
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [isFocused, backPressedOnce]);
 
   const getSavedLoginInfo = async () => {
     const email = await AsyncStorage.getItem("email");
