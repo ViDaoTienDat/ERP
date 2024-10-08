@@ -39,9 +39,7 @@ export default function home() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [backPressedOnce, setBackPressedOnce] = useState(false);
-  const handlePressNotificationIcon = () => {
-    router.push("/(tabs)/home/notificationTab");
-  };
+  
   const isFocused = useIsFocused(); // Kiểm tra xem trang chủ có đang được focus không
   useEffect(() => {
     // Nếu trang chủ không được focus, không cần thêm sự kiện quay lại
@@ -103,6 +101,9 @@ export default function home() {
   const handlegoProfile = () => {
     handleClose();
     router.push("/home/profileTab");
+  };
+  const handlePressNotificationIcon = () => {
+    router.push("/home/notification");
   };
 
   const handleLogout = async () => {
