@@ -52,11 +52,11 @@ export const StyleHistory = StyleSheet.create({
     flexDirection: "row",
     padding: 10,
     justifyContent: "space-around",
-    backgroundColor: Color.color1,
+    borderBottomWidth: 1,
+    borderColor: Color.color1,
   },
   boxcalendar: {
     paddingHorizontal: 10,
-    //backgroundColor: '#fff',
   },
   rowcalendar: {
     flexDirection: "row",

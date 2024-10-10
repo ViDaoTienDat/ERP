@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, ScrollView, Image } from "react-native";
+import { View, Text, ImageBackground, ScrollView, Image, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TitleHeader from "@/components/TitleHeader";
@@ -9,7 +9,9 @@ import MapView from "@/components/MapView";
 import { CustomCheckBox } from "@/components/CustomCheckBox";
 import { useLocalSearchParams } from "expo-router";
 import { getImageUrl } from "@/app/axios/api/imageApi";
-
+import * as FileSystem from 'expo-file-system';
+import { Colors } from "@/constants/Colors";
+import Color from "@/constants/theme/Color";
 export default function checkinDetailHistory() {
   const {
     time,
@@ -27,12 +29,18 @@ export default function checkinDetailHistory() {
   const lngRecord = parseFloat(record_longitude as string);
   const latBranch = parseFloat(branch_latitude as string);
   const lngBranch = parseFloat(branch_longitude as string);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getImageUrl(image as string).then((res) => {
-      setImageUrl(res.data.url);
-    });
-  }, []);
+    try {
+      getImageUrl(image as string).then((base64String) => {
+        setImageUrl(base64String);
+        setIsLoading(false);
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }, [image]);
 
   const [checkbox, setCheckbox] = useState(false);
   const userInfo = useSelector((state: any) => state.userdata.user);
@@ -57,15 +65,19 @@ export default function checkinDetailHistory() {
                 Hình ảnh gương mặt
               </Text>
               <View style={AppStyle.StyleCheckIn.boxCamera}>
-                <Image
-                  resizeMode="stretch"
-                  source={
-                    imageUrl
-                      ? { uri: imageUrl }
-                      : require("../../../assets/images/image_sample.png")
-                  }
-                  style={{ width: "100%", height: "100%" }}
-                />
+                {isLoading ? (
+                  <ActivityIndicator size="large" color={Color.color_header_red} /> // Hiển thị vòng xoay khi đang tải
+                ) : (
+                  <Image
+                    resizeMode="stretch"
+                    source={
+                      imageUrl
+                        ? { uri: imageUrl } // Hiển thị hình ảnh từ URL
+                        : require("../../../assets/images/image_sample.png") // Hình ảnh mẫu nếu không có URL
+                    }
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                )}
               </View>
 
               <RowContentCheckIn title={"Văn phòng"} content={branch_name} />
