@@ -39,7 +39,7 @@ export default function home() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [backPressedOnce, setBackPressedOnce] = useState(false);
-  
+
   const isFocused = useIsFocused(); // Kiểm tra xem trang chủ có đang được focus không
   useEffect(() => {
     // Nếu trang chủ không được focus, không cần thêm sự kiện quay lại
@@ -108,13 +108,13 @@ export default function home() {
 
   const handleLogout = async () => {
     setModalVisible(false);
+    router.replace("/login");
     await storeToken("", "");
     dispatch(clearUser());
     dispatch(clearWorkShift());
     dispatch(clearDataIntern());
     dispatch(clearDateHisCheckIn());
     dispatch(clearBranch());
-    router.navigate("/login");
   };
 
   return (

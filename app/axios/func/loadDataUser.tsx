@@ -10,7 +10,7 @@ type DataWorkShift = {
 
 export const splitWorkShift = (data: DataWorkShift[]) => {
   let result = data.map((item) => ({
-    label: item.name,
+    label: item.name + " (" + item.start_time + " - " + item.end_time + ")",
     value: item.id,
     start_time: item.start_time,
     end_time: item.end_time,

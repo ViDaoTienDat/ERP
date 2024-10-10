@@ -58,10 +58,9 @@ export default function checkin() {
       setShowDetailCheckIn(false);
     }, [])
   );
+  const handlePressCheckIn = () => {};
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: "#fff" }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ImageBackground
         source={require("../../../assets/images/logo-background.png")}
         resizeMode="contain"
@@ -79,6 +78,7 @@ export default function checkin() {
             <ExpoCheckIn
               showDetailCheckIn={showDetailCheckIn}
               handlePressCheckIn={() => setShowDetailCheckIn(true)}
+              updateNumTab={() => setNumTab(1)}
             />
           ) : (
             <HistoryCheckIn />

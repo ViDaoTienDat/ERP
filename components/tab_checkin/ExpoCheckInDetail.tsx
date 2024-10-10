@@ -1,4 +1,8 @@
-import { checkInAPI, getHisCheckIn } from "@/app/axios/api/checkInApi";
+import {
+  checkInAPI,
+  getCheckInById,
+  getHisCheckIn,
+} from "@/app/axios/api/checkInApi";
 import {
   getCurrentTime,
   getFormatDateTimeCheckIn,
@@ -38,20 +42,24 @@ import CustomMap from "../CustomMap";
 import { handleSplitHisCheckIn } from "@/app/axios/func/createCalendar";
 import ExpoCustomMap from "../ExpoCustomMap";
 import ExpoCustomCamera from "../ExpoCustomCamera";
-import { CameraType, CameraView } from "expo-camera";
 
 type CustomCameraRef = {
   takePhoto: () => any | null;
 };
 
-function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
+const dataBranches: any = [];
+type ExpoCheckInDetailType = {
+  updateNumTab: Function;
+};
+function ExpoCheckInDetail({
+  updateNumTab,
+}: ExpoCheckInDetailType): React.JSX.Element {
   const cameraRef = useRef<CustomCameraRef>(null);
-  const officeId = useSelector((state: any) => state.office.officeId);
   const dispatch = useDispatch();
 
   const workShift = useSelector((state: any) => state.userdata.workshift);
+
   const branchs = useSelector((state: any) => state.userdata.branch);
-  const office = branchs.find((office: { id: any }) => office.id === officeId);
   const location = useSelector((state: any) => state.location.coordinates);
 
   const [successTime, setSuccessTime] = useState(``);
@@ -59,7 +67,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
   const [currentTime, setCurrentTime] = useState(``);
   const [wsSelected, setWSSelected] = useState<string>(
     workShift.length > 0 ? workShift[0].value : ""
-  );  
+  );
 
   const [note, setNote] = useState("");
   const [position, setPosition] = useState([0, 0]);
@@ -73,6 +81,38 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
   const [message, setMessage] = useState("");
   const [isCameraVisible, setIsCameraVisible] = useState(true);
 
+  // For show detail checkin
+  const [dateTimeDetail, setDateTimeDetail] = useState("");
+  const [branchNameDetail, setBranchNameDetail] = useState("");
+  const [workShiftNameDetail, setWorkShiftNameDetail] = useState("");
+  const [imageDetail, setImageDetail] = useState("");
+
+  //list branches Dropdown
+  const [officeIdDropdown, setOfficeIdDropdown] = useState("B1");
+  useEffect(() => {
+    dataBranches.length = 0;
+    branchs.forEach((item: any) => {
+      dataBranches.push({
+        label: item.name,
+        value: item.id,
+      });
+    });
+  }, []);
+  const [locationBusiness, setLocationBusiness] = useState({ lat: 0, lng: 0 });
+
+  useEffect(() => {
+    const office = branchs.find(
+      (office: { id: any }) => office.id === officeIdDropdown
+    );
+    if (office) {
+      setLocationBusiness({
+        lat: office.latitude,
+        lng: office.longitude,
+      });
+    } else {
+      setLocationBusiness({ lat: 0, lng: 0 });
+    }
+  }, [officeIdDropdown]);
   useEffect(() => {
     const formattedDate = getFormattedDate();
     setCurrentDate(formattedDate);
@@ -121,7 +161,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
         await checkInAPI(
           time,
           image,
-          officeId,
+          officeIdDropdown,
           wsSelected,
           note,
           location.lat,
@@ -131,6 +171,14 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
             sethasSuccess(true);
             setMessage("");
             setIsLoading(false);
+            getCheckInById(result.data.id).then(async (result) => {
+              if (result.code === 200) {
+                setDateTimeDetail(result.data.date_time);
+                setBranchNameDetail(result.data.branch_name);
+                setWorkShiftNameDetail(result.data.work_shift_name);
+                setImageDetail(result.data.image);
+              }
+            });
             getHisCheckIn().then(async (result) => {
               if (result.code === 200) {
                 const datehis = await handleSplitHisCheckIn(result.data);
@@ -163,7 +211,11 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
 
   const SuccessCheckIn = () => {
     sethasSuccess(false);
-    router.back();
+    router.navigate("/(tabs)/home/homeTab");
+  };
+  const SeeHistoryCheckIn = () => {
+    sethasSuccess(false);
+    updateNumTab();
   };
 
   const FailureCheckIn = () => {
@@ -196,8 +248,8 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
             <ExpoCustomMap
               showCir={checkbox}
               location_business={{
-                lat: office ? office.latitude : 0,
-                lng: office ? office.longitude : 0,
+                lat: locationBusiness ? locationBusiness.lat : 0,
+                lng: locationBusiness ? locationBusiness.lng : 0,
               }}
             />
             {/* <CustomMap showCir={checkbox} location_business={{ lat: office.latitude, lng: office.longitude }}  /> */}
@@ -221,11 +273,26 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <Text style={AppStyle.StyleCheckIn.ItemLabel}>Văn phòng</Text>
-            <View style={AppStyle.StyleCheckIn.ItemInfo}>
+            {/* <View style={AppStyle.StyleCheckIn.ItemInfo}>
               {office && office.name ? (
-                <Text style={AppStyle.StyleCheckIn.ItemValue}>{office.name}</Text>
+                <Text style={AppStyle.StyleCheckIn.ItemValue}>
+                  {office.name}
+                </Text>
               ) : (
                 <Text>Không có thông tin văn phòng</Text>
+              )}
+            </View> */}
+            <View style={AppStyle.StyleCheckIn.boxDropdown}>
+              {dataBranches.length > 0 ? (
+                <CustomDropdown
+                  data={dataBranches}
+                  firstValue={officeIdDropdown}
+                  onChange={(value: any) => {
+                    setOfficeIdDropdown(value);
+                  }}
+                />
+              ) : (
+                <Text>Không có ca làm việc</Text>
               )}
             </View>
           </View>
@@ -235,7 +302,7 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
               {workShift.length > 0 ? (
                 <CustomDropdown
                   data={workShift}
-                  firstValue={workShift[0].value}
+                  firstValue={workShift[1].value}
                   onChange={(value: any) => {
                     console.log("🚀 ~ ExpoCheckInDetail ~ value:", value);
                     setWSSelected(value);
@@ -269,15 +336,15 @@ function ExpoCheckInDetail({ route, navigation }: any): React.JSX.Element {
           hasVisible={hasSuccess}
           title={"Chấm công thành công"}
           content={"Dữ liệu của bạn đã được ghi nhận vào " + successTime}
-          func={SuccessCheckIn}
-          textFunc={"OK"}
+          func={[SeeHistoryCheckIn, SuccessCheckIn]}
+          textFunc={["Xem lịch sử", "Màn hình chính"]}
         />
         <CustomMessage
           hasVisible={hasFailure}
           title={"Chấm công thất bại"}
-          content={"Vui lòng thực hiện chấm công lại"}
-          func={FailureCheckIn}
-          textFunc={"Quay lại"}
+          content={message}
+          func={[FailureCheckIn]}
+          textFunc={["Quay lại"]}
         />
         <Modal transparent={true} animationType="slide" visible={isLoading}>
           <View style={AppStyle.StyleCheckIn.overlay}>
