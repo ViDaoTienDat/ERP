@@ -89,17 +89,15 @@ export const handleSplitHisCheckIn = async (
       if (monthData) {
         let dayData = monthData.datamonth.find((d) => d.day === itemday);
         if (dayData) {
-          if (!dayData.checkout.time) {
-            dayData.checkout = {
-              time: time,
-              image: item.image,
-              record_latitude: item.record_latitude,
-              record_longitude: item.record_longitude,
-              branch_latitude: item.branch_latitude,
-              branch_longitude: item.branch_longitude,
-              note: item.note,
-            };
-          }
+          dayData.checkout = {
+            time: time,
+            image: item.image,
+            record_latitude: item.record_latitude,
+            record_longitude: item.record_longitude,
+            branch_latitude: item.branch_latitude,
+            branch_longitude: item.branch_longitude,
+            note: item.note,
+          };
         } else {
           monthData.datamonth.push({
             day: itemday,
