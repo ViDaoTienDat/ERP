@@ -29,10 +29,13 @@ import { useRouter } from "expo-router";
 import { storeToken } from "@/app/axios/api/storeToken";
 import {
   clearBranch,
+  clearBranchCheckIn,
   clearDataIntern,
   clearDateHisCheckIn,
+  clearRoleId,
   clearUser,
   clearWorkShift,
+  clearWorkShiftCheckIn,
 } from "@/app/state/reducers/dataSlice";
 import { useIsFocused } from "@react-navigation/native";
 export default function home() {
@@ -112,9 +115,12 @@ export default function home() {
     await storeToken("", "");
     dispatch(clearUser());
     dispatch(clearWorkShift());
+    dispatch(clearWorkShiftCheckIn());
+    dispatch(clearBranchCheckIn());
     dispatch(clearDataIntern());
     dispatch(clearDateHisCheckIn());
     dispatch(clearBranch());
+    dispatch(clearRoleId());
   };
 
   return (

@@ -12,12 +12,16 @@ import {
   setBranch,
   setDataIntern,
   setDateHisCheckIn,
+  setRoleId,
   setUser,
   setWorkShift,
 } from "./state/reducers/dataSlice";
 import { handleSplitHisCheckIn } from "./axios/func/createCalendar";
 import { splitWorkShift } from "./axios/func/loadDataUser";
-import { getExpiredTimeFromAccessToken } from "./axios/func/getUserIdFromAccessToken";
+import {
+  getExpiredTimeFromAccessToken,
+  getRoleIdFromAccessToken,
+} from "./axios/func/getUserIdFromAccessToken";
 
 export default function index() {
   const [redirectTo, setRedirectTo] = useState<Href>();
@@ -34,6 +38,7 @@ export default function index() {
           ).getTime();
           if (currentTime < expirationTime) {
             console.log("Token chưa hết hạn");
+            dispatch(setRoleId(getRoleIdFromAccessToken(token?.accessToken)));
             getUser(token?.accessToken).then(async (result) => {
               if (result.code === 200) {
                 dispatch(setUser(result.data));

@@ -58,15 +58,20 @@ function ExpoCheckInDetail({
   const dispatch = useDispatch();
 
   const workShift = useSelector((state: any) => state.userdata.workshift);
-
+  const workShiftCheckIn = useSelector(
+    (state: any) => state.userdata.workShiftCheckIn
+  );
   const branchs = useSelector((state: any) => state.userdata.branch);
+  const branchCheckIn = useSelector(
+    (state: any) => state.userdata.branchCheckIn
+  );
   const location = useSelector((state: any) => state.location.coordinates);
 
   const [successTime, setSuccessTime] = useState(``);
   const [currentDate, setCurrentDate] = useState(``);
   const [currentTime, setCurrentTime] = useState(``);
   const [wsSelected, setWSSelected] = useState<string>(
-    workShift.length > 0 ? workShift[0].value : ""
+    workShiftCheckIn ? workShiftCheckIn : workShift[0].value
   );
 
   const [note, setNote] = useState("");
@@ -88,7 +93,9 @@ function ExpoCheckInDetail({
   const [imageDetail, setImageDetail] = useState("");
 
   //list branches Dropdown
-  const [officeIdDropdown, setOfficeIdDropdown] = useState("B1");
+  const [officeIdDropdown, setOfficeIdDropdown] = useState(
+    branchCheckIn ? branchCheckIn : "B1"
+  );
   useEffect(() => {
     dataBranches.length = 0;
     branchs.forEach((item: any) => {
@@ -101,6 +108,12 @@ function ExpoCheckInDetail({
   const [locationBusiness, setLocationBusiness] = useState({ lat: 0, lng: 0 });
 
   useEffect(() => {
+    setWSSelected(workShiftCheckIn);
+  }, [workShiftCheckIn]);
+  useEffect(() => {
+    setOfficeIdDropdown(branchCheckIn);
+  }, [branchCheckIn]);
+  useEffect(() => {
     const office = branchs.find(
       (office: { id: any }) => office.id === officeIdDropdown
     );
@@ -112,7 +125,11 @@ function ExpoCheckInDetail({
     } else {
       setLocationBusiness({ lat: 0, lng: 0 });
     }
+    setOfficeIdDropdown(officeIdDropdown);
   }, [officeIdDropdown]);
+  useEffect(() => {
+    setWSSelected(wsSelected);
+  }, [wsSelected]);
   useEffect(() => {
     const formattedDate = getFormattedDate();
     setCurrentDate(formattedDate);
@@ -221,7 +238,12 @@ function ExpoCheckInDetail({
   const FailureCheckIn = () => {
     sethasFailure(false);
   };
-
+  const branchLabel = dataBranches.find(
+    (branch: any) => branch.value === branchCheckIn
+  )?.label;
+  const workShiftLabel = workShift.find(
+    (item: any) => item.value === workShiftCheckIn
+  )?.label;
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -273,45 +295,52 @@ function ExpoCheckInDetail({
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <Text style={AppStyle.StyleCheckIn.ItemLabel}>Văn phòng</Text>
-            {/* <View style={AppStyle.StyleCheckIn.ItemInfo}>
-              {office && office.name ? (
+            {branchCheckIn.length > 0 ? (
+              <View style={AppStyle.StyleCheckIn.ItemInfo}>
                 <Text style={AppStyle.StyleCheckIn.ItemValue}>
-                  {office.name}
+                  {branchLabel}
                 </Text>
-              ) : (
-                <Text>Không có thông tin văn phòng</Text>
-              )}
-            </View> */}
-            <View style={AppStyle.StyleCheckIn.boxDropdown}>
-              {dataBranches.length > 0 ? (
-                <CustomDropdown
-                  data={dataBranches}
-                  firstValue={officeIdDropdown}
-                  onChange={(value: any) => {
-                    setOfficeIdDropdown(value);
-                  }}
-                />
-              ) : (
-                <Text>Không có ca làm việc</Text>
-              )}
-            </View>
+              </View>
+            ) : (
+              <View style={AppStyle.StyleCheckIn.boxDropdown}>
+                {dataBranches.length > 0 ? (
+                  <CustomDropdown
+                    data={dataBranches}
+                    firstValue={officeIdDropdown}
+                    onChange={(value: any) => {
+                      setOfficeIdDropdown(value);
+                    }}
+                  />
+                ) : (
+                  <Text>Không có ca làm việc</Text>
+                )}
+              </View>
+            )}
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <Text style={AppStyle.StyleCheckIn.ItemLabel}>Ca làm việc</Text>
-            <View style={AppStyle.StyleCheckIn.boxDropdown}>
-              {workShift.length > 0 ? (
-                <CustomDropdown
-                  data={workShift}
-                  firstValue={workShift[1].value}
-                  onChange={(value: any) => {
-                    console.log("🚀 ~ ExpoCheckInDetail ~ value:", value);
-                    setWSSelected(value);
-                  }}
-                />
-              ) : (
-                <Text>Không có ca làm việc</Text>
-              )}
-            </View>
+            {workShiftCheckIn.length > 0 ? (
+              <View style={AppStyle.StyleCheckIn.ItemInfo}>
+                <Text style={AppStyle.StyleCheckIn.ItemValue}>
+                  {workShiftLabel}
+                </Text>
+              </View>
+            ) : (
+              <View style={AppStyle.StyleCheckIn.boxDropdown}>
+                {workShift.length > 0 ? (
+                  <CustomDropdown
+                    data={workShift}
+                    firstValue={wsSelected}
+                    onChange={(value: any) => {
+                      console.log("🚀 ~ ExpoCheckInDetail ~ value:", value);
+                      setWSSelected(value);
+                    }}
+                  />
+                ) : (
+                  <Text>Không có ca làm việc</Text>
+                )}
+              </View>
+            )}
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <Text style={AppStyle.StyleCheckIn.ItemLabel}>Ghi chú</Text>

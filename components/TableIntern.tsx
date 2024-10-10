@@ -82,7 +82,7 @@ function CellResIntern({
   const isRegistrationClosed = () => {
     const currentHour = today.getHours();
     // Kiểm tra nếu hôm nay là Thứ Sáu (Wednesday) và giờ lớn hơn 15:00
-    return today.getDay() === 3 && currentHour >= 20;
+    return today.getDay() === 5 && currentHour >= 15;
   };
 
   useEffect(() => {
