@@ -22,10 +22,12 @@ import * as Location from "expo-location";
 type ExpoCheckInType = {
   showDetailCheckIn: boolean;
   handlePressCheckIn: Function;
+  updateNumTab: Function;
 };
 function ExpoCheckIn({
   showDetailCheckIn,
   handlePressCheckIn,
+  updateNumTab,
 }: ExpoCheckInType): React.JSX.Element {
   const [officeVisible, setOfficeVisible] = useState(false);
   const [office, setOffice] = useState("");
@@ -88,7 +90,7 @@ function ExpoCheckIn({
         <Text style={AppStyle.StyleCheckIn.textNote}>
           Bạn vui lòng hoàn thành các bước sau để tiến hành chấm công!
         </Text>
-        <CardCheckIn
+        {/* <CardCheckIn
           key={0}
           img={require("../../assets/images/map.png")}
           name="Chọn văn phòng"
@@ -96,7 +98,7 @@ function ExpoCheckIn({
           stateStr={office != "" ? "Đã chọn" : "Chưa chọn"}
           func={handlePressOffice}
           note={office}
-        />
+        /> */}
         <CardCheckIn
           key={1}
           img={require("../../assets/images/camera.png")}
@@ -149,7 +151,7 @@ function ExpoCheckIn({
         </TouchableWithoutFeedback>
       </Modal>
 
-      {office != "" && permission && location && (
+      {permission && location && (
         <TouchableOpacity
           style={AppStyle.StyleCheckIn.buttonCheckIn}
           onPress={() => handlePressCheckIn()}
@@ -159,7 +161,7 @@ function ExpoCheckIn({
       )}
     </View>
   ) : (
-    <ExpoCheckInDetail></ExpoCheckInDetail>
+    <ExpoCheckInDetail updateNumTab={updateNumTab}></ExpoCheckInDetail>
   );
 }
 export default ExpoCheckIn;

@@ -36,6 +36,34 @@ export const getHisCheckIn = async () => {
     }
   }
 };
+export const getCheckInById = async (id: string) => {
+  try {
+    const token = await getTokens();
+    if (token.accessToken) {
+      const userId = getUserIdFromAccessToken(token.accessToken);
+      if (userId) {
+        const url = `${serverAPI}/api/v1/attendance-records/${id}`;
+
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token.accessToken}`,
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+          },
+        });
+        return response.data;
+      }
+    }
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      return error.response.data;
+    } else {
+      // Xử lý các lỗi khác nếu không phải là lỗi từ server
+      console.error(error);
+      throw new Error("An unknown error occurred.");
+    }
+  }
+};
 
 export const checkInAPI = async (
   date_time: string,
@@ -71,6 +99,39 @@ export const checkInAPI = async (
 
         return response.data;
       }
+    }
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      return error.response.data;
+    } else {
+      // Xử lý các lỗi khác nếu không phải là lỗi từ server
+      console.error(error);
+      throw new Error("An unknown error occurred.");
+    }
+  }
+};
+export const getCurrentCheckIn = async () => {
+  try {
+    const token = await getTokens();
+    if (token.accessToken) {
+      const url = `${serverAPI}/api/v1/attendance-records/current-records`;
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token.accessToken}`,
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+        },
+      });
+      console.log(
+        "🚀 ~ getCurrentCheckIn ~ response:",
+        response.data[response.data.length - 1].branch_id
+      );
+      console.log(
+        "🚀 ~ getCurrentCheckIn ~ response:",
+        response.data[response.data.length - 1].work_shift_id
+      );
+      return response.data;
     }
   } catch (error: any) {
     if (error.response && error.response.data) {

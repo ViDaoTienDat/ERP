@@ -22,7 +22,7 @@
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon-thd.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.ERPTHDexpo"

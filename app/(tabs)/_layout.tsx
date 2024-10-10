@@ -2,7 +2,12 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import Color from "@/constants/theme/Color";
-import { HomeIcon, CheckInIcon, RegisterIcon, ApplicationIcon } from "@/components/CustomIcon";
+import {
+  HomeIcon,
+  CheckInIcon,
+  RegisterIcon,
+  ApplicationIcon,
+} from "@/components/CustomIcon";
 
 export default function _layout() {
   return (
@@ -15,9 +20,9 @@ export default function _layout() {
           fontWeight: "bold",
           marginBottom: 0,
         },
-        tabBarStyle: {
-          paddingVertical: 10,
-        },
+        // tabBarStyle: {
+        //   paddingVertical: 10,
+        // },
         tabBarActiveTintColor: Color.color3,
         tabBarInactiveTintColor: Color.color2,
       }}
@@ -47,9 +52,9 @@ export default function _layout() {
         name="application"
         options={{
           tabBarLabel: "Ứng dụng",
-          tabBarIcon: ({focused}) => <ApplicationIcon focused={focused}/>
+          tabBarIcon: ({ focused }) => <ApplicationIcon focused={focused} />,
         }}
-        />
+      />
     </Tabs>
   );
 }

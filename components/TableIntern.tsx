@@ -48,13 +48,13 @@ export function RowResIntern({
   }, [data.CN]);
   return (
     <View style={AppStyle.StyleHistory.rowcalendar}>
-      <CellResInternDayOff data={data.CN} month={month} curr={currweek} />
+      <CellResIntern data={data.CN} month={month} curr={currweek} />
       <CellResIntern data={data.T2} month={month} curr={currweek} />
       <CellResIntern data={data.T3} month={month} curr={currweek} />
       <CellResIntern data={data.T4} month={month} curr={currweek} />
       <CellResIntern data={data.T5} month={month} curr={currweek} />
       <CellResIntern data={data.T6} month={month} curr={currweek} />
-      <CellResInternDayOff data={data.T7} month={month} curr={currweek} />
+      <CellResIntern data={data.T7} month={month} curr={currweek} />
     </View>
   );
 }
@@ -79,6 +79,12 @@ function CellResIntern({
       today.getFullYear() == data.register_year
     );
   };
+  const isRegistrationClosed = () => {
+    const currentHour = today.getHours();
+    // Kiểm tra nếu hôm nay là Thứ Sáu (Wednesday) và giờ lớn hơn 15:00
+    return today.getDay() === 3 && currentHour >= 20;
+  };
+
   useEffect(() => {
     setAdd(data.add);
     if (data.register_shift) {
@@ -93,7 +99,7 @@ function CellResIntern({
           AppStyle.StyleTable.boxday,
           {
             borderRadius: 5,
-            backgroundColor: isToday() ? Color.color3 : 'transparent',
+            backgroundColor: isToday() ? Color.color3 : "transparent",
           },
         ]}
       >
@@ -115,7 +121,10 @@ function CellResIntern({
       </View>
       <View style={AppStyle.StyleTable.boxValue}>
         {/* Điều kiện thay đổi lịch khi có ca đăng ký , không phải ngày trong tuần và lớn hơn ngày hiện tại  */}
-        {data.register_shift != "" && !curr && registerDate > today ? (
+        {data.register_shift != "" &&
+        !curr &&
+        registerDate > today &&
+        !isRegistrationClosed() ? (
           <TouchableOpacity
             style={AppStyle.StyleTable.boxValue}
             onPress={() => {
@@ -152,7 +161,7 @@ function CellResIntern({
               {data.end_time ? data.end_time : "--/--"}
             </Text>
           </View>
-        ) : add && month == data.register_month ? (
+        ) : add && month == data.register_month && !isRegistrationClosed() ? (
           <TouchableOpacity
             style={[AppStyle.StyleTable.boxButton, { backgroundColor: "#fff" }]}
             onPress={() => {

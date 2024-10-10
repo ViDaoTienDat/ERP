@@ -42,7 +42,7 @@ function CustomDropdown({
         maxHeight={200}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? "Địa điểm" : "..."}
+        placeholder={!isFocus ? "Ca làm việc" : "..."}
         searchPlaceholder="Search..."
         value={value}
         onFocus={() => setIsFocus(true)}

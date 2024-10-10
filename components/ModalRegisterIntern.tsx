@@ -31,17 +31,6 @@ type DataModalResIntern = {
   add: boolean;
   onChangeSchedule: Function;
 };
-const dataworkShift = [
-  { label: "Ca sáng", value: "2c1e165e-8" },
-  { label: "Ca chiều", value: "78546471-a" },
-  { label: "Fulltime", value: "All" },
-];
-const dataworkShiftforChange = [
-  { label: "Ca sáng", value: "2c1e165e-8" },
-  { label: "Ca chiều", value: "78546471-a" },
-  { label: "Fulltime", value: "All" },
-  { label: "Hủy ca", value: "Cancel" },
-];
 const dataBranches: any = [];
 export function ModalResIntern({
   visiable,
@@ -59,8 +48,12 @@ export function ModalResIntern({
 
   const dispatch = useDispatch();
   const listWorkShift = useSelector((state: any) => state.userdata.workshift);
+  const dataworkShiftforChange = [
+    ...listWorkShift,
+    { label: "Hủy ca", value: "Cancel" },
+  ];
   const listOffice = useSelector((state: any) => state.userdata.branch);
-  const [workShift, setWorkShift] = useState(dataworkShift[0].value);
+  const [workShift, setWorkShift] = useState(listWorkShift[0].value);
   const [office, setOffice] = useState("");
 
   const [show, setShow] = useState(false);
@@ -88,11 +81,7 @@ export function ModalResIntern({
     setIsLoading(true);
     setIsError(false);
     let workshiftSend = [];
-    if (workShift === "All") {
-      workshiftSend.push("2c1e165e-8", "78546471-a");
-    } else {
-      workshiftSend.push(workShift);
-    }
+    workshiftSend.push(workShift);
     try {
       let result;
       if (add) {
@@ -238,7 +227,7 @@ export function ModalResIntern({
                   </Text>
                   <View style={AppStyle.StyleTable.addValue}>
                     <CustomDropdown
-                      data={add ? dataworkShift : dataworkShiftforChange}
+                      data={add ? listWorkShift : dataworkShiftforChange}
                       firstValue={workShift}
                       onChange={(value: React.SetStateAction<string>) => {
                         setWorkShift(value);
