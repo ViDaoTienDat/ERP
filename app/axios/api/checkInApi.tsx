@@ -123,14 +123,6 @@ export const getCurrentCheckIn = async () => {
           "x-api-key": apiKey,
         },
       });
-      console.log(
-        "🚀 ~ getCurrentCheckIn ~ response:",
-        response.data[response.data.length - 1].branch_id
-      );
-      console.log(
-        "🚀 ~ getCurrentCheckIn ~ response:",
-        response.data[response.data.length - 1].work_shift_id
-      );
       return response.data;
     }
   } catch (error: any) {

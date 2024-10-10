@@ -13,7 +13,14 @@ import ExpoCheckIn from "@/components/tab_checkin/ExpoCheckIn";
 import { useFocusEffect } from "expo-router";
 import HistoryCheckIn from "@/components/tab_checkin/history";
 import { useIsFocused } from "@react-navigation/native";
+import { getCurrentCheckIn } from "@/app/axios/api/checkInApi";
+import { useDispatch } from "react-redux";
+import {
+  setBranchCheckIn,
+  setWorkShiftCheckIn,
+} from "@/app/state/reducers/dataSlice";
 export default function checkin() {
+  const dispatch = useDispatch();
   const [numTab, setNumTab] = useState(0); // Initialize numTab as state
   const [showDetailCheckIn, setShowDetailCheckIn] = useState(false);
   // Function to handle tab press
@@ -58,7 +65,27 @@ export default function checkin() {
       setShowDetailCheckIn(false);
     }, [])
   );
-  const handlePressCheckIn = () => {};
+  useEffect(() => {
+    setShowDetailCheckIn(false);
+  }, [numTab]);
+  const handlePressCheckIn = () => {
+    getCurrentCheckIn().then(async (result) => {
+      if (result.code === 200 && result.data && result.data.length > 0) {
+        const lastCheckIn = result.data[result.data.length - 1];
+
+        if (lastCheckIn.branch_id && lastCheckIn.work_shift_id) {
+          console.log("dispatcch setWS ");
+          console.log(
+            "🚀 ~ getCurrentCheckIn ~ work_shift_id:",
+            lastCheckIn.work_shift_id
+          );
+          dispatch(setBranchCheckIn(lastCheckIn.branch_id));
+          dispatch(setWorkShiftCheckIn(lastCheckIn.work_shift_id));
+        }
+      }
+      setShowDetailCheckIn(true);
+    });
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ImageBackground
@@ -77,7 +104,7 @@ export default function checkin() {
           {numTab == 0 ? (
             <ExpoCheckIn
               showDetailCheckIn={showDetailCheckIn}
-              handlePressCheckIn={() => setShowDetailCheckIn(true)}
+              handlePressCheckIn={handlePressCheckIn}
               updateNumTab={() => setNumTab(1)}
             />
           ) : (

@@ -23,6 +23,7 @@ import {
   setBranch,
   setDataIntern,
   setDateHisCheckIn,
+  setRoleId,
   setUser,
   setWorkShift,
 } from "../state/reducers/dataSlice";
@@ -33,10 +34,10 @@ import { splitWorkShift } from "../axios/func/loadDataUser";
 import { getAllBranch } from "../axios/api/branchApi";
 import { getWorkShift } from "../axios/api/workShirtApi";
 import Color from "@/constants/theme/Color";
-import { getTokens } from "../axios/api/storeToken";
 import { CustomCheckBox } from "@/components/CustomCheckBox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
+import { getRoleIdFromAccessToken } from "../axios/func/getUserIdFromAccessToken";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -54,7 +55,6 @@ export default function Index() {
 
   const isFocused = useIsFocused();
   useEffect(() => {
-    
     if (!isFocused) return;
 
     const backAction = () => {
@@ -68,7 +68,7 @@ export default function Index() {
         );
 
         setTimeout(() => {
-          setBackPressedOnce(false); 
+          setBackPressedOnce(false);
         }, 2000);
       }
       return true;
@@ -140,6 +140,7 @@ export default function Index() {
         }
         setWrongPass(false);
         setTextWrong("");
+        dispatch(setRoleId(getRoleIdFromAccessToken(result.data.access_token)));
         getUser(result.data.access_token).then(async (result) => {
           if (result.code === 200) {
             dispatch(setUser(result.data));

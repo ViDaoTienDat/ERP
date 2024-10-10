@@ -21,16 +21,22 @@ interface User {
 
 const initialState: {
   branch: string[];
+  branchCheckIn: "";
   dateHisCheckIn: string[];
   dataIntern: string[];
   workshift: string[];
+  workShiftCheckIn: string;
   user: User | undefined;
+  roleId: string;
 } = {
   branch: [],
+  branchCheckIn: "",
   dateHisCheckIn: [],
   dataIntern: [],
   workshift: [],
+  workShiftCheckIn: "",
   user: undefined,
+  roleId: "",
 };
 
 const userdataSlice = createSlice({
@@ -42,6 +48,12 @@ const userdataSlice = createSlice({
     },
     clearBranch: (state) => {
       state.branch = [];
+    },
+    setBranchCheckIn: (state, action) => {
+      state.branchCheckIn = action.payload;
+    },
+    clearBranchCheckIn: (state) => {
+      state.branchCheckIn = "";
     },
     setDateHisCheckIn: (state, action) => {
       state.dateHisCheckIn = action.payload;
@@ -61,11 +73,23 @@ const userdataSlice = createSlice({
     clearWorkShift: (state) => {
       state.workshift = [];
     },
+    setWorkShiftCheckIn: (state, action) => {
+      state.workShiftCheckIn = action.payload;
+    },
+    clearWorkShiftCheckIn: (state) => {
+      state.workShiftCheckIn = "";
+    },
     setUser: (state, action) => {
       state.user = action.payload;
     },
     clearUser: (state) => {
       state.user = undefined;
+    },
+    setRoleId: (state, action) => {
+      state.roleId = action.payload;
+    },
+    clearRoleId: (state) => {
+      state.roleId = "";
     },
   },
 });
@@ -73,13 +97,19 @@ const userdataSlice = createSlice({
 export const {
   setBranch,
   clearBranch,
+  setBranchCheckIn,
+  clearBranchCheckIn,
   setDateHisCheckIn,
   clearDateHisCheckIn,
   setDataIntern,
   clearDataIntern,
   setWorkShift,
   clearWorkShift,
+  setWorkShiftCheckIn,
+  clearWorkShiftCheckIn,
   setUser,
   clearUser,
+  setRoleId,
+  clearRoleId,
 } = userdataSlice.actions;
 export default userdataSlice.reducer;

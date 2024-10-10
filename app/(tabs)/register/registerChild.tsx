@@ -16,6 +16,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import CardRegister from "../../../components/CardRegister";
 import { useRouter } from "expo-router";
+import { useSelector } from "react-redux";
 
 function registerChild(): React.JSX.Element {
   const router = useRouter();
@@ -34,6 +35,8 @@ function registerChild(): React.JSX.Element {
   const handlePressTabForgot = (num: any) => {
     router.navigate("./register/registerForgot");
   };
+  const roleId = useSelector((state: any) => state.userdata.roleId);
+  console.log("🚀 ~ registerChild ~ roleId:", roleId);
   return (
     <View style={{ flex: 1 }}>
       <View style={AppStyle.StyleCheckIn.container}>
@@ -49,10 +52,12 @@ function registerChild(): React.JSX.Element {
           name="Đăng ký làm việc tại nhà"
           func={handlePressTabWFH}
         />
-        <CardRegister
-          name="Đăng ký lịch thực tập"
-          func={handlePressTabIntern}
-        />
+        {roleId == "R1" && (
+          <CardRegister
+            name="Đăng ký lịch thực tập"
+            func={handlePressTabIntern}
+          />
+        )}
         <CardRegister name="Quên chấm công" func={handlePressTabForgot} />
       </View>
     </View>
