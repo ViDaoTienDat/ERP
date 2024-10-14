@@ -28,6 +28,7 @@ const initialState: {
   workShiftCheckIn: string;
   user: User | undefined;
   roleId: string;
+  avatar: string | undefined;
 } = {
   branch: [],
   branchCheckIn: "",
@@ -37,6 +38,7 @@ const initialState: {
   workShiftCheckIn: "",
   user: undefined,
   roleId: "",
+  avatar: "",
 };
 
 const userdataSlice = createSlice({
@@ -91,6 +93,12 @@ const userdataSlice = createSlice({
     clearRoleId: (state) => {
       state.roleId = "";
     },
+    setAvatar: (state, action) => {
+      state.avatar = action.payload;
+    },
+    clearAvatar: (state) => {
+      state.avatar = "";
+    },
   },
 });
 
@@ -111,5 +119,7 @@ export const {
   clearUser,
   setRoleId,
   clearRoleId,
+  setAvatar,
+  clearAvatar
 } = userdataSlice.actions;
 export default userdataSlice.reducer;

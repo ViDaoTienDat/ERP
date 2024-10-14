@@ -44,6 +44,7 @@ export default function checkinDetailHistory() {
 
   const [checkbox, setCheckbox] = useState(false);
   const userInfo = useSelector((state: any) => state.userdata.user);
+  
   return (
     <SafeAreaView style={AppStyle.StyleCommon.container}>
       <View style={[AppStyle.StyleCommon.container]}>

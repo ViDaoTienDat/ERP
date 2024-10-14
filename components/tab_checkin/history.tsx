@@ -43,7 +43,7 @@ const currdate = new Date();
     }
     useEffect(() => {
       getNewMonth(currdate.getMonth() + 1, currdate.getFullYear());
-    }, []);
+    }, [dateHisCheckIn]);
       return (
         <View style={AppStyle.StyleCheckIn.boxContainer}>
             <View style={AppStyle.StyleHistory.boxmonth}>

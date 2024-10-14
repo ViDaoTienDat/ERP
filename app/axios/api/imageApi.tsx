@@ -11,7 +11,7 @@ export const getImageUrl = async (id: string) => {
       },
       responseType: "blob",
     });
-    
+
     const base64String = await convertBlobToBase64(response.data);
     return base64String; // Trả về chuỗi Base64
   } catch (error) {

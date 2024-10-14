@@ -24,6 +24,8 @@ export default function profileDetail() {
 
   const [image, setImage] = useState<string | null>(null);
 
+  const imgUrl = useSelector((state: any) => state.userdata.avatar);
+
 
   const pickImage = async () => {
     setModalVisible(false);
@@ -74,7 +76,7 @@ export default function profileDetail() {
                 source={
                   image
                     ? { uri: image }
-                    : require("../../../assets/images/avt.png")
+                    :  imgUrl ? { uri: imgUrl } : require("../../../assets/images/avt.png")
                 }
               />
               <View style={styles.container}>

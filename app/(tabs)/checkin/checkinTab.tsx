@@ -4,8 +4,10 @@ import {
   ImageBackground,
   BackHandler,
   ToastAndroid,
+  ScrollView,
+  RefreshControl
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CustomHeader from "@/components/CustomHeader";
 import AppStyle from "@/constants/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,16 +15,25 @@ import ExpoCheckIn from "@/components/tab_checkin/ExpoCheckIn";
 import { useFocusEffect } from "expo-router";
 import HistoryCheckIn from "@/components/tab_checkin/history";
 import { useIsFocused } from "@react-navigation/native";
-import { getCurrentCheckIn } from "@/app/axios/api/checkInApi";
+import { getCurrentCheckIn, getHisCheckIn } from "@/app/axios/api/checkInApi";
 import { useDispatch } from "react-redux";
 import {
+  setBranch,
   setBranchCheckIn,
+  setDateHisCheckIn,
+  setWorkShift,
   setWorkShiftCheckIn,
 } from "@/app/state/reducers/dataSlice";
+import { getAllBranch } from "@/app/axios/api/branchApi";
+import { handleSplitHisCheckIn } from "@/app/axios/func/createCalendar";
+import { getWorkShift } from "@/app/axios/api/workShirtApi";
+import { splitWorkShift } from "@/app/axios/func/loadDataUser";
+
 export default function checkin() {
   const dispatch = useDispatch();
-  const [numTab, setNumTab] = useState(0); // Initialize numTab as state
+  const [numTab, setNumTab] = useState(0);
   const [showDetailCheckIn, setShowDetailCheckIn] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   // Function to handle tab press
   const handlePressTab = (index: number) => {
     setNumTab(index); // Update numTab with the pressed tab index
@@ -68,6 +79,37 @@ export default function checkin() {
   useEffect(() => {
     setShowDetailCheckIn(false);
   }, [numTab]);
+
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+  
+    try {
+      const [branchResult, hisCheckInResult, workShiftResult] = await Promise.all([
+        getAllBranch(),
+        getHisCheckIn(),
+        getWorkShift(),
+      ]);
+      if (branchResult.code === 200) {
+        dispatch(setBranch(branchResult.data));
+      }
+      if (hisCheckInResult.code === 200) {
+        const datehis = await handleSplitHisCheckIn(hisCheckInResult.data);
+        dispatch(setDateHisCheckIn(datehis));
+      }
+      if (workShiftResult.code === 200) {
+        const workshift = await splitWorkShift(workShiftResult.data);
+        dispatch(setWorkShift(workshift));
+      }
+    } catch (error) {
+      console.error("Error during refresh:", error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [dispatch]);
+  
+  
+
   const handlePressCheckIn = () => {
     getCurrentCheckIn().then(async (result) => {
       if (result.code === 200 && result.data && result.data.length > 0) {
@@ -100,6 +142,9 @@ export default function checkin() {
           state={numTab}
           onchangeTab={false}
         />
+        <ScrollView refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={AppStyle.StyleHome.containerPadding}>
           {numTab == 0 ? (
             <ExpoCheckIn
@@ -111,6 +156,8 @@ export default function checkin() {
             <HistoryCheckIn />
           )}
         </View>
+        </ScrollView>
+        
       </ImageBackground>
     </SafeAreaView>
   );
