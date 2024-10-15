@@ -38,6 +38,7 @@ import { CustomCheckBox } from "@/components/CustomCheckBox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import { getRoleIdFromAccessToken } from "../axios/func/getUserIdFromAccessToken";
+import Dimension from "@/constants/theme/Dimension";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -198,157 +199,165 @@ export default function Index() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <SafeAreaView
-        style={[
-          AppStyle.StyleCommon.container,
-          AppStyle.StyleCommon.alignCenter,
-        ]}
+    <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView
-          style={[AppStyle.StyleCommon.container, { width: "100%" }]}
-          contentContainerStyle={{ flexGrow: 1 }}
+        <SafeAreaView
+          style={[
+            AppStyle.StyleCommon.container,
+            AppStyle.StyleCommon.alignCenter,
+          ]}
         >
-          <View
-            style={[
-              AppStyle.StyleCommon.alignCenter,
-              AppStyle.StyleLogin.flexLogo,
-              ,
-            ]}
+          <ScrollView
+            style={[AppStyle.StyleCommon.container, { width: "100%" }]}
+            contentContainerStyle={{ flexGrow: 1 }}
           >
-            <Image
-              resizeMode="contain"
-              style={AppStyle.StyleLogin.logo}
-              source={require("../../assets/images/logo.png")}
-            />
-          </View>
-          <View style={AppStyle.StyleLogin.flexLogin}>
-            <View style={AppStyle.StyleLogin.boxLogin}>
-              <View style={AppStyle.StyleLogin.boxItem}>
-                <Text style={AppStyle.StyleCommon.textBlack15}>Email</Text>
-                <TextInput
-                  style={[
-                    AppStyle.StyleLogin.inputLogin,
-                    AppStyle.StyleCommon.textBlack15,
-                  ]}
-                  placeholder="Nhập email"
-                  placeholderTextColor="#ccc"
-                  value={email}
-                  onChangeText={(text) => {
-                    setEmail(text);
-                  }}
-                />
-              </View>
-              <View style={AppStyle.StyleLogin.boxItem}>
-                <Text style={AppStyle.StyleCommon.textBlack15}>Mật khẩu</Text>
-                <TextInput
-                  style={[
-                    AppStyle.StyleLogin.inputLogin,
-                    AppStyle.StyleCommon.textBlack15,
-                  ]}
-                  placeholder="Nhập mật khẩu"
-                  placeholderTextColor="#ccc"
-                  secureTextEntry={!showPass}
-                  value={password}
-                  onChangeText={(text) => {
-                    setPassword(text);
-                  }}
-                />
-                <TouchableOpacity
-                  style={AppStyle.StyleLogin.buttonImg}
-                  onPress={handleShowPass}
-                >
-                  <Image
-                    style={AppStyle.StyleLogin.img}
-                    source={
-                      showPass
-                        ? require("../../assets/images/eye_view.png")
-                        : require("../../assets/images/eye_hide.png")
-                    }
-                  />
-                </TouchableOpacity>
-              </View>
-              {wrongPass && (
-                <View
-                  style={[
-                    AppStyle.StyleLogin.boxItem,
-                    { marginVertical: 0, marginLeft: 4 },
-                  ]}
-                >
-                  <Text style={AppStyle.StyleLogin.wrongPass}>{textwrong}</Text>
-                </View>
-              )}
-              <View
-                style={{
-                  flex: 1,
-                  alignSelf: "flex-end",
-                  marginRight: 20,
-                  marginBottom: 15,
-                }}
-              >
-                <TouchableOpacity onPress={handleForgotPassword}>
-                  <Text style={AppStyle.StyleLogin.textHref}>
-                    Quên mật khẩu?
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View
-                style={[
-                  {
-                    flexDirection: "row",
-                    width: "90%",
-                    alignSelf: "center",
-                    marginLeft: 4,
-                    marginBottom: 10,
-                    gap: 10,
-                  },
-                ]}
-              >
-                <CustomCheckBox
-                  checked={isSavedPassword}
-                  func={() => {
-                    setisSavedPassword(!isSavedPassword);
-                  }}
-                />
-                <Text>Lưu mật khẩu</Text>
-              </View>
-              <TouchableOpacity
-                style={[
-                  AppStyle.StyleLogin.boxItem,
-                  AppStyle.StyleLogin.button,
-                  AppStyle.StyleCommon.alignCenter,
-                  ,
-                  {
-                    backgroundColor:
-                      email && password ? Color.color_header_red : "#ccc", // Điều kiện đổi màu nền
-                  },
-                ]}
-                onPress={handleLogin}
-                disabled={loading || !(email && password)} // Vô hiệu hóa nút khi đang tải
-              >
-                {loading ? ( // Hiển thị ActivityIndicator nếu đang tải
-                  <ActivityIndicator size="small" color="#fff" />
-                ) : (
-                  <Text
+            <View
+              style={[
+                AppStyle.StyleCommon.alignCenter,
+                AppStyle.StyleLogin.flexLogo,
+                ,
+              ]}
+            >
+              <Image
+                resizeMode="contain"
+                style={AppStyle.StyleLogin.logo}
+                source={require("../../assets/images/logo.png")}
+              />
+            </View>
+            <View style={AppStyle.StyleLogin.flexLogin}>
+              <View style={AppStyle.StyleLogin.boxLogin}>
+                <View style={AppStyle.StyleLogin.boxItem}>
+                  <Text style={AppStyle.StyleCommon.textBlack15}>Email</Text>
+                  <TextInput
                     style={[
-                      AppStyle.StyleCommon.textWhite15,
-                      { color: email && password ? "#fff" : "#A8A8A8" },
+                      AppStyle.StyleLogin.inputLogin,
+                      AppStyle.StyleCommon.textBlack15,
+                    ]}
+                    placeholder="Nhập email"
+                    placeholderTextColor="#ccc"
+                    value={email}
+                    onChangeText={(text) => {
+                      setEmail(text);
+                    }}
+                  />
+                </View>
+                <View style={AppStyle.StyleLogin.boxItem}>
+                  <Text style={AppStyle.StyleCommon.textBlack15}>Mật khẩu</Text>
+                  <TextInput
+                    style={[
+                      AppStyle.StyleLogin.inputLogin,
+                      AppStyle.StyleCommon.textBlack15,
+                    ]}
+                    placeholder="Nhập mật khẩu"
+                    placeholderTextColor="#ccc"
+                    secureTextEntry={!showPass}
+                    value={password}
+                    onChangeText={(text) => {
+                      setPassword(text);
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={AppStyle.StyleLogin.buttonImg}
+                    onPress={handleShowPass}
+                  >
+                    <Image
+                      style={AppStyle.StyleLogin.img}
+                      source={
+                        showPass
+                          ? require("../../assets/images/eye_view.png")
+                          : require("../../assets/images/eye_hide.png")
+                      }
+                    />
+                  </TouchableOpacity>
+                </View>
+                {wrongPass && (
+                  <View
+                    style={[
+                      AppStyle.StyleLogin.boxItem,
+                      { marginVertical: 0, marginLeft: 4 },
                     ]}
                   >
-                    Đăng nhập
-                  </Text>
+                    <Text style={AppStyle.StyleLogin.wrongPass}>
+                      {textwrong}
+                    </Text>
+                  </View>
                 )}
-              </TouchableOpacity>
+                <View
+                  style={{
+                    flex: 1,
+                    alignSelf: "flex-end",
+                    marginRight: 20,
+                    marginBottom: 15,
+                  }}
+                >
+                  <TouchableOpacity onPress={handleForgotPassword}>
+                    <Text style={AppStyle.StyleLogin.textHref}>
+                      Quên mật khẩu?
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={[
+                    {
+                      flexDirection: "row",
+                      width: "90%",
+                      alignSelf: "center",
+                      marginLeft: 4,
+                      marginBottom: 10,
+                      gap: 10,
+                    },
+                  ]}
+                >
+                  <CustomCheckBox
+                    checked={isSavedPassword}
+                    func={() => {
+                      setisSavedPassword(!isSavedPassword);
+                    }}
+                  />
+                  <Text>Lưu mật khẩu</Text>
+                </View>
+                <TouchableOpacity
+                  style={[
+                    AppStyle.StyleLogin.boxItem,
+                    AppStyle.StyleLogin.button,
+                    AppStyle.StyleCommon.alignCenter,
+                    ,
+                    {
+                      backgroundColor:
+                        email && password ? Color.color_header_red : "#ccc", // Điều kiện đổi màu nền
+                    },
+                  ]}
+                  onPress={handleLogin}
+                  disabled={loading || !(email && password)} // Vô hiệu hóa nút khi đang tải
+                >
+                  {loading ? ( // Hiển thị ActivityIndicator nếu đang tải
+                    <ActivityIndicator size="small" color="#fff" />
+                  ) : (
+                    <Text
+                      style={[
+                        AppStyle.StyleCommon.textWhite15,
+                        { color: email && password ? "#fff" : "#A8A8A8" },
+                      ]}
+                    >
+                      Đăng nhập
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          <View style={AppStyle.StyleLogin.flexVer}>
-            <Text style={{ alignSelf: "center" }}>Version 1.1.1</Text>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+          </ScrollView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
+      <View
+        style={[
+          AppStyle.StyleLogin.flexVer,
+        ]}
+      >
+        <Text style={{ alignSelf: "center" }}>Version 1.1.1</Text>
+      </View>
+    </View>
   );
 }

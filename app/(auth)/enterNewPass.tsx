@@ -84,148 +84,150 @@ export default function enterNewPass() {
     }
   };
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <SafeAreaView
-        style={[
-          AppStyle.StyleCommon.container,
-          AppStyle.StyleCommon.alignCenter,
-        ]}
+    <View style={AppStyle.StyleCommon.container}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView
-          style={[AppStyle.StyleCommon.container, { width: "100%" }]}
-          contentContainerStyle={{ flexGrow: 1 }}
+        <SafeAreaView
+          style={[
+            AppStyle.StyleCommon.container,
+            AppStyle.StyleCommon.alignCenter,
+          ]}
         >
-          <View
-            style={[
-              AppStyle.StyleCommon.alignCenter,
-              AppStyle.StyleLogin.flexLogo,
-            ]}
+          <ScrollView
+            style={[AppStyle.StyleCommon.container, { width: "100%" }]}
+            contentContainerStyle={{ flexGrow: 1 }}
           >
-            <Image
-              style={AppStyle.StyleLogin.logo}
-              source={require("../../assets/images/logo.png")}
-            />
-          </View>
-          <View style={AppStyle.StyleLogin.flexLogin}>
-            <View style={AppStyle.StyleLogin.boxLogin}>
-              <View style={AppStyle.StyleLogin.boxItem}>
-                <Text style={AppStyle.StyleCommon.textBlack15}>
-                  {isChangePasswordFirstTime == 1
-                    ? "Thay đổi mật khẩu lần đầu tiên"
-                    : "Đặt lại mật khẩu"}
-                </Text>
-                <TextInput
-                  style={[
-                    AppStyle.StyleLogin.inputLogin,
-                    AppStyle.StyleCommon.textBlack15,
-                  ]}
-                  placeholder="Nhập mật khẩu mới"
-                  placeholderTextColor="#ccc"
-                  secureTextEntry={!showPass}
-                  value={newpass}
-                  onChangeText={(text) => {
-                    setNewPass(text);
-                  }}
-                />
-                <TextInput
-                  style={[
-                    AppStyle.StyleLogin.inputLogin,
-                    AppStyle.StyleCommon.textBlack15,
-                  ]}
-                  placeholder="Xác nhận mật khẩu"
-                  placeholderTextColor="#ccc"
-                  secureTextEntry={!showPass}
-                  value={retypePass}
-                  onChangeText={(text) => {
-                    setRetypePass(text);
-                  }}
-                />
-                <TouchableOpacity
-                  style={AppStyle.StyleLogin.showPassResetPass}
-                  onPress={handleShowPass}
-                >
-                  <Text style={AppStyle.StyleLogin.textShowPass}>
-                    {showPass ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+            <View
+              style={[
+                AppStyle.StyleCommon.alignCenter,
+                AppStyle.StyleLogin.flexLogo,
+              ]}
+            >
+              <Image
+                style={AppStyle.StyleLogin.logo}
+                source={require("../../assets/images/logo.png")}
+              />
+            </View>
+            <View style={AppStyle.StyleLogin.flexLogin}>
+              <View style={AppStyle.StyleLogin.boxLogin}>
+                <View style={AppStyle.StyleLogin.boxItem}>
+                  <Text style={AppStyle.StyleCommon.textBlack15}>
+                    {isChangePasswordFirstTime == 1
+                      ? "Thay đổi mật khẩu lần đầu tiên"
+                      : "Đặt lại mật khẩu"}
                   </Text>
-                  <Image
-                    style={AppStyle.StyleLogin.img}
-                    source={
-                      showPass
-                        ? require("../../assets/images/eye_view.png")
-                        : require("../../assets/images/eye_hide.png")
-                    }
-                  />
-                </TouchableOpacity>
-                {!isStrongPass && (
-                  <View>
-                    <Text>{message}</Text>
-                  </View>
-                )}
-                {wrongPass && (
-                  <View>
-                    <Text style={AppStyle.StyleLogin.wrongPass}>
-                      {textwrong}
-                    </Text>
-                  </View>
-                )}
-              </View>
-
-              <View
-                style={[
-                  AppStyle.StyleCommon.flexRowCenter,
-                  AppStyle.StyleLogin.boxButton,
-                ]}
-              >
-                <TouchableOpacity
-                  style={[AppStyle.StyleCommon.alignCenter]}
-                  onPress={handleGoLogin}
-                >
-                  <Text
+                  <TextInput
                     style={[
+                      AppStyle.StyleLogin.inputLogin,
                       AppStyle.StyleCommon.textBlack15,
-                      AppStyle.StyleLogin.spaceButton,
                     ]}
-                  >
-                    Hủy Bỏ
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  disabled={!isStrongPass}
-                  style={[
-                    AppStyle.StyleLogin.button,
-                    !isStrongPass && { backgroundColor: "gray" },
-                    AppStyle.StyleCommon.alignCenter,
-                  ]}
-                  onPress={handleLogin}
-                >
-                  <Text
+                    placeholder="Nhập mật khẩu mới"
+                    placeholderTextColor="#ccc"
+                    secureTextEntry={!showPass}
+                    value={newpass}
+                    onChangeText={(text) => {
+                      setNewPass(text);
+                    }}
+                  />
+                  <TextInput
                     style={[
-                      AppStyle.StyleCommon.textWhite15,
-                      ,
-                      AppStyle.StyleLogin.spaceButton,
+                      AppStyle.StyleLogin.inputLogin,
+                      AppStyle.StyleCommon.textBlack15,
                     ]}
+                    placeholder="Xác nhận mật khẩu"
+                    placeholderTextColor="#ccc"
+                    secureTextEntry={!showPass}
+                    value={retypePass}
+                    onChangeText={(text) => {
+                      setRetypePass(text);
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={AppStyle.StyleLogin.showPassResetPass}
+                    onPress={handleShowPass}
                   >
-                    Xác nhận
-                  </Text>
-                </TouchableOpacity>
+                    <Text style={AppStyle.StyleLogin.textShowPass}>
+                      {showPass ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                    </Text>
+                    <Image
+                      style={AppStyle.StyleLogin.img}
+                      source={
+                        showPass
+                          ? require("../../assets/images/eye_view.png")
+                          : require("../../assets/images/eye_hide.png")
+                      }
+                    />
+                  </TouchableOpacity>
+                  {!isStrongPass && (
+                    <View>
+                      <Text>{message}</Text>
+                    </View>
+                  )}
+                  {wrongPass && (
+                    <View>
+                      <Text style={AppStyle.StyleLogin.wrongPass}>
+                        {textwrong}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+
+                <View
+                  style={[
+                    AppStyle.StyleCommon.flexRowCenter,
+                    AppStyle.StyleLogin.boxButton,
+                  ]}
+                >
+                  <TouchableOpacity
+                    style={[AppStyle.StyleCommon.alignCenter]}
+                    onPress={handleGoLogin}
+                  >
+                    <Text
+                      style={[
+                        AppStyle.StyleCommon.textBlack15,
+                        AppStyle.StyleLogin.spaceButton,
+                      ]}
+                    >
+                      Hủy Bỏ
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    disabled={!isStrongPass}
+                    style={[
+                      AppStyle.StyleLogin.button,
+                      !isStrongPass && { backgroundColor: "gray" },
+                      AppStyle.StyleCommon.alignCenter,
+                    ]}
+                    onPress={handleLogin}
+                  >
+                    <Text
+                      style={[
+                        AppStyle.StyleCommon.textWhite15,
+                        ,
+                        AppStyle.StyleLogin.spaceButton,
+                      ]}
+                    >
+                      Xác nhận
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-          <View style={AppStyle.StyleLogin.flexVer}>
-            <Text style={{ alignSelf: "center" }}>Version 1.1.1</Text>
-          </View>
-        </ScrollView>
-        <CustomMessage
-          hasVisible={isSuccess}
-          title={"Đổi mật khẩu thành công"}
-          content={"Vui lòng đăng nhập lại"}
-          func={[handleGoLogin]}
-          textFunc={["Đăng nhập"]}
-        />
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+          </ScrollView>
+          <CustomMessage
+            hasVisible={isSuccess}
+            title={"Đổi mật khẩu thành công"}
+            content={"Vui lòng đăng nhập lại"}
+            func={[handleGoLogin]}
+            textFunc={["Đăng nhập"]}
+          />
+        </SafeAreaView>
+      </KeyboardAvoidingView>
+      <View style={AppStyle.StyleLogin.flexVer}>
+        <Text style={{ alignSelf: "center" }}>Version 1.1.1</Text>
+      </View>
+    </View>
   );
 }
