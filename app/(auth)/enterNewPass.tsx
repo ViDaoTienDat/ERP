@@ -16,12 +16,14 @@ import { checkPassword } from "../axios/func/checkPassword";
 import { changePassword, resetPassword } from "../axios/api/loginAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomMessage from "@/components/CustomMessage";
+import * as SecureStore from "expo-secure-store";
 
 export default function enterNewPass() {
   const params = useLocalSearchParams();
   const email = params.email.toString();
   const password = params.password.toString();
   const isChangePasswordFirstTime = Number(params.isChangePassword);
+  const isSavedPassword = params.isSavedPassword.toString();
   const [newpass, setNewPass] = useState("");
   const [retypePass, setRetypePass] = useState("");
   const [isStrongPass, setIsStrongPass] = useState(false);
@@ -33,6 +35,9 @@ export default function enterNewPass() {
 
   const handleGoLogin = () => {
     router.replace("/login");
+  };
+  const handleSuccess = () => {
+    router.replace("/");
   };
   const handleShowPass = () => {
     setShowPass(!showPass);
@@ -51,8 +56,12 @@ export default function enterNewPass() {
         if (isChangePasswordFirstTime == 1) {
           changePassword(password, newpass, retypePass).then(async (result) => {
             if (result.code === 200) {
+              if (isSavedPassword == "true") {
+                await AsyncStorage.setItem("password", newpass);
+              }
+              await SecureStore.setItemAsync("force_password_change", "false");
               setWrongPass(false);
-              setIsSuccess(true);
+              handleSuccess();
             } else if (result.code === 400) {
               setWrongPass(true);
               setTextWrong("Xác nhận mật khẩu không đúng!");
@@ -64,7 +73,8 @@ export default function enterNewPass() {
         } else {
           resetPassword(email, newpass, retypePass).then((result) => {
             if (result.code === 200) {
-              handleGoLogin();
+              setWrongPass(false);
+              setIsSuccess(true);
             } else if (result.code === 400) {
               setWrongPass(true);
               setTextWrong("Không thể đổi!");
@@ -172,7 +182,6 @@ export default function enterNewPass() {
                   </View>
                 )}
               </View>
-
               <View
                 style={[
                   AppStyle.StyleCommon.flexRowCenter,
@@ -196,7 +205,7 @@ export default function enterNewPass() {
                   disabled={!isStrongPass}
                   style={[
                     AppStyle.StyleLogin.button,
-                    !isStrongPass && { backgroundColor: "gray" },
+                    !isStrongPass && { backgroundColor: "#ccc" },
                     AppStyle.StyleCommon.alignCenter,
                   ]}
                   onPress={handleLogin}
@@ -204,7 +213,7 @@ export default function enterNewPass() {
                   <Text
                     style={[
                       AppStyle.StyleCommon.textWhite15,
-                      ,
+                      !isStrongPass && { color: "#A8A8A8" },
                       AppStyle.StyleLogin.spaceButton,
                     ]}
                   >
@@ -213,9 +222,6 @@ export default function enterNewPass() {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
-          <View style={AppStyle.StyleLogin.flexVer}>
-            <Text style={{ alignSelf: "center" }}>Version 1.1.1</Text>
           </View>
         </ScrollView>
         <CustomMessage

@@ -144,7 +144,12 @@ export default function Index() {
         if (result.data.force_password_change) {
           router.push({
             pathname: "./enterNewPass",
-            params: { email: email, password: password, isChangePassword: 1 },
+            params: {
+              email: email,
+              password: password,
+              isChangePassword: 1,
+              isSavedPassword: isSavedPassword.toString(),
+            },
           });
         } else {
           dispatch(
