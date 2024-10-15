@@ -192,12 +192,12 @@ function CheckInDetail({ route, navigation }: any): React.JSX.Element {
             <Text style={AppStyle.StyleCheckIn.textCheckIn}>Chấm Công</Text>
           </TouchableOpacity>
         </ScrollView>
-        <CustomMessage hasVisible={hasSuccess} title={'Chấm công thành công'}
+        {/* <CustomMessage hasVisible={hasSuccess} title={'Chấm công thành công'}
           content={'Dữ liệu của bạn đã được ghi nhận vào ' + successTime}
           func={SuccessCheckIn} textFunc={'OK'} />
         <CustomMessage hasVisible={hasFailure} title={'Chấm công thất bại'}
           content={message}
-          func={FailureCheckIn} textFunc={'Quay lại'} />
+          func={FailureCheckIn} textFunc={'Quay lại'} /> */}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );

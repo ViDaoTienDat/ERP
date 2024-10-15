@@ -94,9 +94,12 @@ export default function enterNewPass() {
     }
   };
   return (
+    <View style={{ flex: 1 }}>
+
+    
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <SafeAreaView
         style={[
@@ -233,5 +236,13 @@ export default function enterNewPass() {
         />
       </SafeAreaView>
     </KeyboardAvoidingView>
+    <View
+        style={[
+          AppStyle.StyleLogin.flexVer,
+        ]}
+      >
+        <Text style={{ alignSelf: "center" }}>Version 1.1.1</Text>
+      </View>
+    </View>
   );
 }

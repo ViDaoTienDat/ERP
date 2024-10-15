@@ -11,7 +11,10 @@ const StyleLogin = StyleSheet.create({
     width: "100%",
   },
   flexVer: {
-    flex: 1,
+    backgroundColor: 'white',
+    width: "100%",
+    justifyContent: "flex-end", 
+    height: "auto"
   },
   logo: {
     width: 167,
