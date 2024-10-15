@@ -9,6 +9,7 @@ import RowCategory from "@/components/RowCategory";
 import { useRouter } from "expo-router";
 export default function profileTab() {
   const router = useRouter();
+  const imageUrl = useSelector((state: any) => state.userdata.avatar);
 
   const handleDetailProfile = () => {
     router.navigate("/home/profileDetail");
@@ -24,8 +25,8 @@ export default function profileTab() {
               <Image
                 style={[AppStyle.StyleHeader.size_avt]}
                 source={
-                  userInfo.avatar
-                    ? { uri: userInfo.avatar }
+                  imageUrl
+                    ? { uri: imageUrl }
                     : require("../../../assets/images/avt.png")
                 }
               />

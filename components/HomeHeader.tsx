@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -11,9 +11,11 @@ import Color from "../constants/theme/Color";
 import AppStyle from "../constants/theme";
 import { useSelector } from "react-redux";
 import { useRouter } from "expo-router";
+import { getImageUrl } from "@/app/axios/api/imageApi";
 
 function HomeHeader({ userInfo, onPress, handlePressNotificationIcon }: any): React.JSX.Element {
-  const router = useRouter();
+
+  const imageUrl = useSelector((state: any) => state.userdata.avatar);
   return (
     <View style={[AppStyle.StyleHeader.header]}>
       <View style={[AppStyle.StyleHeader.topRow]}>
@@ -22,8 +24,8 @@ function HomeHeader({ userInfo, onPress, handlePressNotificationIcon }: any): Re
             <Image
               style={[AppStyle.StyleHeader.size_avt]}
               source={
-                userInfo?.avatar
-                  ? { uri: userInfo.avatar }
+                imageUrl
+                  ? { uri: imageUrl }
                   : require("../assets/images/avt.png")
               }
             />

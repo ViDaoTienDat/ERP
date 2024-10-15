@@ -5,7 +5,7 @@ const serverAPI = process.env.EXPO_PUBLIC_API_URL;
 const apiKey = process.env.EXPO_PUBLIC_X_API_KEY;
 export const signIn = async (email: string, password: string) => {
   try {
-    const url = `${serverAPI}/api/v1/sign-in`;
+    const url = `${serverAPI}/sign-in`;
     const data = {
       email: email,
       password: password,
@@ -35,7 +35,7 @@ export const signIn = async (email: string, password: string) => {
 };
 export const sendCode = async (email: string) => {
   try {
-    const url = `${serverAPI}/api/v1/forgot-password/send-code`;
+    const url = `${serverAPI}/forgot-password/send-code`;
     const data = {
       email: email,
     };
@@ -54,7 +54,7 @@ export const sendCode = async (email: string) => {
 };
 export const verifyPassword = async (email: any, code: any) => {
   try {
-    const url = `${serverAPI}/api/v1/forgot-password/verify-code`;
+    const url = `${serverAPI}/forgot-password/verify-code`;
     const data = {
       email: email,
       code: code,
@@ -78,7 +78,7 @@ export const resetPassword = async (
   retype_password: any
 ) => {
   try {
-    const url = `${serverAPI}/api/v1/forgot-password/reset`;
+    const url = `${serverAPI}/forgot-password/reset`;
     const data = {
       email: email,
       new_password: new_password,

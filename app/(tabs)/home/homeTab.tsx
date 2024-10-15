@@ -28,6 +28,7 @@ import { useRouter } from "expo-router";
 
 import { storeToken } from "@/app/axios/api/storeToken";
 import {
+  clearAvatar,
   clearBranch,
   clearBranchCheckIn,
   clearDataIntern,
@@ -36,16 +37,18 @@ import {
   clearUser,
   clearWorkShift,
   clearWorkShiftCheckIn,
+  setAvatar,
 } from "@/app/state/reducers/dataSlice";
 import { useIsFocused } from "@react-navigation/native";
+import { getImageUrl } from "@/app/axios/api/imageApi";
 export default function home() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [backPressedOnce, setBackPressedOnce] = useState(false);
 
-  const isFocused = useIsFocused(); // Kiểm tra xem trang chủ có đang được focus không
+
+  const isFocused = useIsFocused();
   useEffect(() => {
-    // Nếu trang chủ không được focus, không cần thêm sự kiện quay lại
     if (!isFocused) return;
 
     const backAction = () => {
@@ -82,6 +85,7 @@ export default function home() {
     { useNativeDriver: false }
   );
   const userInfo = useSelector((state: any) => state.userdata.user);
+  const imageUrl = useSelector((state: any) => state.userdata.avatar);
   const slideAnim = useRef(new Animated.Value(-500)).current; // Vị trí bắt đầu từ bên trái
   const [modalVisible, setModalVisible] = useState(false);
   const handleClose = () => {
@@ -121,7 +125,14 @@ export default function home() {
     dispatch(clearDateHisCheckIn());
     dispatch(clearBranch());
     dispatch(clearRoleId());
+    dispatch(clearAvatar());
   };
+  useEffect(() => {
+    if (!userInfo) return;
+    getImageUrl(userInfo?.avatar).then((res) => {
+      dispatch(setAvatar(res));
+    })
+  }, [userInfo]);
 
   return (
     <SafeAreaView style={AppStyle.StyleCommon.container}>
@@ -214,8 +225,8 @@ export default function home() {
                     <Image
                       style={[AppStyle.StyleCommon.size_avt_large]}
                       source={
-                        userInfo?.avatar
-                          ? { uri: userInfo.avatar }
+                        imageUrl
+                          ? { uri: imageUrl }
                           : require("../../../assets/images/avt.png")
                       }
                     />

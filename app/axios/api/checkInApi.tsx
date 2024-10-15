@@ -14,7 +14,7 @@ export const getHisCheckIn = async () => {
     if (token.accessToken) {
       const userId = getUserIdFromAccessToken(token.accessToken);
       if (userId) {
-        const url = `${serverAPI}/api/v1/attendance-records/users/${userId}`;
+        const url = `${serverAPI}/attendance-records/users/${userId}`;
 
         const response = await axios.get(url, {
           headers: {
@@ -42,7 +42,7 @@ export const getCheckInById = async (id: string) => {
     if (token.accessToken) {
       const userId = getUserIdFromAccessToken(token.accessToken);
       if (userId) {
-        const url = `${serverAPI}/api/v1/attendance-records/${id}`;
+        const url = `${serverAPI}/attendance-records/${id}`;
 
         const response = await axios.get(url, {
           headers: {
@@ -80,7 +80,7 @@ export const checkInAPI = async (
       const userId = getUserIdFromAccessToken(token.accessToken);
 
       if (userId) {
-        const url = `${serverAPI}/api/v1/attendance-records`;
+        const url = `${serverAPI}/attendance-records`;
         const data = {
           image: image,
           branch_id: branch_id,
@@ -114,7 +114,7 @@ export const getCurrentCheckIn = async () => {
   try {
     const token = await getTokens();
     if (token.accessToken) {
-      const url = `${serverAPI}/api/v1/attendance-records/current-records`;
+      const url = `${serverAPI}/attendance-records/current-records`;
 
       const response = await axios.get(url, {
         headers: {

@@ -3,7 +3,7 @@ import { apiKey, serverAPI } from "./dev_env";
 
 export const getImageUrl = async (id: string) => {
   try {
-    const url = `${serverAPI}/api/v1/images/${id}`;
+    const url = `${serverAPI}/images/${id}`;
 
     const response = await axios.get(url, {
       headers: {
@@ -11,7 +11,7 @@ export const getImageUrl = async (id: string) => {
       },
       responseType: "blob",
     });
-    
+
     const base64String = await convertBlobToBase64(response.data);
     return base64String; // Trả về chuỗi Base64
   } catch (error) {
