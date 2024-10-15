@@ -16,7 +16,7 @@ export const GetInternSchedule = async () => {
     if (token.accessToken) {
       const userId = getUserIdFromAccessToken(token.accessToken);
       if (userId) {
-        const url = `${serverAPI}/api/v1/schedules/users/${userId}`;
+        const url = `${serverAPI}/schedules/users/${userId}`;
 
         const response = await axios.get(url, {
           headers: {
@@ -47,8 +47,8 @@ export const RegisterInternSchedule = async (
     if (token.accessToken) {
       const userId = getUserIdFromAccessToken(token.accessToken);
       if (userId) {
-        const url = `${serverAPI}/api/v1/schedules/register/${userId}`;
-        // const url = `${serverAPI}/api/v1/schedules/dasdasdsadasdasd`; // co tinh de error
+        const url = `${serverAPI}/schedules/register/${userId}`;
+        // const url = `${serverAPI}/schedules/dasdasdsadasdasd`; // co tinh de error
         const formattedDate = formatDateToLocal(date);
         const data = {
           register_time: {
@@ -86,7 +86,7 @@ export const ChangeInternSchedule = async (date: Date, workShift: string[]) => {
       userId = getUserIdFromAccessToken(token.accessToken);
     }
     if (userId) {
-      const url = `${serverAPI}/api/v1/schedules/users/${userId}`;
+      const url = `${serverAPI}/schedules/users/${userId}`;
       const formattedDate = formatDateToLocal(date);
       const data = {
         register_time: {
@@ -123,7 +123,7 @@ export const DeleteInternSchedule = async (date: Date) => {
       userId = getUserIdFromAccessToken(token.accessToken);
     }
     if (userId) {
-      const url = `${serverAPI}/api/v1/schedules/users/${userId}`;
+      const url = `${serverAPI}/schedules/users/${userId}`;
       const formattedDate = formatDateToLocal(date);
       const response = await axios.delete(url, {
         data: {

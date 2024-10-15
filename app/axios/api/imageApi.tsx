@@ -3,7 +3,7 @@ import { apiKey, serverAPI } from "./dev_env";
 
 export const getImageUrl = async (id: string) => {
   try {
-    const url = `${serverAPI}/api/v1/images/${id}`;
+    const url = `${serverAPI}/images/${id}`;
 
     const response = await axios.get(url, {
       headers: {
