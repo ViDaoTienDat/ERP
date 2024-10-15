@@ -13,45 +13,75 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "../../constants/theme";
 import { router, useLocalSearchParams } from "expo-router";
 import { checkPassword } from "../axios/func/checkPassword";
-import { resetPassword } from "../axios/api/loginAPI";
+import { changePassword, resetPassword } from "../axios/api/loginAPI";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomMessage from "@/components/CustomMessage";
 
 export default function enterNewPass() {
   const params = useLocalSearchParams();
-  const email = params.email;
+  const email = params.email.toString();
+  const password = params.password.toString();
+  const isChangePasswordFirstTime = Number(params.isChangePassword);
   const [newpass, setNewPass] = useState("");
   const [retypePass, setRetypePass] = useState("");
-  const [strongPass, setStrongPass] = useState(true);
+  const [isStrongPass, setIsStrongPass] = useState(false);
   const [message, setMessage] = useState("");
   const [wrongPass, setWrongPass] = useState(false);
   const [textwrong, setTextWrong] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleGoLogin = () => {
-    router.navigate("/");
+    router.replace("/login");
   };
   const handleShowPass = () => {
     setShowPass(!showPass);
   };
 
   useEffect(() => {
-    checkPassword(newpass).then(({ mess, result }) => {
-      setStrongPass(result);
+    checkPassword(newpass).then(({ mess, isStrongPass }) => {
+      setIsStrongPass(isStrongPass);
       setMessage(mess);
     });
   }, [newpass]);
 
   const handleLogin = () => {
-    resetPassword(email, newpass, retypePass).then((result) => {
-      if (result.code === 200) {
-        handleGoLogin();
-      } else if (result.code === 400) {
-        setWrongPass(true);
-        setTextWrong("Không thể đổi!");
+    if (newpass && retypePass) {
+      if (newpass === retypePass) {
+        if (isChangePasswordFirstTime == 1) {
+          changePassword(password, newpass, retypePass).then(async (result) => {
+            if (result.code === 200) {
+              setWrongPass(false);
+              setIsSuccess(true);
+            } else if (result.code === 400) {
+              setWrongPass(true);
+              setTextWrong("Xác nhận mật khẩu không đúng!");
+            } else {
+              setWrongPass(true);
+              setTextWrong("Lỗi không xác định!");
+            }
+          });
+        } else {
+          resetPassword(email, newpass, retypePass).then((result) => {
+            if (result.code === 200) {
+              handleGoLogin();
+            } else if (result.code === 400) {
+              setWrongPass(true);
+              setTextWrong("Không thể đổi!");
+            } else {
+              setWrongPass(true);
+              setTextWrong("Lỗi không xác định!");
+            }
+          });
+        }
       } else {
         setWrongPass(true);
-        setTextWrong("Lỗi không xác định!");
+        setTextWrong("Xác nhận mật khẩu không đúng");
       }
-    });
+    } else {
+      setWrongPass(true);
+      setTextWrong("Mật khẩu không được để trống!");
+    }
   };
   return (
     <KeyboardAvoidingView
@@ -83,7 +113,9 @@ export default function enterNewPass() {
             <View style={AppStyle.StyleLogin.boxLogin}>
               <View style={AppStyle.StyleLogin.boxItem}>
                 <Text style={AppStyle.StyleCommon.textBlack15}>
-                  Đặt lại mật khẩu
+                  {isChangePasswordFirstTime == 1
+                    ? "Thay đổi mật khẩu lần đầu tiên"
+                    : "Đặt lại mật khẩu"}
                 </Text>
                 <TextInput
                   style={[
@@ -127,15 +159,20 @@ export default function enterNewPass() {
                     }
                   />
                 </TouchableOpacity>
-                {!strongPass && (
+                {!isStrongPass && (
                   <View>
                     <Text>{message}</Text>
                   </View>
                 )}
+                {wrongPass && (
+                  <View>
+                    <Text style={AppStyle.StyleLogin.wrongPass}>
+                      {textwrong}
+                    </Text>
+                  </View>
+                )}
               </View>
-              {wrongPass && (
-                <Text style={AppStyle.StyleLogin.wrongPass}>{textwrong}</Text>
-              )}
+
               <View
                 style={[
                   AppStyle.StyleCommon.flexRowCenter,
@@ -156,8 +193,10 @@ export default function enterNewPass() {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  disabled={!isStrongPass}
                   style={[
                     AppStyle.StyleLogin.button,
+                    !isStrongPass && { backgroundColor: "gray" },
                     AppStyle.StyleCommon.alignCenter,
                   ]}
                   onPress={handleLogin}
@@ -179,6 +218,13 @@ export default function enterNewPass() {
             <Text style={{ alignSelf: "center" }}>Version 1.1.1</Text>
           </View>
         </ScrollView>
+        <CustomMessage
+          hasVisible={isSuccess}
+          title={"Đổi mật khẩu thành công"}
+          content={"Vui lòng đăng nhập lại"}
+          func={[handleGoLogin]}
+          textFunc={["Đăng nhập"]}
+        />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );

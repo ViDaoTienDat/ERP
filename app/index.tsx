@@ -32,7 +32,7 @@ export default function index() {
     const checkToken = async () => {
       try {
         const token = await getTokens();
-        if (token?.accessToken) {
+        if (token?.accessToken && token?.forcePasswordChange == "false") {
           const expirationTime = new Date(
             getExpiredTimeFromAccessToken(token?.accessToken) // exp: "2024-09-26T17:35:20.731715287+07:00"
           ).getTime();

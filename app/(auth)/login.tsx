@@ -84,11 +84,11 @@ export default function Index() {
 
   const getSavedLoginInfo = async () => {
     const email = await AsyncStorage.getItem("email");
-    console.log("🚀 ~ getSavedLoginInfo ~ email:", email);
+    // console.log("🚀 ~ getSavedLoginInfo ~ email:", email);
     const password = await AsyncStorage.getItem("password");
-    console.log("🚀 ~ getSavedLoginInfo ~ password:", password);
+    // console.log("🚀 ~ getSavedLoginInfo ~ password:", password);
     const isSavedPassword = await AsyncStorage.getItem("isSavedPassword");
-    console.log("🚀 ~ getSavedLoginInfo ~ isSavedPassword:", isSavedPassword);
+    // console.log("🚀 ~ getSavedLoginInfo ~ isSavedPassword:", isSavedPassword);
     return { email, password, isSavedPassword };
   };
 
@@ -138,38 +138,48 @@ export default function Index() {
           );
           await AsyncStorage.setItem("password", ""); // Đặt giá trị password thành null
         }
+
         setWrongPass(false);
         setTextWrong("");
-        dispatch(setRoleId(getRoleIdFromAccessToken(result.data.access_token)));
-        getUser(result.data.access_token).then(async (result) => {
-          if (result.code === 200) {
-            dispatch(setUser(result.data));
-          }
-        });
-        getAllBranch().then(async (result) => {
-          if (result.code === 200) {
-            dispatch(setBranch(result.data));
-          }
-        });
-        getHisCheckIn().then(async (result) => {
-          if (result.code === 200) {
-            const datehis = await handleSplitHisCheckIn(result.data);
-            dispatch(setDateHisCheckIn(datehis));
-          }
-        });
-        GetInternSchedule().then(async (result) => {
-          if (result.code === 200) {
-            dispatch(setDataIntern(result.data));
-          }
-        });
-        getWorkShift().then(async (result) => {
-          if (result.code === 200) {
-            const workshift = await splitWorkShift(result.data);
-            dispatch(setWorkShift(workshift));
-          }
-        });
+        if (result.data.force_password_change) {
+          router.push({
+            pathname: "./enterNewPass",
+            params: { email: email, password: password, isChangePassword: 1 },
+          });
+        } else {
+          dispatch(
+            setRoleId(getRoleIdFromAccessToken(result.data.access_token))
+          );
+          getUser(result.data.access_token).then(async (result) => {
+            if (result.code === 200) {
+              dispatch(setUser(result.data));
+            }
+          });
+          getAllBranch().then(async (result) => {
+            if (result.code === 200) {
+              dispatch(setBranch(result.data));
+            }
+          });
+          getHisCheckIn().then(async (result) => {
+            if (result.code === 200) {
+              const datehis = await handleSplitHisCheckIn(result.data);
+              dispatch(setDateHisCheckIn(datehis));
+            }
+          });
+          GetInternSchedule().then(async (result) => {
+            if (result.code === 200) {
+              dispatch(setDataIntern(result.data));
+            }
+          });
+          getWorkShift().then(async (result) => {
+            if (result.code === 200) {
+              const workshift = await splitWorkShift(result.data);
+              dispatch(setWorkShift(workshift));
+            }
+          });
 
-        router.push("/(tabs)/home");
+          router.push("/(tabs)/home");
+        }
       } else if (result.code === 401) {
         setWrongPass(true);
         setTextWrong("Email hoặc mật khẩu không đúng!");
