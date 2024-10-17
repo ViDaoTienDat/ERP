@@ -8,40 +8,40 @@ import {
   StyleSheet,
   Modal,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyle from "@/constants/theme";
 import TitleHeader from "@/components/TitleHeader";
 import ContentProfile from "@/components/ContentProfile";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "expo-router";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
+import { changeAvatar } from "@/app/axios/api/dataUserAPI";
+import { setAvatar, setUrlAvatar } from "@/app/state/reducers/dataSlice";
+import Color from "@/constants/theme/Color";
+import { getImageUrl } from "@/app/axios/api/imageApi";
+import * as ImageManipulator from "expo-image-manipulator";
 export default function profileDetail() {
-  const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
   const userInfo = useSelector((state: any) => state.userdata.user);
-
-  const [image, setImage] = useState<string | null>(null);
-
-  const imgUrl = useSelector((state: any) => state.userdata.avatar);
-
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const imgUrl = useSelector((state: any) => state.userdata.urlAvatar);
+  const [img, setImg] = useState("");
 
   const pickImage = async () => {
     setModalVisible(false);
-
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-      base64:true
     });
-
     if (!result.canceled) {
-        const type = result.assets[0] ? result.assets[0].uri.split(".").pop() : null;
-        const base64Image = result.assets[0].base64;
-        setImage(`data:image/${type};base64,${base64Image}`);
+      setIsLoading(true);
+      uploadImage(result.assets[0]);
     }
   };
   const takePhoto = async () => {
@@ -51,14 +51,32 @@ export default function profileDetail() {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-      base64:true
     });
     if (!result.canceled) {
-      const type = result.assets[0] ? result.assets[0].uri.split(".").pop() : null;
-      const base64Image = result.assets[0].base64;
-      setImage(`data:image/${type};base64,${base64Image}`);
-  }
-  }
+      setIsLoading(true);
+      uploadImage(result.assets[0]);
+    }
+  };
+
+  const uploadImage = async (imageUri: any) => {
+    console.log(imageUri);
+    const resizedImage = await ImageManipulator.manipulateAsync(
+      imageUri.uri,
+      [{ resize: { width: 800 } }],
+      { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+    );
+    console.log(resizedImage);
+    const response = await changeAvatar(resizedImage);
+    if (response?.data) {
+      dispatch(setAvatar(response?.data?.id));
+      getImageUrl(response?.data?.id).then((res) => {
+        if (res) {
+          dispatch(setUrlAvatar(res)); 
+          setIsLoading(false);
+        }
+      });
+    }
+  };
 
   return (
     <SafeAreaView style={AppStyle.StyleCommon.container}>
@@ -74,9 +92,11 @@ export default function profileDetail() {
               <Image
                 style={[AppStyle.StyleCommon.size_avt_large]}
                 source={
-                  image
-                    ? { uri: image }
-                    :  imgUrl ? { uri: imgUrl } : require("../../../assets/images/avt.png")
+                  img
+                    ? { uri: img }
+                    : imgUrl
+                    ? { uri: imgUrl }
+                    : require("../../../assets/images/avt.png")
                 }
               />
               <View style={styles.container}>
@@ -92,18 +112,15 @@ export default function profileDetail() {
               </View>
             </View>
             <ContentProfile title={"Họ tên"} content={userInfo?.full_name} />
-
             <ContentProfile title={"Mã nhân viên"} content={userInfo?.id} />
             <ContentProfile title={"Giới tính"} content={userInfo?.gender} />
             <ContentProfile title={"Ngày sinh"} content={userInfo?.birthday} />
-
             <ContentProfile
               title={"Số điện thoại"}
               content={userInfo?.phone_number}
             />
             <ContentProfile title={"Email"} content={userInfo?.email} />
             <ContentProfile title={"Địa chỉ"} content={userInfo?.address} />
-
             <ContentProfile
               title={"Ngày bắt đầu"}
               content={userInfo?.start_date}
@@ -116,11 +133,9 @@ export default function profileDetail() {
               title={"Ngày kết thúc"}
               content={userInfo?.end_date}
             />
-
             <ContentProfile title={"Trạng thái"} content={""} />
             <ContentProfile title={"Phân loại"} content={""} />
             <ContentProfile title={"Chức danh"} content={userInfo?.position} />
-
             <ContentProfile
               title={"Phòng ban"}
               content={userInfo?.department}
@@ -131,6 +146,13 @@ export default function profileDetail() {
             />
           </ScrollView>
         </ImageBackground>
+        {isLoading && (
+          <View style={AppStyle.StyleCommon.loadingWrapper}>
+            <View style={AppStyle.StyleCommon.loadingContainer}>
+              <ActivityIndicator size="large" color={Color.color_header_red} />
+            </View>
+          </View>
+        )}
       </View>
       <Modal
         animationType="slide"
@@ -146,7 +168,10 @@ export default function profileDetail() {
           <View style={styles.modalContainer}>
             <TouchableWithoutFeedback>
               <View style={styles.modalView}>
-                <TouchableOpacity style={styles.row_container_modal} onPress={pickImage}>
+                <TouchableOpacity
+                  style={styles.row_container_modal}
+                  onPress={pickImage}
+                >
                   <Image
                     style={styles.icon}
                     source={require("../../../assets/images/file-earmark-image.png")}
@@ -155,7 +180,10 @@ export default function profileDetail() {
                     Chọn ảnh trong thư viện
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.row_container_modal} onPress={takePhoto}>
+                <TouchableOpacity
+                  style={styles.row_container_modal}
+                  onPress={takePhoto}
+                >
                   <Image
                     style={styles.icon}
                     source={require("../../../assets/images/camera_black.png")}

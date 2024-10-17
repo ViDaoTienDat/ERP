@@ -95,8 +95,6 @@ export default function enterNewPass() {
   };
   return (
     <View style={{ flex: 1 }}>
-
-    
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}

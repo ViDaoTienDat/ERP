@@ -13,7 +13,7 @@ interface NotificationItemProps {
 }
 
 export default function NotificationItem({ type, time, content, isRead, onPress }: NotificationItemProps) {
-  const imgUrl = useSelector((state: any) => state.userdata.avatar);
+  const imgUrl = useSelector((state: any) => state.userdata.urlAvatar);
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.container, { backgroundColor: isRead ? 'transparent' : Color.color_primary }]}>

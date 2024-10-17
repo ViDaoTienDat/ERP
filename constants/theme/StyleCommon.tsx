@@ -82,6 +82,16 @@ const StyleCommon = StyleSheet.create({
   textSecondary13: {
     fontSize: 13,
     color: Color.color_secondary
-  }
+  },
+  loadingWrapper: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingContainer: {
+    padding: 10, 
+    backgroundColor: "#fff", 
+    borderRadius: 30, 
+  },
 });
 export default StyleCommon;

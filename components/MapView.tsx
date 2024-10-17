@@ -17,6 +17,10 @@ const ExpoCustomMap = ({ showCir, location_business, location }: any) => {
                 latitudeDelta: 0.001,
                 longitudeDelta: 0.001,
             }}
+            scrollEnabled={false}
+            zoomEnabled={false}  
+            rotateEnabled={false}
+            pitchEnabled={false} 
             >
             <Marker
                 coordinate={{

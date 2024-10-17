@@ -9,7 +9,7 @@ import RowCategory from "@/components/RowCategory";
 import { useRouter } from "expo-router";
 export default function profileTab() {
   const router = useRouter();
-  const imageUrl = useSelector((state: any) => state.userdata.avatar);
+  const imageUrl = useSelector((state: any) => state.userdata.urlAvatar);
 
   const handleDetailProfile = () => {
     router.navigate("/home/profileDetail");

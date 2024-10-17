@@ -10,7 +10,6 @@ import CustomHeader from "../CustomHeader";
 import AppStyle from "@/constants/theme";
 import CardCheckIn from "../CardCheckIn";
 import { useSelector } from "react-redux";
-//import { useCameraPermission } from 'react-native-vision-camera';
 import { useCameraPermissions } from "expo-camera";
 import hasLocationPermission from "@/app/map/locationPermission";
 import { getAllBranch } from "@/app/axios/api/branchApi";
@@ -35,7 +34,6 @@ export default function CheckIn() {
     setOffice(label);
     setOfficeValue(value);
     setOfficeVisible(false);
-
     dispatch(setOfficeId(value));  // Cập nhật officeId vào Redux
     setOfficeVisible(false);
   };
