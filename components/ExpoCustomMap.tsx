@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ToastAndroid } from "react-native";
 import * as Location from "expo-location";
 import MapView, { Circle, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useDispatch } from "react-redux";
 import { setLocation } from "@/app/state/reducers/locationSlice";
+import CustomMessage from "./CustomMessage";
+import { router } from "expo-router";
 type Location = {
   latitude: number;
   longitude: number;
   latitudeDelta: number;
   longitudeDelta: number;
 };
-const ExpoCustomMap = ({ showCir, location_business }: any) => {
+const ExpoCustomMap = ({ showCir, location_business, onInvalidLocation }: any) => {
   const [location, setLocationState] = useState<Location>();
   const dispatch = useDispatch();
   const getLocation = async () => {
-    let loc = await Location.getCurrentPositionAsync({});
+    let loc = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.High});
+    if(loc.mocked){
+      onInvalidLocation(true);
+    }else{
+      onInvalidLocation(false);
+    }
     setLocationState({
       latitude: loc.coords.latitude,
       longitude: loc.coords.longitude,
@@ -35,6 +42,10 @@ const ExpoCustomMap = ({ showCir, location_business }: any) => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const FailureCheckIn = () => {
+    router.push("/(tabs)/home/homeTab");
+  };
 
   if (!location) {
     return <Text>Getting location...</Text>;

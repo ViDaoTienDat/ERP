@@ -15,7 +15,7 @@ import { getImageUrl } from "@/app/axios/api/imageApi";
 
 function HomeHeader({ userInfo, onPress, handlePressNotificationIcon }: any): React.JSX.Element {
 
-  const imageUrl = useSelector((state: any) => state.userdata.avatar);
+  const imageUrl = useSelector((state: any) => state.userdata.urlAvatar);
   return (
     <View style={[AppStyle.StyleHeader.header]}>
       <View style={[AppStyle.StyleHeader.topRow]}>
