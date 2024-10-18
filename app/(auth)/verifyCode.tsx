@@ -28,7 +28,15 @@ export default function verifyCode() {
   const handleNext = () => {
     verifyPassword(email, code).then((result) => {
       if (result.code === 200) {
-        router.push({ pathname: "./enterNewPass", params: { email: email } });
+        router.push({
+          pathname: "./enterNewPass",
+          params: {
+            email: email,
+            password: "",
+            isChangePassword: 0,
+            isSavedPassword: "",
+          },
+        });
       } else if (result.code === 400) {
         setWrongPass(true);
         setTextWrong("Mã không chính xác!");
@@ -91,10 +99,12 @@ export default function verifyCode() {
                       setCode(text);
                     }}
                   />
+                  {wrongPass && (
+                    <Text style={AppStyle.StyleLogin.wrongPass}>
+                      {textwrong}
+                    </Text>
+                  )}
                 </View>
-                {wrongPass && (
-                  <Text style={AppStyle.StyleLogin.wrongPass}>{textwrong}</Text>
-                )}
                 <View
                   style={[
                     AppStyle.StyleCommon.flexRowCenter,

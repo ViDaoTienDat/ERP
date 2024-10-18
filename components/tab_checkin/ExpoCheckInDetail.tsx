@@ -107,12 +107,12 @@ function ExpoCheckInDetail({
   }, []);
   const [locationBusiness, setLocationBusiness] = useState({ lat: 0, lng: 0 });
 
-  useEffect(() => {
-    setWSSelected(workShiftCheckIn);
-  }, [workShiftCheckIn]);
-  useEffect(() => {
-    setOfficeIdDropdown(branchCheckIn);
-  }, [branchCheckIn]);
+  // useEffect(() => {
+  //   setWSSelected(workShiftCheckIn);
+  // }, [workShiftCheckIn]);
+  // useEffect(() => {
+  //   setOfficeIdDropdown(branchCheckIn);
+  // }, [branchCheckIn]);
   useEffect(() => {
     const office = branchs.find(
       (office: { id: any }) => office.id === officeIdDropdown
@@ -127,9 +127,9 @@ function ExpoCheckInDetail({
     }
     setOfficeIdDropdown(officeIdDropdown);
   }, [officeIdDropdown]);
-  useEffect(() => {
-    setWSSelected(wsSelected);
-  }, [wsSelected]);
+  // useEffect(() => {
+  //   setWSSelected(wsSelected);
+  // }, [wsSelected]);
   useEffect(() => {
     const formattedDate = getFormattedDate();
     setCurrentDate(formattedDate);

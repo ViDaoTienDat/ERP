@@ -87,12 +87,7 @@ export default function forgotPass() {
                     }}
                   />
                   {wrongPass && (
-                    <Text
-                      style={[
-                        AppStyle.StyleLogin.wrongPass,
-                        { marginLeft: -30 },
-                      ]}
-                    >
+                    <Text style={[AppStyle.StyleLogin.wrongPass]}>
                       {textwrong}
                     </Text>
                   )}

@@ -43,7 +43,12 @@ export const sendCode = async (email: string) => {
       email: email,
     };
 
-    const response = await axios.post(url, data);
+    const response = await axios.post(url, data, {
+      headers: {
+        "x-api-key": apiKey,
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.data) {
@@ -63,7 +68,12 @@ export const verifyPassword = async (email: any, code: any) => {
       code: code,
     };
 
-    const response = await axios.post(url, data);
+    const response = await axios.post(url, data, {
+      headers: {
+        "x-api-key": apiKey,
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.data) {
@@ -88,7 +98,12 @@ export const resetPassword = async (
       retype_password: retype_password,
     };
 
-    const response = await axios.put(url, data);
+    const response = await axios.put(url, data, {
+      headers: {
+        "x-api-key": apiKey,
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.data) {
