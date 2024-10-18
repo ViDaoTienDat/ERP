@@ -38,7 +38,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { router } from "expo-router";
 import CustomMap from "../CustomMap";
-// import { getLocation } from "@/app/axios/func/getLocation";
 import { handleSplitHisCheckIn } from "@/app/axios/func/createCalendar";
 import ExpoCustomMap from "../ExpoCustomMap";
 import ExpoCustomCamera from "../ExpoCustomCamera";
@@ -92,6 +91,7 @@ function ExpoCheckInDetail({
   const [workShiftNameDetail, setWorkShiftNameDetail] = useState("");
   const [imageDetail, setImageDetail] = useState("");
 
+  const [hasInvalidLocation, setHasInvalidLocation] = useState(false);
   //list branches Dropdown
   const [officeIdDropdown, setOfficeIdDropdown] = useState(
     branchCheckIn ? branchCheckIn : "B1"
@@ -234,6 +234,10 @@ function ExpoCheckInDetail({
     sethasSuccess(false);
     updateNumTab();
   };
+  const FailureLocation = () => {
+    sethasFailure(false);
+    router.navigate("/(tabs)/home/homeTab");
+  };
 
   const FailureCheckIn = () => {
     sethasFailure(false);
@@ -259,7 +263,6 @@ function ExpoCheckInDetail({
             Chụp ảnh gương mặt
           </Text>
           <View style={AppStyle.StyleCheckIn.boxCamera}>
-            {/* <CustomCamera ref={cameraRef} /> */}
             <ExpoCustomCamera
               isCameraVisible={isCameraVisible}
               ref={cameraRef}
@@ -272,6 +275,9 @@ function ExpoCheckInDetail({
               location_business={{
                 lat: locationBusiness ? locationBusiness.lat : 0,
                 lng: locationBusiness ? locationBusiness.lng : 0,
+              }}
+              onInvalidLocation={(isInvalid: boolean) => {
+                setHasInvalidLocation(isInvalid);
               }}
             />
             {/* <CustomMap showCir={checkbox} location_business={{ lat: office.latitude, lng: office.longitude }}  /> */}
@@ -374,6 +380,13 @@ function ExpoCheckInDetail({
           content={message}
           func={[FailureCheckIn]}
           textFunc={["Quay lại"]}
+        />
+        <CustomMessage
+          hasVisible={hasInvalidLocation}
+          title={"Vị trí bị can thiệp"}
+          content={"Bạn đang sử dụng phần mềm can thiệp vị trí. Vui lòng tắt nó đi để tiếp tục chấm công."}
+          func={[FailureLocation]}
+          textFunc={["Màn hình chính"]}
         />
         <Modal transparent={true} animationType="slide" visible={isLoading}>
           <View style={AppStyle.StyleCheckIn.overlay}>

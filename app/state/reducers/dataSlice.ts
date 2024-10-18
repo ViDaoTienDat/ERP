@@ -28,7 +28,7 @@ const initialState: {
   workShiftCheckIn: string;
   user: User | undefined;
   roleId: string;
-  avatar: string | undefined;
+  urlAvatar: string | undefined;
 } = {
   branch: [],
   branchCheckIn: "",
@@ -38,7 +38,7 @@ const initialState: {
   workShiftCheckIn: "",
   user: undefined,
   roleId: "",
-  avatar: "",
+  urlAvatar: "",
 };
 
 const userdataSlice = createSlice({
@@ -87,17 +87,22 @@ const userdataSlice = createSlice({
     clearUser: (state) => {
       state.user = undefined;
     },
+    setAvatar: (state, action) => {
+      if (state.user) {
+        state.user.avatar = action.payload; // Update avatar inside user object
+      }
+    },
     setRoleId: (state, action) => {
       state.roleId = action.payload;
     },
     clearRoleId: (state) => {
       state.roleId = "";
     },
-    setAvatar: (state, action) => {
-      state.avatar = action.payload;
+    setUrlAvatar: (state, action) => {
+      state.urlAvatar = action.payload;
     },
-    clearAvatar: (state) => {
-      state.avatar = "";
+    clearUrlAvatar: (state) => {
+      state.urlAvatar = "";
     },
   },
 });
@@ -117,9 +122,10 @@ export const {
   clearWorkShiftCheckIn,
   setUser,
   clearUser,
+  setAvatar,
   setRoleId,
   clearRoleId,
-  setAvatar,
-  clearAvatar
+  setUrlAvatar,
+  clearUrlAvatar,
 } = userdataSlice.actions;
 export default userdataSlice.reducer;

@@ -24,6 +24,7 @@ import {
   setDataIntern,
   setDateHisCheckIn,
   setRoleId,
+  setUrlAvatar,
   setUser,
   setWorkShift,
 } from "../state/reducers/dataSlice";
@@ -39,6 +40,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import { getRoleIdFromAccessToken } from "../axios/func/getUserIdFromAccessToken";
 import Dimension from "@/constants/theme/Dimension";
+import { getImageUrl } from "../axios/api/imageApi";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -159,6 +161,9 @@ export default function Index() {
           getUser(result.data.access_token).then(async (result) => {
             if (result.code === 200) {
               dispatch(setUser(result.data));
+              getImageUrl(result.data.avatar).then((res) => {
+                dispatch(setUrlAvatar(res));
+              })
             }
           });
           getAllBranch().then(async (result) => {
@@ -243,6 +248,7 @@ export default function Index() {
                     ]}
                     placeholder="Nhập email"
                     placeholderTextColor="#ccc"
+                    keyboardType="email-address"
                     value={email}
                     onChangeText={(text) => {
                       setEmail(text);

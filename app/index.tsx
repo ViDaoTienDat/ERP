@@ -13,6 +13,7 @@ import {
   setDataIntern,
   setDateHisCheckIn,
   setRoleId,
+  setUrlAvatar,
   setUser,
   setWorkShift,
 } from "./state/reducers/dataSlice";
@@ -22,6 +23,7 @@ import {
   getExpiredTimeFromAccessToken,
   getRoleIdFromAccessToken,
 } from "./axios/func/getUserIdFromAccessToken";
+import { getImageUrl } from "./axios/api/imageApi";
 
 export default function index() {
   const [redirectTo, setRedirectTo] = useState<Href>();
@@ -42,6 +44,9 @@ export default function index() {
             getUser(token?.accessToken).then(async (result) => {
               if (result.code === 200) {
                 dispatch(setUser(result.data));
+                getImageUrl(result.data?.avatar).then((res) => {
+                  dispatch(setUrlAvatar(res));
+                })
               }
             });
             getAllBranch().then(async (result) => {

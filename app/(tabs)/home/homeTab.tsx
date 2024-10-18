@@ -28,7 +28,7 @@ import { useRouter } from "expo-router";
 
 import { storeToken } from "@/app/axios/api/storeToken";
 import {
-  clearAvatar,
+  clearUrlAvatar,
   clearBranch,
   clearBranchCheckIn,
   clearDataIntern,
@@ -37,20 +37,16 @@ import {
   clearUser,
   clearWorkShift,
   clearWorkShiftCheckIn,
-  setAvatar,
 } from "@/app/state/reducers/dataSlice";
 import { useIsFocused } from "@react-navigation/native";
-import { getImageUrl } from "@/app/axios/api/imageApi";
 export default function home() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [backPressedOnce, setBackPressedOnce] = useState(false);
 
-
   const isFocused = useIsFocused();
   useEffect(() => {
     if (!isFocused) return;
-
     const backAction = () => {
       if (backPressedOnce) {
         BackHandler.exitApp(); // Thoát ứng dụng nếu bấm lần thứ 2
@@ -85,8 +81,8 @@ export default function home() {
     { useNativeDriver: false }
   );
   const userInfo = useSelector((state: any) => state.userdata.user);
-  const imageUrl = useSelector((state: any) => state.userdata.avatar);
-  const slideAnim = useRef(new Animated.Value(-500)).current; // Vị trí bắt đầu từ bên trái
+  const imageUrl = useSelector((state: any) => state.userdata.urlAvatar);
+  const slideAnim = useRef(new Animated.Value(-500)).current;
   const [modalVisible, setModalVisible] = useState(false);
   const handleClose = () => {
     Animated.timing(slideAnim, {
@@ -125,15 +121,8 @@ export default function home() {
     dispatch(clearDateHisCheckIn());
     dispatch(clearBranch());
     dispatch(clearRoleId());
-    dispatch(clearAvatar());
+    dispatch(clearUrlAvatar());
   };
-  useEffect(() => {
-    if (!userInfo) return;
-    getImageUrl(userInfo?.avatar).then((res) => {
-      dispatch(setAvatar(res));
-    })
-  }, [userInfo]);
-
   return (
     <SafeAreaView style={AppStyle.StyleCommon.container}>
       {!userInfo ? (

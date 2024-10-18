@@ -24,6 +24,7 @@ export const signIn = async (email: string, password: string) => {
       response.data.data.refresh_token,
       response.data.data.force_password_change
     );
+    console.log("🚀 ~ signIn ~ response:", response.data.data.access_token);
 
     return response.data;
   } catch (error: any) {
