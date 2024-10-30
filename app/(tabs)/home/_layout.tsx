@@ -1,12 +1,19 @@
 import { View, Text } from "react-native";
-import React from "react";
-import { Stack } from "expo-router";
-
+import React, { useCallback, useEffect } from "react";
+import { Stack, useFocusEffect, useRouter } from "expo-router";
 export default function _layout() {
+  const route = useRouter();
+
+  useFocusEffect(
+    useCallback(() => {
+      route.navigate("/(tabs)/home/homeTab");
+    }, [])
+  );
+
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
+        headerShown: false
       }}
     >
       <Stack.Screen name="homeTab" />
