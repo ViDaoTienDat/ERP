@@ -94,7 +94,7 @@ function ExpoCheckInDetail({
   const [hasInvalidLocation, setHasInvalidLocation] = useState(false);
   //list branches Dropdown
   const [officeIdDropdown, setOfficeIdDropdown] = useState(
-    branchCheckIn ? branchCheckIn : "B1"
+    branchCheckIn ? branchCheckIn : branchs[0].id
   );
   useEffect(() => {
     dataBranches.length = 0;

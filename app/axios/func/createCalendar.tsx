@@ -77,7 +77,9 @@ export const handleSplitHisCheckIn = async (
   data: HisCheckIn[]
 ): Promise<DateHisCheckIn[]> => {
   let result: DateHisCheckIn[] = [];
-
+  if (data == null) {
+    return result;
+  }
   data.forEach((item) => {
     const dateTime = item.date_time;
     const [date, time] = dateTime.split(" ");

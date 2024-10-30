@@ -90,15 +90,6 @@ function ExpoCheckIn({
         <Text style={AppStyle.StyleCheckIn.textNote}>
           Bạn vui lòng hoàn thành các bước sau để tiến hành chấm công!
         </Text>
-        {/* <CardCheckIn
-          key={0}
-          img={require("../../assets/images/map.png")}
-          name="Chọn văn phòng"
-          state={office != "" ? true : false}
-          stateStr={office != "" ? "Đã chọn" : "Chưa chọn"}
-          func={handlePressOffice}
-          note={office}
-        /> */}
         <CardCheckIn
           key={1}
           img={require("../../assets/images/camera.png")}

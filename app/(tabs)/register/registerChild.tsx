@@ -36,7 +36,7 @@ function registerChild(): React.JSX.Element {
     router.navigate("./register/registerForgot");
   };
   const roleId = useSelector((state: any) => state.userdata.roleId);
-  console.log("🚀 ~ registerChild ~ roleId:", roleId);
+  
   return (
     <View style={{ flex: 1 }}>
       <View style={AppStyle.StyleCheckIn.container}>
@@ -52,7 +52,7 @@ function registerChild(): React.JSX.Element {
           name="Đăng ký làm việc tại nhà"
           func={handlePressTabWFH}
         />
-        {roleId == "R1" && (
+        {roleId.substring(0, 3) == "400" && (
           <CardRegister
             name="Đăng ký lịch thực tập"
             func={handlePressTabIntern}
