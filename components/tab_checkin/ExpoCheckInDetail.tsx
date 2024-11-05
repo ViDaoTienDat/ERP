@@ -19,8 +19,7 @@ import Color from "@/constants/theme/Color";
 import { useFocusEffect } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import * as FileSystem from "expo-file-system";
-//import * as Sharing from "expo-sharing";
-// import RNFS from "react-native-fs";
+
 import {
   ActivityIndicator,
   Image,
@@ -41,6 +40,9 @@ import CustomMap from "../CustomMap";
 import { handleSplitHisCheckIn } from "@/app/axios/func/createCalendar";
 import ExpoCustomMap from "../ExpoCustomMap";
 import ExpoCustomCamera from "../ExpoCustomCamera";
+import { getWorkShiftByBranch } from "@/app/axios/api/workShirtApi";
+import convertDateFormat from "@/utils/helper";
+import { splitWorkShift } from "@/app/axios/func/loadDataUser";
 
 type CustomCameraRef = {
   takePhoto: () => any | null;
@@ -56,7 +58,7 @@ function ExpoCheckInDetail({
   const cameraRef = useRef<CustomCameraRef>(null);
   const dispatch = useDispatch();
 
-  const workShift = useSelector((state: any) => state.userdata.workshift);
+  const [workShift, setWorkShift] = useState<any[]>([]);
   const workShiftCheckIn = useSelector(
     (state: any) => state.userdata.workShiftCheckIn
   );
@@ -69,8 +71,11 @@ function ExpoCheckInDetail({
   const [successTime, setSuccessTime] = useState(``);
   const [currentDate, setCurrentDate] = useState(``);
   const [currentTime, setCurrentTime] = useState(``);
+
   const [wsSelected, setWSSelected] = useState<string>(
-    workShiftCheckIn ? workShiftCheckIn : workShift[0].value
+    workShiftCheckIn
+      ? workShiftCheckIn
+      : ""
   );
 
   const [note, setNote] = useState("");
@@ -85,17 +90,25 @@ function ExpoCheckInDetail({
   const [message, setMessage] = useState("");
   const [isCameraVisible, setIsCameraVisible] = useState(true);
 
-  // For show detail checkin
   const [dateTimeDetail, setDateTimeDetail] = useState("");
   const [branchNameDetail, setBranchNameDetail] = useState("");
   const [workShiftNameDetail, setWorkShiftNameDetail] = useState("");
   const [imageDetail, setImageDetail] = useState("");
 
+  const [loadingWorkShifts, setLoadingWorkShifts] = useState<boolean>(false);
+
   const [hasInvalidLocation, setHasInvalidLocation] = useState(false);
-  //list branches Dropdown
+
   const [officeIdDropdown, setOfficeIdDropdown] = useState(
     branchCheckIn ? branchCheckIn : branchs[0].id
   );
+
+  useEffect(() => {
+    if (Array.isArray(workShift) && workShift.length > 0) {
+      setWSSelected(workShift[0].value);
+    }
+  }, [workShift]);
+
   useEffect(() => {
     dataBranches.length = 0;
     branchs.forEach((item: any) => {
@@ -107,12 +120,6 @@ function ExpoCheckInDetail({
   }, []);
   const [locationBusiness, setLocationBusiness] = useState({ lat: 0, lng: 0 });
 
-  // useEffect(() => {
-  //   setWSSelected(workShiftCheckIn);
-  // }, [workShiftCheckIn]);
-  // useEffect(() => {
-  //   setOfficeIdDropdown(branchCheckIn);
-  // }, [branchCheckIn]);
   useEffect(() => {
     const office = branchs.find(
       (office: { id: any }) => office.id === officeIdDropdown
@@ -127,17 +134,47 @@ function ExpoCheckInDetail({
     }
     setOfficeIdDropdown(officeIdDropdown);
   }, [officeIdDropdown]);
-  // useEffect(() => {
-  //   setWSSelected(wsSelected);
-  // }, [wsSelected]);
+
+  const loadDataWorkShift = async (id: string) => {
+    setLoadingWorkShifts(true);
+    try {
+      const result = await getWorkShiftByBranch(
+        id,
+        convertDateFormat(currentDate)
+      );
+      if (result.data) {
+        const dataWorkShift = splitWorkShift(result.data);
+        setWorkShift(dataWorkShift);
+      } else {
+        setWorkShift([]);
+      }
+
+      setLoadingWorkShifts(false);
+    } catch (error) {
+      console.log("🚀 ~ loadDataWorkShift ~ error:", error);
+    }
+  };
+
   useEffect(() => {
     const formattedDate = getFormattedDate();
     setCurrentDate(formattedDate);
 
+    getWorkShiftByBranch(
+      officeIdDropdown,
+      convertDateFormat(formattedDate)
+    ).then((result) => {
+      if (result.data) {
+        const dataWorkShift = splitWorkShift(result.data);
+        setWorkShift(dataWorkShift);
+      } else {
+        setWorkShift([]);
+      }
+    });
+
     const interval = setInterval(() => {
       setCurrentTime(getCurrentTime());
     }, 1000);
-    // Cleanup interval on component unmount
+
     return () => {
       clearInterval(interval);
     };
@@ -151,27 +188,6 @@ function ExpoCheckInDetail({
         setIsCameraVisible(false);
         const type = dataPhoto ? await dataPhoto.uri.split(".").pop() : null;
         const image = "data:image/" + type + ";base64," + dataPhoto.base64;
-        // try {
-        //   if (dataPhoto && dataPhoto.base64) {
-        //     const fileUri = `${FileSystem.documentDirectory}photoBase64.txt`; // Đường dẫn file
-        //     await FileSystem.writeAsStringAsync(fileUri, dataPhoto.base64, {
-        //       encoding: FileSystem.EncodingType.UTF8,
-        //     });
-        //     console.log(`🚀 Dữ liệu base64 đã được ghi vào file: ${fileUri}`);
-
-        //     const fileExists = await FileSystem.getInfoAsync(fileUri);
-        //     if (fileExists.exists) {
-        //       console.log(`🚀 chia se file`);
-        //       await Sharing.shareAsync(fileUri);
-        //     } else {
-        //       console.log("File không tồn tại");
-        //     }
-        //   } else {
-        //     console.log("Không có dữ liệu base64 để ghi vào file");
-        //   }
-        // } catch (error) {
-        //   console.log("Lỗi khi ghi file:", error);
-        // }
         const time = getFormatDateTimeCheckIn();
         setSuccessTime(time);
 
@@ -245,9 +261,9 @@ function ExpoCheckInDetail({
   const branchLabel = dataBranches.find(
     (branch: any) => branch.value === branchCheckIn
   )?.label;
-  const workShiftLabel = workShift.find(
-    (item: any) => item.value === workShiftCheckIn
-  )?.label;
+  const workShiftLabel =
+    workShift &&
+    workShift.find((item: any) => item.value === workShiftCheckIn)?.label;
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -280,7 +296,6 @@ function ExpoCheckInDetail({
                 setHasInvalidLocation(isInvalid);
               }}
             />
-            {/* <CustomMap showCir={checkbox} location_business={{ lat: office.latitude, lng: office.longitude }}  /> */}
           </View>
           <View style={AppStyle.StyleCheckIn.boxItem}>
             <CustomCheckBox
@@ -315,10 +330,11 @@ function ExpoCheckInDetail({
                     firstValue={officeIdDropdown}
                     onChange={(value: any) => {
                       setOfficeIdDropdown(value);
+                      loadDataWorkShift(value);
                     }}
                   />
                 ) : (
-                  <Text>Không có ca làm việc</Text>
+                  <Text>Không có chi nhánh làm việc</Text>
                 )}
               </View>
             )}
@@ -333,12 +349,16 @@ function ExpoCheckInDetail({
               </View>
             ) : (
               <View style={AppStyle.StyleCheckIn.boxDropdown}>
-                {workShift.length > 0 ? (
+                {loadingWorkShifts ? (
+                  <ActivityIndicator
+                    size="small"
+                    color={Color.color_header_red}
+                  />
+                ) : workShift && workShift.length > 0 ? (
                   <CustomDropdown
                     data={workShift}
                     firstValue={wsSelected}
-                    onChange={(value: any) => {
-                      console.log("🚀 ~ ExpoCheckInDetail ~ value:", value);
+                    onChange={(value: string) => {
                       setWSSelected(value);
                     }}
                   />
@@ -384,7 +404,9 @@ function ExpoCheckInDetail({
         <CustomMessage
           hasVisible={hasInvalidLocation}
           title={"Vị trí bị can thiệp"}
-          content={"Bạn đang sử dụng phần mềm can thiệp vị trí. Vui lòng tắt nó đi để tiếp tục chấm công."}
+          content={
+            "Bạn đang sử dụng phần mềm can thiệp vị trí. Vui lòng tắt nó đi để tiếp tục chấm công."
+          }
           func={[FailureLocation]}
           textFunc={["Màn hình chính"]}
         />
