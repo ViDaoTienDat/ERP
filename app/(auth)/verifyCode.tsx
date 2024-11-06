@@ -94,6 +94,7 @@ export default function verifyCode() {
                     ]}
                     placeholder="Nhập mã xác thực"
                     placeholderTextColor="#ccc"
+                    keyboardType="number-pad"
                     value={code}
                     onChangeText={(text) => {
                       setCode(text);

@@ -128,7 +128,7 @@ const StyleCheckIn = StyleSheet.create({
     borderWidth: 1,
     borderColor: Color.color4,
     width: "70%",
-    height: 40,
+    height: "auto",
     padding: 10,
     borderRadius: 10,
   },

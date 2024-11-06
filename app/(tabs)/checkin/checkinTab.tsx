@@ -108,13 +108,11 @@ export default function checkin() {
     }
   }, [dispatch]);
   
-  
 
   const handlePressCheckIn = () => {
     getCurrentCheckIn().then(async (result) => {
       if (result.code === 200 && result.data && result.data.length > 0) {
         const lastCheckIn = result.data[result.data.length - 1];
-
         if (lastCheckIn.branch_id && lastCheckIn.work_shift_id) {
           console.log("dispatcch setWS ");
           console.log(
