@@ -96,7 +96,9 @@ export default function profileDetail() {
                     ? { uri: img }
                     : imgUrl
                     ? { uri: imgUrl }
-                    : require("../../../assets/images/avt.png")
+                    : userInfo && userInfo.gender == "Nam"
+                    ? require("../../../assets/images/user-male.jpg")
+                    : require("../../../assets/images/user-female.jpg") 
                 }
               />
               <View style={styles.container}>
@@ -112,7 +114,7 @@ export default function profileDetail() {
               </View>
             </View>
             <ContentProfile title={"Họ tên"} content={userInfo?.full_name} />
-            <ContentProfile title={"Mã nhân viên"} content={userInfo?.id} />
+            <ContentProfile title={"Mã nhân viên"} content={userInfo?.id.split("-")[0]} />
             <ContentProfile title={"Giới tính"} content={userInfo?.gender} />
             <ContentProfile title={"Ngày sinh"} content={userInfo?.birthday} />
             <ContentProfile

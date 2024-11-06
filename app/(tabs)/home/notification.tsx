@@ -34,7 +34,6 @@ export default function Notification() {
       <View style={AppStyle.StyleCommon.container}>
         <ImageBackground source={require("../../../assets/images/logo-background.png")} resizeMode="contain" style={AppStyle.StyleHome.background}>
           <TitleHeader title={"Thông báo"} />
-
           <FlatList
             data={data}
             renderItem={renderItem}

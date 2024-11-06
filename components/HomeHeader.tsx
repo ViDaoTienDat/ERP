@@ -13,8 +13,11 @@ import { useSelector } from "react-redux";
 import { useRouter } from "expo-router";
 import { getImageUrl } from "@/app/axios/api/imageApi";
 
-function HomeHeader({ userInfo, onPress, handlePressNotificationIcon }: any): React.JSX.Element {
-
+function HomeHeader({
+  userInfo,
+  onPress,
+  handlePressNotificationIcon,
+}: any): React.JSX.Element {
   const imageUrl = useSelector((state: any) => state.userdata.urlAvatar);
   return (
     <View style={[AppStyle.StyleHeader.header]}>
@@ -26,7 +29,9 @@ function HomeHeader({ userInfo, onPress, handlePressNotificationIcon }: any): Re
               source={
                 imageUrl
                   ? { uri: imageUrl }
-                  : require("../assets/images/avt.png")
+                  : userInfo && userInfo.gender == "Nam"
+                  ? require("../assets/images/user-male.jpg")
+                  : require("../assets/images/user-female.jpg")
               }
             />
           </TouchableOpacity>

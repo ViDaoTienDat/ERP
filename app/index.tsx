@@ -44,9 +44,6 @@ export default function index() {
             getUser(token?.accessToken).then(async (result) => {
               if (result.code === 200) {
                 dispatch(setUser(result.data));
-                getImageUrl(result.data?.avatar).then((res) => {
-                  dispatch(setUrlAvatar(res));
-                })
               }
             });
             getAllBranch().then(async (result) => {

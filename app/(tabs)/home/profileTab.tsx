@@ -27,7 +27,9 @@ export default function profileTab() {
                 source={
                   imageUrl
                     ? { uri: imageUrl }
-                    : require("../../../assets/images/avt.png")
+                    : userInfo.gender == "Nam"
+                    ? require("../../../assets/images/user-male.jpg")
+                    : require("../../../assets/images/user-female.jpg")
                 }
               />
             </TouchableOpacity>
