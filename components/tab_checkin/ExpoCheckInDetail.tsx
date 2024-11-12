@@ -158,7 +158,7 @@ function ExpoCheckInDetail({
   useEffect(() => {
     const formattedDate = getFormattedDate();
     setCurrentDate(formattedDate);
-
+    setLoadingWorkShifts(true);
     getWorkShiftByBranch(
       officeIdDropdown,
       convertDateFormat(formattedDate)
@@ -169,6 +169,7 @@ function ExpoCheckInDetail({
       } else {
         setWorkShift([]);
       }
+      setLoadingWorkShifts(false);
     });
 
     const interval = setInterval(() => {
