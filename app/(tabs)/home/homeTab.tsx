@@ -37,8 +37,10 @@ import {
   clearUser,
   clearWorkShift,
   clearWorkShiftCheckIn,
+  setUrlAvatar,
 } from "@/app/state/reducers/dataSlice";
 import { useIsFocused } from "@react-navigation/native";
+import { getImageUrl } from "@/app/axios/api/imageApi";
 export default function home() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -100,6 +102,14 @@ export default function home() {
       useNativeDriver: true,
     }).start();
   };
+
+  useEffect(() => {
+    if(userInfo && userInfo.avatar){
+      getImageUrl(userInfo.avatar).then((res) => {
+        dispatch(setUrlAvatar(res));
+      })
+    }
+  }, [userInfo]);
 
   const handlegoProfile = () => {
     handleClose();
@@ -216,7 +226,9 @@ export default function home() {
                       source={
                         imageUrl
                           ? { uri: imageUrl }
-                          : require("../../../assets/images/avt.png")
+                          : userInfo && userInfo.gender == "Nam"
+                          ? require("../../../assets/images/user-male.jpg")
+                          : require("../../../assets/images/user-female.jpg")
                       }
                     />
                     <Text style={AppStyle.StyleCommon.textBlack18}>
