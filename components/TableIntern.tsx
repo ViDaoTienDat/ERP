@@ -133,6 +133,9 @@ function CellResIntern({
             }}
           >
             <Text style={[AppStyle.StyleTable.textValue]}>
+              {data.branch_name}
+            </Text>
+            <Text style={[AppStyle.StyleTable.textValue]}>
               {data.start_time ? data.start_time : "--/--"}
             </Text>
             <Text style={[AppStyle.StyleTable.textValue]}>
@@ -144,6 +147,14 @@ function CellResIntern({
             {/*<Text style={[AppStyle.StyleTable.textValue, data.curr ? { color: Color.color3 } : {}]}>
                   {data.location ? data.location : ''}
                 </Text> */}
+            <Text
+              style={[
+                AppStyle.StyleTable.textValue,
+                curr ? { color: Color.color12 } : {},
+              ]}
+            >
+              {data.branch_name ? data.branch_name : "--/--"}
+            </Text>
             <Text
               style={[
                 AppStyle.StyleTable.textValue,
@@ -176,6 +187,9 @@ function CellResIntern({
           </TouchableOpacity>
         ) : (
           <View style={AppStyle.StyleTable.boxValue}>
+            <Text style={[AppStyle.StyleTable.textValue]}>
+              {data.branch_name}
+            </Text>
             <Text style={[AppStyle.StyleTable.textValue]}>
               {data.start_time ? data.start_time : ""}
             </Text>
@@ -252,20 +266,6 @@ function CellResInternDayOff({
         </Text>
       </View>
       <View style={AppStyle.StyleTable.boxValue}></View>
-      {/* <ModalResIntern
-        visiable={addVisible}
-        add={add}
-        defaultDate={
-          new Date(
-            data.register_year,
-            data.register_month - 1,
-            data.register_day
-          )
-        }
-        funcHide={() => {
-          setAddVisible(false);
-        }}
-      /> */}
     </View>
   );
 }

@@ -1,6 +1,7 @@
 import { DayNameOfWeek } from "./createCalendar";
 
 export type InternScheduleData = {
+  branch_name: string;
   register_date: string;
   register_shift: string;
   start_time: string;
@@ -8,6 +9,7 @@ export type InternScheduleData = {
 };
 
 type InternScheduleDay = {
+  branch_name: string;
   register_day: number;
   register_month: number;
   register_year: number;
@@ -40,13 +42,24 @@ export const getSunDayOfWeek = (date: Date) => {
   }
   return result;
 };
+const formatBranchName = (name: string) => {
+  if (name.includes("Gtel")) {
+    return "Gtel";
+  } else if (name.includes("Hồ Bá Kiện")) {
+    return "HBK";
+  } else {
+    return name;
+  }
+};
 const splitDateIntern = (data: InternScheduleData[]) => {
   let result: InternScheduleDay[] = [];
   data.map((item) => {
+    const branchName = formatBranchName(item.branch_name);
     const [itemday, itemmonth, itemyear] = item.register_date
       .split("-")
       .map(Number);
     result.push({
+      branch_name: branchName,
       register_day: itemday,
       register_month: itemmonth,
       register_year: itemyear,
@@ -94,6 +107,7 @@ export const getInternSchedule = async (
 const getInternScheduleWeek = (startDate: Date, data: InternScheduleDay[]) => {
   let dataweek: InternScheduleWeek = {
     T2: {
+      branch_name: "",
       register_day: 0,
       register_month: 0,
       register_year: 0,
@@ -103,6 +117,7 @@ const getInternScheduleWeek = (startDate: Date, data: InternScheduleDay[]) => {
       add: false,
     },
     T3: {
+      branch_name: "",
       register_day: 0,
       register_month: 0,
       register_year: 0,
@@ -112,6 +127,7 @@ const getInternScheduleWeek = (startDate: Date, data: InternScheduleDay[]) => {
       add: false,
     },
     T4: {
+      branch_name: "",
       register_day: 0,
       register_month: 0,
       register_year: 0,
@@ -121,6 +137,7 @@ const getInternScheduleWeek = (startDate: Date, data: InternScheduleDay[]) => {
       add: false,
     },
     T5: {
+      branch_name: "",
       register_day: 0,
       register_month: 0,
       register_year: 0,
@@ -130,6 +147,7 @@ const getInternScheduleWeek = (startDate: Date, data: InternScheduleDay[]) => {
       add: false,
     },
     T6: {
+      branch_name: "",
       register_day: 0,
       register_month: 0,
       register_year: 0,
@@ -139,6 +157,7 @@ const getInternScheduleWeek = (startDate: Date, data: InternScheduleDay[]) => {
       add: false,
     },
     T7: {
+      branch_name: "",
       register_day: 0,
       register_month: 0,
       register_year: 0,
@@ -148,6 +167,7 @@ const getInternScheduleWeek = (startDate: Date, data: InternScheduleDay[]) => {
       add: false,
     },
     CN: {
+      branch_name: "",
       register_day: 0,
       register_month: 0,
       register_year: 0,

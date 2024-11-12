@@ -359,11 +359,7 @@ export default function Index() {
           </ScrollView>
         </SafeAreaView>
       </KeyboardAvoidingView>
-      <View
-        style={[
-          AppStyle.StyleLogin.flexVer,
-        ]}
-      >
+      <View style={[AppStyle.StyleLogin.flexVer]}>
         <Text style={{ alignSelf: "center" }}>Version 1.1.1</Text>
       </View>
     </View>
