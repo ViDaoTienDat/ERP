@@ -38,9 +38,43 @@ export const GetInternSchedule = async () => {
   }
 };
 
+export const getWorkShiftToCheckInByBranch = async (
+  branchId: string,
+  date: Date
+) => {
+  try {
+    const token = await getTokens();
+    if (token.accessToken) {
+      const userId = getUserIdFromAccessToken(token.accessToken);
+      if (userId) {
+        // const url = `${serverAPI}/schedules/dasdasdsadasdasd`; // co tinh de error
+        const formattedDate = formatDateToLocal(date);
+        const url = `${serverAPI}/work-shifts/branches/${branchId}?dateTime=${formattedDate}&&action=register`;
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token.accessToken}`,
+            "x-api-key": apiKey,
+            "Content-Type": "application/json",
+          },
+        });
+
+        return response.data;
+      }
+    }
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      return error.response.data;
+    } else {
+      console.error(error);
+      throw new Error("An unknown error occurred.");
+    }
+  }
+};
+
 export const RegisterInternSchedule = async (
   date: Date,
-  workShift: string[]
+  workShift: string[],
+  branchId: string
 ) => {
   try {
     const token = await getTokens();
@@ -54,6 +88,7 @@ export const RegisterInternSchedule = async (
           register_time: {
             [formattedDate]: workShift,
           },
+          branch_id: branchId,
         };
         const response = await axios.post(url, data, {
           headers: {
@@ -76,7 +111,11 @@ export const RegisterInternSchedule = async (
   }
 };
 
-export const ChangeInternSchedule = async (date: Date, workShift: string[]) => {
+export const ChangeInternSchedule = async (
+  date: Date,
+  workShift: string[],
+  branchId: string
+) => {
   try {
     const token = await getTokens();
     let userId = null;
@@ -92,6 +131,7 @@ export const ChangeInternSchedule = async (date: Date, workShift: string[]) => {
         register_time: {
           [formattedDate]: workShift,
         },
+        branch_id: branchId,
       };
       const response = await axios.put(url, data, {
         headers: {

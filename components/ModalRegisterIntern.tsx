@@ -18,11 +18,13 @@ import {
   ChangeInternSchedule,
   DeleteInternSchedule,
   GetInternSchedule,
+  getWorkShiftToCheckInByBranch,
   RegisterInternSchedule,
 } from "@/app/axios/api/InternAPI";
 import { Picker } from "@react-native-picker/picker";
 import Color from "@/constants/theme/Color";
 import CustomDropdown from "./DropDown";
+import { splitWorkShift } from "@/app/axios/func/loadDataUser";
 
 type DataModalResIntern = {
   visiable: boolean;
@@ -48,13 +50,17 @@ export function ModalResIntern({
 
   const dispatch = useDispatch();
   const listWorkShift = useSelector((state: any) => state.userdata.workshift);
+
+  const [listWorkShiftByBranch, setListWorkShiftByBranch] = useState<any>([]);
+  const [loadingWorkShifts, setLoadingWorkShifts] = useState<boolean>(false);
   const dataworkShiftforChange = [
-    ...listWorkShift,
+    ...listWorkShiftByBranch,
     { label: "Hủy ca", value: "Cancel" },
   ];
   const listOffice = useSelector((state: any) => state.userdata.branch);
-  const [workShift, setWorkShift] = useState(listWorkShift[0].value);
-  const [office, setOffice] = useState("");
+
+  const [workShift, setWorkShift] = useState("");
+  const [office, setOffice] = useState(listOffice ? listOffice[0].id : "");
 
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -67,7 +73,7 @@ export function ModalResIntern({
     listOffice.forEach((item: any) => {
       dataBranches.push({ label: item.name, value: item.id });
     });
-    setOffice(dataBranches[0].value);
+    GetWorkShiftToRegister();
   }, []);
   useEffect(() => {
     setDate(defaultDate);
@@ -77,6 +83,31 @@ export function ModalResIntern({
     setShow(Platform.OS === "ios");
     setDate(currentDate);
   };
+
+  useEffect(() => {
+    if (
+      Array.isArray(listWorkShiftByBranch) &&
+      listWorkShiftByBranch.length > 0
+    ) {
+      setWorkShift(listWorkShiftByBranch[0].value);
+    }
+  }, [listWorkShiftByBranch]);
+  const GetWorkShiftToRegister = async () => {
+    setLoadingWorkShifts(true);
+    try {
+      getWorkShiftToCheckInByBranch(office, date).then(async (result) => {
+        if (result.code === 200 && result.data) {
+          const workshift = await splitWorkShift(result.data);
+          setListWorkShiftByBranch(workshift);
+          setLoadingWorkShifts(false);
+        } else {
+          setLoadingWorkShifts(false);
+        }
+      });
+    } catch (error) {
+      console.error("Error during GetWorkShiftToRegister:", error);
+    }
+  };
   const SubmitRegisterIntern = async () => {
     setIsLoading(true);
     setIsError(false);
@@ -85,29 +116,16 @@ export function ModalResIntern({
     try {
       let result;
       if (add) {
-        result = await RegisterInternSchedule(date, workshiftSend);
+        result = await RegisterInternSchedule(date, workshiftSend, office);
+        console.log("🚀 ~ SubmitRegisterIntern ~ result:", result);
       } else {
         if (workshiftSend.includes("Cancel")) {
           result = await DeleteInternSchedule(date);
-        } else result = await ChangeInternSchedule(date, workshiftSend);
-        // result = await ChangeInternSchedule(date, workshiftSend);
-        // let textWorkShift = "";
-        // if (
-        //   workshiftSend.includes("2c1e165e-8") &&
-        //   workshiftSend.includes("78546471-a")
-        // ) {
-        //   textWorkShift = "08:30 - 17:30";
-        // } else if (workshiftSend.includes("2c1e165e-8")) {
-        //   textWorkShift = "08:30 - 12:00";
-        // } else {
-        //   textWorkShift = "01:30 - 17:30";
-        // }
-
-        // onChangeSchedule(
-        //   `${date.getDate()}/${
-        //     date.getMonth() + 1
-        //   }/${date.getFullYear()} ${textWorkShift}`
-        // );
+          GetWorkShiftToRegister();
+        } else {
+          result = await ChangeInternSchedule(date, workshiftSend, office);
+          console.log("Change InternSchedule result:");
+        }
       }
       if (result.code === 200) {
         funcHide();
@@ -194,6 +212,7 @@ export function ModalResIntern({
                       firstValue={office}
                       onChange={(value: React.SetStateAction<string>) => {
                         setOffice(value);
+                        GetWorkShiftToRegister();
                       }}
                     />
                     {/* <View
@@ -226,13 +245,25 @@ export function ModalResIntern({
                     Ca làm việc
                   </Text>
                   <View style={AppStyle.StyleTable.addValue}>
-                    <CustomDropdown
-                      data={add ? listWorkShift : dataworkShiftforChange}
-                      firstValue={workShift}
-                      onChange={(value: React.SetStateAction<string>) => {
-                        setWorkShift(value);
-                      }}
-                    />
+                    {loadingWorkShifts ? (
+                      <ActivityIndicator
+                        size="small"
+                        color={Color.color_header_red}
+                      />
+                    ) : listWorkShiftByBranch &&
+                      listWorkShiftByBranch.length > 0 ? (
+                      <CustomDropdown
+                        data={
+                          add ? listWorkShiftByBranch : dataworkShiftforChange
+                        }
+                        firstValue={workShift}
+                        onChange={(value: React.SetStateAction<string>) => {
+                          setWorkShift(value);
+                        }}
+                      />
+                    ) : (
+                      <Text>Không có ca làm việc</Text>
+                    )}
                     {/* <View
                       style={{
                         width: "100%",
