@@ -8,6 +8,7 @@ import {
   getInternSchedule,
   InternScheduleWeek,
 } from "@/app/axios/func/createInternSchedule";
+import CustomMessage from "@/components/CustomMessage";
 
 const currdate = new Date();
 
@@ -16,6 +17,9 @@ function RegisterInternChild(): React.JSX.Element {
   const [datamonth, setdatamonth] = useState<InternScheduleWeek[]>([]);
   const [currmonth, setcurrmonth] = useState(currdate.getMonth() + 1);
   const [curryear, setcurryear] = useState(currdate.getFullYear());
+  const [isMessageVisible, setIsMessageVisible] = useState(false);
+
+  const today = new Date();
 
   const getNewMonth = async (newmonth: any, year: any) => {
     const calendardata = await getInternSchedule(newmonth, year, dataIntern);
@@ -23,6 +27,11 @@ function RegisterInternChild(): React.JSX.Element {
     setdatamonth(calendardata.schedule);
     setcurryear(calendardata.year);
     setcurrmonth(calendardata.month);
+  };
+  const isRegistrationClosed = () => {
+    const currentHour = today.getHours();
+    // Kiểm tra nếu hôm nay là Thứ Sáu (Wednesday) và giờ lớn hơn 15:00
+    return today.getDay() === 5 && currentHour >= 15;
   };
   const handlePressBack = () => {
     if (currmonth - 1 <= 0) {
@@ -38,12 +47,28 @@ function RegisterInternChild(): React.JSX.Element {
       getNewMonth(currmonth + 1, curryear);
     }
   };
+  const funcHide = () => {
+    setIsMessageVisible(false);
+  };
+  // Thông báo nếu hết hạn đăng ký lịch thực tập trong tuần
+  useEffect(() => {
+    if (isRegistrationClosed()) {
+      setIsMessageVisible(true);
+    }
+  }, []);
 
   useEffect(() => {
     getNewMonth(currmonth, curryear);
   }, [dataIntern]);
   return (
     <View style={{ flex: 1 }}>
+      <CustomMessage
+        hasVisible={isMessageVisible}
+        title={"Thông Báo"}
+        content={"Hết thời gian đăng ký lịch thực tập"}
+        func={[funcHide]}
+        textFunc={["Tiếp tục"]}
+      />
       <View style={AppStyle.StyleHistory.boxmonth}>
         <TouchableOpacity
           style={AppStyle.StyleHistory.button}
@@ -58,7 +83,14 @@ function RegisterInternChild(): React.JSX.Element {
           Tháng {currmonth}, {curryear}
         </Text>
         <TouchableOpacity
-          style={[AppStyle.StyleHistory.button, {justifyContent: "flex-end", flexDirection: "row", alignItems: "center"}]}
+          style={[
+            AppStyle.StyleHistory.button,
+            {
+              justifyContent: "flex-end",
+              flexDirection: "row",
+              alignItems: "center",
+            },
+          ]}
           onPress={handlePressNext}
         >
           <Image

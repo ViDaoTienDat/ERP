@@ -7,7 +7,7 @@ export default function _layout() {
 
   useFocusEffect(
     useCallback(() => {
-      route.navigate('/(tabs)/register/');
+      route.navigate("/(tabs)/register/");
     }, [])
   );
   return (

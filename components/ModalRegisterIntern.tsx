@@ -117,7 +117,6 @@ export function ModalResIntern({
       let result;
       if (add) {
         result = await RegisterInternSchedule(date, workshiftSend, office);
-        console.log("🚀 ~ SubmitRegisterIntern ~ result:", result);
       } else {
         if (workshiftSend.includes("Cancel")) {
           result = await DeleteInternSchedule(date);
@@ -215,29 +214,6 @@ export function ModalResIntern({
                         GetWorkShiftToRegister();
                       }}
                     />
-                    {/* <View
-                      style={{
-                        width: "100%",
-                        borderColor: Color.color4,
-                        borderWidth: 1,
-                        borderRadius: 10,
-                      }}
-                    >
-                      <Picker
-                        selectedValue={office}
-                        onValueChange={(itemValue, itemIndex) =>
-                          setOffice(itemValue)
-                        }
-                      >
-                        {listOffice.map((item: any, index: number) => (
-                          <Picker.Item
-                            key={index}
-                            label={item.name}
-                            value={item}
-                          />
-                        ))}
-                      </Picker>
-                    </View> */}
                   </View>
                 </View>
                 <View style={AppStyle.StyleTable.addItem}>
@@ -264,25 +240,6 @@ export function ModalResIntern({
                     ) : (
                       <Text>Không có ca làm việc</Text>
                     )}
-                    {/* <View
-                      style={{
-                        width: "100%",
-                        borderColor: Color.color4,
-                        borderWidth: 1,
-                        borderRadius: 10,
-                      }}
-                    >
-                      <Picker
-                        selectedValue={workShift}
-                        onValueChange={(itemValue, itemIndex) =>
-                          setWorkShift(itemValue)
-                        }
-                      >
-                        <Picker.Item label="Ca 1" value={listWorkShift[0]} />
-                        <Picker.Item label="Ca 2" value={listWorkShift[1]} />
-                        <Picker.Item label="All" value={listWorkShift[2]} />
-                      </Picker>
-                    </View> */}
                   </View>
                 </View>
                 {isError && (
@@ -323,7 +280,7 @@ export function ModalResIntern({
                     ]}
                     onPress={SubmitRegisterIntern}
                   >
-                    {isLoading ? ( // Hiển thị ActivityIndicator nếu đang tải
+                    {isLoading ? (
                       <ActivityIndicator
                         style={[AppStyle.StyleLogin.spaceButton]}
                         size="small"

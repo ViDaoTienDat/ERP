@@ -21,22 +21,22 @@ import { useSelector } from "react-redux";
 function registerChild(): React.JSX.Element {
   const router = useRouter();
   const handlePressTabLOA = (num: any) => {
-    router.navigate("./register/registerLOA");
+    router.navigate("/(tabs)/register/registerLOA");
   };
   const handlePressTabOnsite = (num: any) => {
-    router.navigate("./register/registerOnSite");
+    router.navigate("/(tabs)/register/registerOnSite");
   };
   const handlePressTabWFH = (num: any) => {
-    router.navigate("./register/registerWFH");
+    router.navigate("/(tabs)/register/registerWFH");
   };
   const handlePressTabIntern = (num: any) => {
-    router.navigate("./register/registerIntern");
+    router.navigate("/(tabs)/register/registerIntern");
   };
   const handlePressTabForgot = (num: any) => {
-    router.navigate("./register/registerForgot");
+    router.navigate("/(tabs)/register/registerForgot");
   };
   const roleId = useSelector((state: any) => state.userdata.roleId);
-  
+
   return (
     <View style={{ flex: 1 }}>
       <View style={AppStyle.StyleCheckIn.container}>

@@ -5,7 +5,7 @@ import {
   BackHandler,
   ToastAndroid,
   ScrollView,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import CustomHeader from "@/components/CustomHeader";
@@ -80,16 +80,12 @@ export default function checkin() {
     setShowDetailCheckIn(false);
   }, [numTab]);
 
-
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-  
+
     try {
-      const [branchResult, hisCheckInResult, workShiftResult] = await Promise.all([
-        getAllBranch(),
-        getHisCheckIn(),
-        getWorkShift(),
-      ]);
+      const [branchResult, hisCheckInResult, workShiftResult] =
+        await Promise.all([getAllBranch(), getHisCheckIn(), getWorkShift()]);
       if (branchResult.code === 200) {
         dispatch(setBranch(branchResult.data));
       }
@@ -107,18 +103,12 @@ export default function checkin() {
       setRefreshing(false);
     }
   }, [dispatch]);
-  
 
   const handlePressCheckIn = () => {
     getCurrentCheckIn().then(async (result) => {
       if (result.code === 200 && result.data && result.data.length > 0) {
         const lastCheckIn = result.data[result.data.length - 1];
         if (lastCheckIn.branch_id && lastCheckIn.work_shift_id) {
-          console.log("dispatcch setWS ");
-          console.log(
-            "🚀 ~ getCurrentCheckIn ~ work_shift_id:",
-            lastCheckIn.work_shift_id
-          );
           dispatch(setBranchCheckIn(lastCheckIn.branch_id));
           dispatch(setWorkShiftCheckIn(lastCheckIn.work_shift_id));
         }
@@ -140,22 +130,23 @@ export default function checkin() {
           state={numTab}
           onchangeTab={false}
         />
-        <ScrollView refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        <View style={AppStyle.StyleHome.containerPadding}>
-          {numTab == 0 ? (
-            <ExpoCheckIn
-              showDetailCheckIn={showDetailCheckIn}
-              handlePressCheckIn={handlePressCheckIn}
-              updateNumTab={() => setNumTab(1)}
-            />
-          ) : (
-            <HistoryCheckIn />
-          )}
-        </View>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <View style={AppStyle.StyleHome.containerPadding}>
+            {numTab == 0 ? (
+              <ExpoCheckIn
+                showDetailCheckIn={showDetailCheckIn}
+                handlePressCheckIn={handlePressCheckIn}
+                updateNumTab={() => setNumTab(1)}
+              />
+            ) : (
+              <HistoryCheckIn />
+            )}
+          </View>
         </ScrollView>
-        
       </ImageBackground>
     </SafeAreaView>
   );

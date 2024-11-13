@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "ERP THD",
-    "slug": "ERP THD",
+    "slug": "ERP-THD-expo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
